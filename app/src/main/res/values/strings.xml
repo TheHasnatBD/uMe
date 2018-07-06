@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">uMe</string>
+    <string name="app_name_slogan">urgent messages</string>
+
+    <!-- My Common Strings -->
+    <string name="student_name">Abdullah Al-Hasnat</string>
+    <string name="copyright">Copyright © 2018</string>
+    <string name="ac_settings">Account Settings</string>
+    <string name="log_in">Log In</string>
+    <string name="log_out">Log Out</string>
+    <string name="profile">Profile</string>
+    <string name="friends">Friends</string>
+
+
+
+
+    <!-- Slider Screen Strings -->
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">START</string>
+    <string name="title_slide1">Personal Chatting</string>
+    <string name="desc_slide1">fully one to one personal &amp; premium chatting system</string>
+    <string name="title_slide2">Friendship</string>
+    <string name="desc_slide2">search a contact, make a new friend</string>
+    <string name="title_slide3">Account</string>
+    <string name="desc_slide3">this app gives you a smart account profile</string>
+
+
+    <!-- About App Strings -->
+    <string name="varsity_name">BANGLADESH UNIVERSITY</string>
+    <string name="instructor_name">Omar Farukh</string>
+    <string name="about_app_title">x</string>
+    <string name="about_app_detail">x</string>
+
+</resources>
