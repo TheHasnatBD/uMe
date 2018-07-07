@@ -18,7 +18,7 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    sleep(3000); // 3 secs
+                    sleep(4000); // 4 secs
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -30,6 +30,11 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         };
         myThread.start();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }

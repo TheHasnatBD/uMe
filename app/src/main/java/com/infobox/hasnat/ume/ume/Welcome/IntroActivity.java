@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.infobox.hasnat.ume.ume.MainActivity;
+import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
 
 public class IntroActivity extends Activity {
