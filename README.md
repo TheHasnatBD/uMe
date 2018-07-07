@@ -7,6 +7,9 @@
 * Login, Registration Mechanism with Firebase
 * Works With Firebase AUTHENTICATION, REALTIME DATABASE, STORAGE & CLOUD MESSAGING
 *
+*
+*
+
 >with full UI design
 
 
