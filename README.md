@@ -1,5 +1,5 @@
-## uMe
-urgent messages
+# uMe
+> urgent messages
 
 ### App features for learner/developer-
 * Splash Screen
@@ -7,6 +7,7 @@ urgent messages
 * Login, Registration Mechanism with Firebase
 * Works With Firebase AUTHENTICATION, REALTIME DATABASE, STORAGE & CLOUD MESSAGING
 *
+>with full UI design
 
 
 ### Some Screenshots of this app
@@ -26,6 +27,6 @@ Registration Screen                  | Home/Main Screen                     | Fi
 
 
 
-university project of
+>_university project of_
 
 <img src="images/bu.png" width="130"> 
