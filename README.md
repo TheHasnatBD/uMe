@@ -1,5 +1,5 @@
 # *uMe*
-> urgent messages
+> _urgent messages_
 
 ### App features for learner/developer-
 * Splash Screen
@@ -10,7 +10,7 @@
 >with full UI design
 
 
-### Some Screenshots of this app
+#### Some Screenshots of this app
 
 Splash Screen                         |  Intro Screen Demo                     |Log in Screen
 :------------------------------------:|:--------------------------------------:|:------------------------------------: 
