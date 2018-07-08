@@ -18,7 +18,7 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    sleep(9000); // 4 secs
+                    sleep(4000); // 4 secs
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

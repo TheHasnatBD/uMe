@@ -15,30 +15,33 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:foregroundGravity="center"
-        android:src="@drawable/msg_chat" />
+        android:src="@drawable/msg_chat"
+        />
 
-
+<!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="90dp"
+        android:layout_marginTop="10dp"
         android:text="@string/app_name"
-        android:textSize="50sp"
+        android:textSize="55sp"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textStyle="bold|italic"
         android:textColor="#0f71d2"
         android:id="@+id/textView" />
+        -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/copyright"
-        android:textSize="11sp"
+        android:textSize="16sp"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textStyle="normal"
