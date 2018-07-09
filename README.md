@@ -21,7 +21,7 @@ Splash Screen                         |  Intro Screen Demo                     |
 
 Registration Screen                  | Home/Main Screen                     | Find/Search Friends
 :-----------------------------------:|:------------------------------------:|:------------------------------------:
-<img src="myFiles/04.png" width="200"> | <img src="images/5.png" width="200"> |<img src="myFiles/6.png" width="200"> 
+<img src="myFiles/4.png" width="200"> | <img src="images/5.png" width="200"> |<img src="myFiles/6.png" width="200"> 
 
 
 
