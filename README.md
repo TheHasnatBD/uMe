@@ -32,4 +32,4 @@ Registration Screen                  | Home/Main Screen                     | Fi
 
 >_university project of_
 
-<img src="images/bu.png" width="130"> 
+<img src="myFiles/bu.png" width="130"> 
