@@ -1,25 +1,55 @@
 package com.infobox.hasnat.ume.ume.Login;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
+
+    private EditText userEmail, userPassword;
+    private Button loginButton;
+    private TextView linkSingUp;
+
+
+    private ProgressDialog progressDialog;
+
+    //Firebase Auth
+    private FirebaseAuth mAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
 
-        TextView linkSingUp = (TextView)findViewById(R.id.linkSingUp);
+        userEmail = (EditText)findViewById(R.id.inputEmail);
+        userPassword = (EditText)findViewById(R.id.inputPassword);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        linkSingUp = (TextView)findViewById(R.id.linkSingUp);
+        progressDialog = new ProgressDialog(this);
+
+        //redirect to register activity
         linkSingUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,6 +59,65 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+
+        /**
+         * Login Button with Firebase
+         */
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = userEmail.getText().toString();
+                String password = userPassword.getText().toString();
+
+                loginUserAccount(email, password);
+            }
+        });
+    }
+
+    private void loginUserAccount(String email, String password) {
+        //just validation
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show();
+        } else if(TextUtils.isEmpty(password)){
+            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show();
+        } else {
+
+            //progress bar
+            progressDialog.setTitle("Login account");
+            progressDialog.setMessage("Please wait, verifying your credentials...");
+            progressDialog.show();
+            progressDialog.setCanceledOnTouchOutside(false);
+
+
+
+            // after validation checking, log in user a/c
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()){
+
+                                Toast.makeText(LoginActivity.this, "Login successful.", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+
+
+
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Your email and password is incorrect. Please check & try again.", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            progressDialog.dismiss();
+
+                        }
+                    });
+        }
     }
 
 }

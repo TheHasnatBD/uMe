@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=" Full Name"
-                android:id="@+id/inputUserFullName"
+                android:id="@+id/registerFullName"
                 android:inputType="textCapWords"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -53,8 +56,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=" Email"
-                android:id="@+id/inputEmail"
+                android:hint=" Your Email"
+                android:id="@+id/registerEmail"
                 android:inputType="textEmailAddress"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -68,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=" Mobile No"
-                android:id="@+id/inputUserMobileNo"
+                android:id="@+id/registerMobileNo"
                 android:inputType="number"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -86,8 +89,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint=" Password"
-                android:id="@+id/inputPassword"
+                android:hint=" Type Password"
+                android:id="@+id/registerPassword"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleDrawable="@drawable/pass_icon_selector"
+            >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint=" Confirm Password"
+                android:id="@+id/confirm_registerPassword"
                 />
         </android.support.design.widget.TextInputLayout>
 
@@ -116,3 +136,4 @@
 
 
 </RelativeLayout>
+</ScrollView>

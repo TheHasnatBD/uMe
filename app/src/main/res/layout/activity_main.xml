@@ -1,9 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home.MainActivity">
+    tools:context=".MainActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include
+        layout="@layout/app_bar_layout"
+        android:id="@+id/main_page_toolbar"/>
+    <!--
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbar">
+        <include
+            layout="@layout/app_bar_layout"
+            android:id="@+id/main_page_toolbar"/>
+    </android.support.design.widget.AppBarLayout>
+-->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/main_tabs"
+        android:background="@drawable/white_gray_border_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_page_toolbar"
+        android:theme="@style/AppTheme">
+
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tabs_pager"
+        android:layout_below="@id/main_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>
