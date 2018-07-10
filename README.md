@@ -6,9 +6,10 @@
 * Intro Slider with SharedPreference
 * Login, Registration Mechanism with Firebase
 * Works With Firebase AUTHENTICATION, REALTIME DATABASE, STORAGE & CLOUD MESSAGING
+* Custom Appbar Design,, Custom Alert Dialog Alert
+* RecyclerView, Tab layout
 *
-*
-*
+* 
 
 >with full UI design
 
