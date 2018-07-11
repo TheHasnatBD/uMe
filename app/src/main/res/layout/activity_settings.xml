@@ -3,74 +3,94 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_img"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/userac"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp" />
-    <TextView
-        android:padding="2dp"
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/profile_img"
-        android:text="Username"
-        android:textSize="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_img"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/userac"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="2dp" />
+        <TextView
+            android:padding="2dp"
+            android:id="@+id/user_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_img"
+            android:text=""
+            android:textSize="24dp"
+            android:textColor="@color/black"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
 
-    <TextView
-        android:padding="5dp"
-        android:id="@+id/userProfileStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/username"
-        android:text="Here is some text for user profile status."
-        android:textSize="16sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="30dp"/>
+        <TextView
+            android:padding="5dp"
+            android:id="@+id/userEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_display_name"
+            android:text=""
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="0dp"/>
 
-    <TextView
-        android:padding="2dp"
-        android:id="@+id/changeProfileImageLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/userProfileStatus"
-        android:text="Change profile photo "
-        android:textSize="16dp"
-        android:textStyle="italic"
-        android:textColor="@color/colorPrimary"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"/>
+        <TextView
+            android:padding="5dp"
+            android:id="@+id/userProfileStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userEmail"
+            android:text=""
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="30dp"/>
 
-    <Button
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/changeProfileImageLink"
-        android:layout_marginTop="15dp"
-        android:text=" Update Status "
-        android:textAllCaps="false"
-        android:background="@drawable/white_rounded_button"
-        android:textColor="@color/black"
-        />
+        <TextView
+            android:padding="2dp"
+            android:id="@+id/changeProfileImageLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userProfileStatus"
+            android:text="Change profile photo"
+            android:textSize="15dp"
+            android:textStyle="normal"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:drawableLeft="@drawable/ic_file_upload"
+            android:drawablePadding="2dp"
+            />
 
-
-</RelativeLayout>
+        <Button
+            android:id="@+id/updateStatus"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/changeProfileImageLink"
+            android:layout_marginTop="10dp"
+            android:text=" Update Status "
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_edit"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
 </ScrollView>

@@ -46,7 +46,11 @@
         completions."
     </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Remove or change this placeholder text -->
+    <string name="on_internet_msg">No internet connection! Please check internet.</string>
+
+    <!-- TODO: Firebase Database node / fields -->
+
 
 
 </resources>

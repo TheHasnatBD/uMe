@@ -44,14 +44,20 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:11.8.0'
     implementation 'com.google.firebase:firebase-messaging:11.8.0'
 
-    //circle image view
+    // circle image view library
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    // cropping image library
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
+    // Picasso Library
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 
 
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.firebase:firebase-core:11.8.0'
 
+    implementation 'com.google.firebase:firebase-storage:11.8.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

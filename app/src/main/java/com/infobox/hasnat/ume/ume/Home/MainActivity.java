@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         //checking logging, if not login redirect to Login ACTIVITY
+
         if (currentUser == null){
             logOutUser(); // Return to Login activity
         }
@@ -102,7 +103,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    // for options menu
+
+
+
+    // tool bar action menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -129,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.main_logout){
 
+            // Custom Alert Dialog
+
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.logout_dailog, null);
 
@@ -137,9 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
             title.setText("Hello !");
             imageButton.setImageResource(R.drawable.logout);
-
-
-            //builder.setMessage("Are you sure to Log out?");
             builder.setCancelable(false);
 
             builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -170,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+
     // This method is used to detect back button
     @Override
     public void onBackPressed() {
@@ -178,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), "Exited", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getApplicationContext(), "Press back again to Exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         backPressed = System.currentTimeMillis();
     } //End Back button press for exit...
