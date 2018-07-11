@@ -34,4 +34,3 @@ Registration Screen                  | Home/Main Screen                     | Fi
 >_university project of_
 
 <img src="myFiles/bu.png" width="130"> 
-
