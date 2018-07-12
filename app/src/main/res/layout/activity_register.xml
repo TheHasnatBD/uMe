@@ -14,7 +14,8 @@
             android:orientation="vertical"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
-            android:paddingTop="55dp">
+            android:paddingTop="55dp"
+            android:paddingBottom="50dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,10 +31,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="20dp"
                 android:text="REGISTER A NEW ACCOUNT"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/give_correct_information"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="4dp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -47,7 +58,6 @@
                     android:layout_height="wrap_content"
                     android:hint=" Full Name"
                     android:inputType="textCapWords"
-                    android:maxLength="100"
                     android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -116,7 +126,7 @@
                 android:id="@+id/resisterButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="75dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/white_rounded_button"
                 android:padding="13dp"

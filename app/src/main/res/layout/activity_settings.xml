@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".ProfileSetting.SettingsActivity">
+
+    <include layout="@layout/all_app_bar_layout"
+        android:id="@+id/profile_settings_appbar"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_img"
-            android:layout_width="190dp"
-            android:layout_height="190dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_below="@id/profile_settings_appbar"
+            android:layout_width="185dp"
+            android:layout_height="185dp"
             android:src="@drawable/userac"
-            app:civ_border_color="#FF000000"
-            app:civ_border_width="2dp" />
+            android:id="@+id/profile_img"
+            android:layout_centerHorizontal="true"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="2dp"
+            android:layout_marginTop="10dp"
+
+            />
+
         <TextView
             android:padding="2dp"
             android:id="@+id/user_display_name"
@@ -63,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/userProfileStatus"
-            android:text="Change profile photo"
+            android:text="Upload new a profile photo "
             android:textSize="15dp"
             android:textStyle="normal"
             android:textColor="@color/colorPrimary"
@@ -75,11 +81,11 @@
 
         <Button
             android:id="@+id/updateStatus"
-            android:layout_marginLeft="80dp"
-            android:layout_marginRight="80dp"
-            android:layout_width="fill_parent"
+            android:layout_marginLeft="75dp"
+            android:layout_marginRight="75dp"
+            android:layout_marginBottom="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/changeProfileImageLink"
             android:layout_marginTop="10dp"
@@ -93,4 +99,5 @@
             android:textColor="@color/white"
             />
     </RelativeLayout>
+
 </ScrollView>

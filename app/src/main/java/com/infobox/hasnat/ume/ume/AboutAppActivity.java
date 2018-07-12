@@ -4,9 +4,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
-import com.infobox.hasnat.ume.ume.R;
-
 public class AboutAppActivity extends AppCompatActivity {
+
+
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +17,9 @@ public class AboutAppActivity extends AppCompatActivity {
         /**
          * Set Home Activity Toolbar Name
          */
-        Toolbar mToolbar = (Toolbar)findViewById(R.id.about_page_page_toolbar);
+        mToolbar = (Toolbar)findViewById(R.id.about_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("About");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

@@ -69,13 +69,14 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             />
+
         <TextView
             android:id="@+id/linkSingUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New here? Create an account"
             android:textColor="@color/blue_link"
-            android:layout_marginTop="05dp"
+            android:layout_marginTop="07dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:textSize="16dp"/>

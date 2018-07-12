@@ -1,10 +1,11 @@
-package com.infobox.hasnat.ume.ume;
+package com.infobox.hasnat.ume.ume.ProfileSetting;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -60,6 +62,12 @@ public class SettingsActivity extends AppCompatActivity {
         changePhotoLInk = (TextView)findViewById(R.id.changeProfileImageLink);
         updateStatusBtn = (Button)findViewById(R.id.updateStatus);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.profile_settings_appbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
 
         // Retrieve data from database
@@ -80,10 +88,9 @@ public class SettingsActivity extends AppCompatActivity {
                 display_status.setText(status);
 
                 // Picasso LIBRARY
-                Picasso.get().load(image).into(profile_settings_image);
-
-
-
+                Picasso.get()
+                        .load(image)
+                        .into(profile_settings_image);
             }
 
             @Override
@@ -104,6 +111,21 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivityForResult(galleryIntent, GALLERY_PICK_CODE);
             }
         });
+
+        /** update status activity */
+        updateStatusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String previous_status = display_status.getText().toString();
+
+                Intent statusUpdateIntent = new Intent(SettingsActivity.this, StatusUpdateActivity.class);
+                // previous status from db
+                statusUpdateIntent.putExtra("ex_status", previous_status);
+                startActivity(statusUpdateIntent);
+            }
+        });
+
 
     }
 
@@ -131,7 +153,6 @@ public class SettingsActivity extends AppCompatActivity {
                 Uri resultUri = result.getUri();
 
                 // firebase storage for uploading the cropped image
-
                 String user_id = mAuth.getCurrentUser().getUid();
                 StorageReference filePath = mProfileImgStorageRef.child(user_id + ".jpg");
 

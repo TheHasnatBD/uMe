@@ -2,6 +2,8 @@
     <string name="app_name">uMe</string>
     <string name="app_name_slogan">urgent messages</string>
 
+    <string name="give_correct_information">Please your give correct information. Because, registered information can\'t be changed.</string>
+
     <!-- My Common Strings -->
     <string name="student_name">Abdullah Al-Hasnat</string>
     <string name="copyright">uMe © 2018</string>
@@ -50,7 +52,6 @@
     <string name="on_internet_msg">No internet connection! Please check internet.</string>
 
     <!-- TODO: Firebase Database node / fields -->
-
 
 
 </resources>

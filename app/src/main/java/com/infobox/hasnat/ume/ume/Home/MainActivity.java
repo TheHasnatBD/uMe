@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.infobox.hasnat.ume.ume.AboutAppActivity;
 import com.infobox.hasnat.ume.ume.Login.LoginActivity;
+import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
 import com.infobox.hasnat.ume.ume.R;
-import com.infobox.hasnat.ume.ume.SettingsActivity;
+import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
 import com.infobox.hasnat.ume.ume.Utils.TabsPagerAdapter;
 
 import io.fabric.sdk.android.Fabric;
@@ -123,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.profile_settings){
             Intent intent =  new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        if (item.getItemId() == R.id.all_peoples){
+            Intent intent =  new Intent(MainActivity.this, PeoplesActivity.class);
             startActivity(intent);
         }
 

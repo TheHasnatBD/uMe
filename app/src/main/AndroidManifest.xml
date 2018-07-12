@@ -28,8 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".Welcome.IntroActivity" />
-        <activity android:name=".Home.MainActivity" />
+
+        <activity android:name=".Home.MainActivity"
+            android:configChanges="orientation|screenSize"/>
+
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Login.RegisterActivity" />
 
@@ -37,7 +41,23 @@
             android:name=".AboutAppActivity"
             android:parentActivityName=".Home.MainActivity">
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
+
+        <activity android:name=".ProfileSetting.SettingsActivity"
+            android:parentActivityName=".Home.MainActivity"
+            android:configChanges="orientation|screenSize"/>
+
+        <activity
+            android:name=".ProfileSetting.StatusUpdateActivity"
+            android:parentActivityName=".ProfileSetting.SettingsActivity"
+            android:configChanges="orientation|screenSize">
+        </activity>
+
+        <activity android:name=".Peoples.PeoplesActivity"
+            android:parentActivityName=".Home.MainActivity">
+        </activity>
+
+
+
 
         <!-- fabric -->
         <meta-data
@@ -45,9 +65,9 @@
             android:value="f7dc8e6a921afdd8026d4716fb509b70ac2680c5" />
 
         <!-- Cropping image library -->
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat"/>
-
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>
