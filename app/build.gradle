@@ -29,6 +29,8 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -57,6 +59,9 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:1.1.1'
+    // image Compressor library
+    compile 'id.zelory:compressor:2.1.0'
+
 
 
     testImplementation 'junit:junit:4.12'

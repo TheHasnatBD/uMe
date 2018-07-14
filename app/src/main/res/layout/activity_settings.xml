@@ -22,7 +22,7 @@
             android:id="@+id/profile_img"
             android:layout_centerHorizontal="true"
             app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="2dp"
+            app:civ_border_width="1dp"
             android:layout_marginTop="10dp"
 
             />

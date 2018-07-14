@@ -71,7 +71,7 @@ public class PeoplesActivity extends AppCompatActivity {
 
                 viewHolder.setUser_name(model.getUser_name());
                 viewHolder.setUser_status(model.getUser_status());
-                viewHolder.setUser_image(getApplicationContext(), model.getUser_image());
+                viewHolder.setUser_thumb_image(getApplicationContext(), model.getUser_thumb_image());
             }
         };
         peoples_list.setAdapter(firebaseRecyclerAdapter);
@@ -95,11 +95,15 @@ public class PeoplesActivity extends AppCompatActivity {
             TextView status = (TextView)view.findViewById(R.id.all_user_status);
             status.setText(user_status);
         }
-        public void setUser_image(Context applicationContext, String user_image) {
-            CircleImageView profile_image = (CircleImageView)view.findViewById(R.id.all_user_profile_img);
-            Picasso.get()
-                    .load(user_image)
-                    .into(profile_image);
+        public void setUser_thumb_image(Context applicationContext, String user_thumb_image) {
+            CircleImageView thumb_image = (CircleImageView)view.findViewById(R.id.all_user_profile_img);
+
+            if(!thumb_image.equals("default_image")) { // default image condition for new user
+                Picasso.get()
+                        .load(user_thumb_image)
+                        .placeholder(R.drawable.userac)
+                        .into(thumb_image);
+            }
         }
 
 

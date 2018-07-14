@@ -21,7 +21,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome.WelcomeActivity">
+        <activity android:name=".Welcome.WelcomeActivity"
+            android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,17 +31,25 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Welcome.IntroActivity" />
+        <activity android:name=".Welcome.IntroActivity"
+            android:configChanges="orientation|screenSize"
+            />
 
         <activity android:name=".Home.MainActivity"
             android:configChanges="orientation|screenSize"/>
 
-        <activity android:name=".Login.LoginActivity" />
-        <activity android:name=".Login.RegisterActivity" />
+        <activity android:name=".Login.LoginActivity"
+            android:configChanges="orientation|screenSize"
+            />
+
+        <activity android:name=".Login.RegisterActivity"
+            android:configChanges="orientation|screenSize" />
 
         <activity
             android:name=".AboutAppActivity"
-            android:parentActivityName=".Home.MainActivity">
+            android:parentActivityName=".Home.MainActivity"
+            android:configChanges="orientation|screenSize"
+            >
         </activity>
 
         <activity android:name=".ProfileSetting.SettingsActivity"
@@ -53,7 +63,9 @@
         </activity>
 
         <activity android:name=".Peoples.PeoplesActivity"
-            android:parentActivityName=".Home.MainActivity">
+            android:parentActivityName=".Home.MainActivity"
+            android:configChanges="orientation|screenSize"
+            >
         </activity>
 
 

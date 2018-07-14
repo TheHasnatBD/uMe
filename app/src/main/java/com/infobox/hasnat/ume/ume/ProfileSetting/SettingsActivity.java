@@ -1,6 +1,8 @@
 package com.infobox.hasnat.ume.ume.ProfileSetting;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +29,14 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -39,8 +48,12 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference getUserDatabaseReference;
     private FirebaseAuth mAuth;
     private StorageReference mProfileImgStorageRef;
+    private StorageReference thumb_image_ref;
 
     private final static int GALLERY_PICK_CODE = 1;
+    Bitmap thumb_Bitmap = null;
+
+    private ProgressDialog progressDialog;
 
 
 
@@ -54,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
         getUserDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
 
         mProfileImgStorageRef = FirebaseStorage.getInstance().getReference().child("profile_image");
+        thumb_image_ref = FirebaseStorage.getInstance().getReference().child("thumb_image");
 
         profile_settings_image = (CircleImageView)findViewById(R.id.profile_img);
         display_name = (TextView)findViewById(R.id.user_display_name);
@@ -67,6 +81,8 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        progressDialog = new ProgressDialog(this);
 
 
 
@@ -87,10 +103,16 @@ public class SettingsActivity extends AppCompatActivity {
                 display_email.setText(email);
                 display_status.setText(status);
 
-                // Picasso LIBRARY
-                Picasso.get()
-                        .load(image)
-                        .into(profile_settings_image);
+                if(!image.equals("default_image")){ // default image condition for new user
+                    // Picasso LIBRARY
+                    Picasso.get()
+                            .load(image)
+                            //.load(thumbImage)
+                            .placeholder(R.drawable.userac)
+                            .into(profile_settings_image);
+                }
+
+
             }
 
             @Override
@@ -150,33 +172,90 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == RESULT_OK) {
+
+                progressDialog.setMessage("Please wait...");
+                progressDialog.show();
+
+
+
                 Uri resultUri = result.getUri();
 
-                // firebase storage for uploading the cropped image
+                File thumb_filePath_Uri = new File(resultUri.getPath());
+
                 String user_id = mAuth.getCurrentUser().getUid();
+
+                /**
+                 * compress image using compressor library
+                 * link - https://github.com/zetbaitsu/Compressor
+                 * */
+                try{
+                    thumb_Bitmap = new Compressor(this)
+                            .setMaxWidth(200)
+                            .setMaxHeight(200)
+                            .setQuality(60)
+                            .compressToBitmap(thumb_filePath_Uri);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                thumb_Bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+                final byte[] thumb_byte = outputStream.toByteArray();
+
+
+                // firebase storage for uploading the cropped image
                 StorageReference filePath = mProfileImgStorageRef.child(user_id + ".jpg");
+
+                // firebase storage for uploading the cropped and compressed image
+                final StorageReference thumb_filePath = thumb_image_ref.child(user_id + "jpg");
+
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task) {
 
                        if (task.isSuccessful()){
                            Toast.makeText(SettingsActivity.this,"Your profile photo is uploaded successfully.", Toast.LENGTH_SHORT).show();
 
                            // retrieve the stored image as profile photo
-                           String download_url = task.getResult().getDownloadUrl().toString();
-                           getUserDatabaseReference.child("user_image").setValue(download_url)
-                                   .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Void> task) {
+                           final String download_url = task.getResult().getDownloadUrl().toString();
 
-                                           Toast.makeText(SettingsActivity.this,"profile photo is updated successfully.", Toast.LENGTH_SHORT).show();
+                           // working with thumb image
+                           UploadTask thumb_uploadTask = thumb_filePath.putBytes(thumb_byte);
+                           thumb_uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                               @Override
+                               public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
 
-                                       }
-                                   });
+                                   String thumb_download_url = thumb_task.getResult().getDownloadUrl().toString();
+
+                                   if (task.isSuccessful()){
+
+                                       Map update__user_data = new HashMap();
+                                       update__user_data.put("user_image", download_url);
+                                       update__user_data.put("user_thumb_image", thumb_download_url);
+
+                                       getUserDatabaseReference.updateChildren(update__user_data)
+                                               .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                   @Override
+                                                   public void onComplete(@NonNull Task<Void> task) {
+
+                                                       progressDialog.dismiss();
+
+                                                       Toast.makeText(SettingsActivity.this,"Profile photo is updated successfully.", Toast.LENGTH_SHORT).show();
+
+                                                   }
+                                               });
+
+                                   }
+                               }
+                           });
+
+
+
 
                        } else {
                            Toast.makeText(SettingsActivity.this,"Error occurred!! Failed to upload profile photo.", Toast.LENGTH_SHORT).show();
+
+                           progressDialog.dismiss();
                        }
 
                     }
