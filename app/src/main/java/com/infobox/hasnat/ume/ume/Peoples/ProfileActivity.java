@@ -120,8 +120,12 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 sendFriendRequest_Button.setEnabled(false);
+
                 if (CURRENT_STATE.equals("not_friends")){
                     sendFriendRequest();
+
+                } if(CURRENT_STATE.equals("request_sent")){
+                    cancelFriendRequest();
                 }
 
             }
@@ -130,7 +134,42 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void cancelFriendRequest() {
+        //for cancellation, delete data from user nodes
+
+        // delete from, sender >> receiver > values
+        friendRequestReference.child(senderID).child(receiver_userID).removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            // delete from, receiver >> sender > values
+                            friendRequestReference.child(receiver_userID).child(senderID).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                // after deleting data, just set button attributes
+                                                sendFriendRequest_Button.setEnabled(true);
+                                                CURRENT_STATE = "not_friends";
+                                                sendFriendRequest_Button.setText("Send Friend Request");
+                                            }
+                                        }
+
+                                    });
+
+                        }
+                    }
+
+                });
+
+    }
+
+
+
+
     private void sendFriendRequest() {
+        // change or, put data to >> sender >> receiver >> request_type >> sent
         friendRequestReference.child(senderID).child(receiver_userID)
                 .child("request_type").setValue("sent")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -139,6 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                         if (task.isSuccessful()){
 
+                            // change or, put data to >> receiver >> sender>> request_type >> received
                             friendRequestReference.child(receiver_userID).child(senderID)
                                     .child("request_type").setValue("received")
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {

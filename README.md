@@ -37,6 +37,5 @@
 
 
 
->_university project of_
+>_university project of BU_
 
-<img src="myFiles/bu.png" width="130"> 
