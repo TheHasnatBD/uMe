@@ -22,4 +22,5 @@
     <color name="dot_active">#000000</color>
     <!-- Slider Screens dots in-active colors -->
     <color name="dot_inactive">#cccccc</color>
+
 </resources>

@@ -108,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Picasso.get()
                             .load(image)
                             //.load(thumbImage)
-                            .placeholder(R.drawable.userac)
+                            .placeholder(R.drawable.default_profile_image)
                             .into(profile_settings_image);
                 }
 
@@ -192,13 +192,13 @@ public class SettingsActivity extends AppCompatActivity {
                     thumb_Bitmap = new Compressor(this)
                             .setMaxWidth(200)
                             .setMaxHeight(200)
-                            .setQuality(60)
+                            .setQuality(45)
                             .compressToBitmap(thumb_filePath_Uri);
                 } catch (IOException e){
                     e.printStackTrace();
                 }
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                thumb_Bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream);
+                thumb_Bitmap.compress(Bitmap.CompressFormat.JPEG, 45, outputStream);
                 final byte[] thumb_byte = outputStream.toByteArray();
 
 

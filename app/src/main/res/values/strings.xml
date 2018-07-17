@@ -30,10 +30,11 @@
 
     <!-- About App Strings -->
     <string name="varsity_name">BANGLADESH UNIVERSITY</string>
-    <string name="instructor_name">Omar Farukh</string>
-    <string name="about_app_title">x</string>
+    <string name="instructor_name">Omor Faruk</string>
+    <string name="about_text">This application is built for learning purpose.\nProject Source Code Link-</string>
+    <string name="project_git_link"><u>https://github.com/TheHasnatBD/uMe</u></string>
     <string name="about_app_detail">x</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="student_id_details">B.Sc in Computer Science &amp; Engineering\nID: 201521 042 019</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

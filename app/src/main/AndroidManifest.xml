@@ -21,54 +21,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome.WelcomeActivity"
-            android:configChanges="orientation|screenSize"
-            >
+        <activity
+            android:name=".WelcomeSlide.WelcomeActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Welcome.IntroActivity"
-            android:configChanges="orientation|screenSize"
-            />
-
-        <activity android:name=".Home.MainActivity"
-            android:configChanges="orientation|screenSize"/>
-
-        <activity android:name=".Login.LoginActivity"
-            android:configChanges="orientation|screenSize"
-            />
-
-        <activity android:name=".Login.RegisterActivity"
-            android:configChanges="orientation|screenSize" />
-
         <activity
-            android:name=".AboutAppActivity"
-            android:parentActivityName=".Home.MainActivity"
+            android:name=".WelcomeSlide.IntroActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".Home.MainActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".Login.LoginActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".Login.RegisterActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".About.AboutAppActivity"
             android:configChanges="orientation|screenSize"
-            >
-        </activity>
-
-        <activity android:name=".ProfileSetting.SettingsActivity"
-            android:parentActivityName=".Home.MainActivity"
-            android:configChanges="orientation|screenSize"/>
-
+            android:parentActivityName=".Home.MainActivity"></activity>
+        <activity
+            android:name=".ProfileSetting.SettingsActivity"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".Home.MainActivity" />
         <activity
             android:name=".ProfileSetting.StatusUpdateActivity"
-            android:parentActivityName=".ProfileSetting.SettingsActivity"
-            android:configChanges="orientation|screenSize">
-        </activity>
-
-        <activity android:name=".Peoples.PeoplesActivity"
-            android:parentActivityName=".Home.MainActivity"
             android:configChanges="orientation|screenSize"
-            >
+            android:parentActivityName=".ProfileSetting.SettingsActivity"></activity>
+        <activity
+            android:name=".Peoples.PeoplesActivity"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".Home.MainActivity"></activity>
+
+        <activity android:name=".Peoples.ProfileActivity"
+            android:parentActivityName=".Peoples.PeoplesActivity"
+            android:configChanges="orientation|screenSize|screenLayout">
         </activity>
-
-
 
 
         <!-- fabric -->

@@ -16,13 +16,13 @@
 
 #### Some Screenshots of this app
 
-Splash Screen                         |  Intro Screen Demo                     |Log in Screen
+Splash Screen                         |  Intro Slider                          |  Registration
 :------------------------------------:|:--------------------------------------:|:------------------------------------: 
-<img src="myFiles/01.png" width="200">  |  <img src="myFiles/2.png" width="200">  |<img src="myFiles/3.png" width="200">
+<img src="myFiles/1.png" width="200"> |  <img src="myFiles/2.png" width="200">  |<img src="myFiles/3.png" width="200">
 
-Registration Screen                  | Home/Main Screen                     | Find/Search Friends
+Login                                | Registered user Profile              | Find/Search Friends
 :-----------------------------------:|:------------------------------------:|:------------------------------------:
-<img src="myFiles/4.png" width="200"> | <img src="images/5.png" width="200"> |<img src="myFiles/6.png" width="200"> 
+<img src="myFiles/4.png" width="200">| <img src="images/5.png" width="200"> |<img src="myFiles/-.png" width="200"> 
 
 
 

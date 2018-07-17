@@ -1,4 +1,4 @@
-package com.infobox.hasnat.ume.ume.Utils;
+package com.infobox.hasnat.ume.ume.Models;
 
 public class AllPeoplesRecyclerView {
 

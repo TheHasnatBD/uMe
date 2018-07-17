@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.infobox.hasnat.ume.ume.AboutAppActivity;
+import com.infobox.hasnat.ume.ume.About.AboutAppActivity;
 import com.infobox.hasnat.ume.ume.Login.LoginActivity;
 import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
 import com.infobox.hasnat.ume.ume.R;

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Peoples.ProfileActivity">
+
+    <include
+        android:id="@+id/single_profile_toolbar"
+        layout="@layout/all_app_bar_layout"
+        />
+
+    <ImageView
+        android:layout_marginTop="15dp"
+        android:id="@+id/visit_user_profile_image"
+        android:layout_below="@id/single_profile_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/default_profile_image"
+        android:scaleType="fitCenter"
+        />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/visit_user_profile_image"
+        android:id="@+id/visitUserProfileName"
+        android:text="@string/student_name"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/visitUserProfileName"
+        android:id="@+id/visitUserProfileStatus"
+        android:text="Software Developer, uMe"
+        android:textSize="18sp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_marginBottom="60dp"/>
+
+    <Button
+        android:id="@+id/visitUserFrndRqstSendButton"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/visitUserProfileStatus"
+        android:layout_marginTop="60dp"
+        android:text="Send Friend Request"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:background="@drawable/ripplebutton"
+        android:textColor="@color/black"
+        android:layout_marginBottom="07dp"
+        />
+
+    <Button
+        android:id="@+id/visitUserFrndRqstDeclineButton"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/visitUserFrndRqstSendButton"
+        android:layout_marginTop="07dp"
+        android:text="Decline Friend Request"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:background="@drawable/ripplebutton"
+        android:textColor="@color/black"
+        android:layout_marginBottom="50dp"
+
+        />
+
+</RelativeLayout>
+</ScrollView>

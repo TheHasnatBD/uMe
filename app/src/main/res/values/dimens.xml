@@ -4,8 +4,8 @@
     <!-- Intro Screen -->
     <dimen name="dots_height">30dp</dimen>
     <dimen name="dots_bottom_margin">20dp</dimen>
-    <dimen name="img_width">120dp</dimen>
-    <dimen name="img_height">120dp</dimen>
+    <dimen name="img_width">150dp</dimen>
+    <dimen name="img_height">150dp</dimen>
     <dimen name="slide_title">30sp</dimen>
     <dimen name="slide_desc">16sp</dimen>
     <dimen name="desc_padding">40dp</dimen>

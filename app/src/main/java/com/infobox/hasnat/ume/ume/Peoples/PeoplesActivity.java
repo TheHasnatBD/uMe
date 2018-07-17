@@ -1,21 +1,20 @@
 package com.infobox.hasnat.ume.ume.Peoples;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.infobox.hasnat.ume.ume.R;
-import com.infobox.hasnat.ume.ume.Utils.AllPeoplesRecyclerView;
+import com.infobox.hasnat.ume.ume.Models.AllPeoplesRecyclerView;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -67,11 +66,29 @@ public class PeoplesActivity extends AppCompatActivity {
                         peoplesDatabaseReference
                 ) {
             @Override
-            protected void populateViewHolder(peoplesViewHolder viewHolder, AllPeoplesRecyclerView model, int position) {
+            protected void populateViewHolder(peoplesViewHolder viewHolder, AllPeoplesRecyclerView model, final int position) {
 
                 viewHolder.setUser_name(model.getUser_name());
                 viewHolder.setUser_status(model.getUser_status());
                 viewHolder.setUser_thumb_image(getApplicationContext(), model.getUser_thumb_image());
+
+
+                /**
+                 *  on list >> clicking item, then, go to single user profile
+                 */
+                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String visit_user_id = getRef(position).getKey();
+
+                        Intent intent = new Intent(PeoplesActivity.this, ProfileActivity.class);
+                        intent.putExtra("visitUserId", visit_user_id);
+                        startActivity(intent);
+                    }
+                });
+
+
             }
         };
         peoples_list.setAdapter(firebaseRecyclerAdapter);

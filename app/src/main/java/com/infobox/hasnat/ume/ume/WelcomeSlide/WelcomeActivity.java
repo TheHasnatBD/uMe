@@ -1,4 +1,4 @@
-package com.infobox.hasnat.ume.ume.Welcome;
+package com.infobox.hasnat.ume.ume.WelcomeSlide;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

@@ -15,8 +15,8 @@
         android:divider="@color/black">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:id="@+id/all_user_profile_img"
             android:src="@drawable/userac"/>
 
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/all_user_name"
-                android:text="@string/student_name"
+                android:text=""
                 android:textStyle="normal"
                 android:textColor="@color/black"
                 android:textSize="19sp"
