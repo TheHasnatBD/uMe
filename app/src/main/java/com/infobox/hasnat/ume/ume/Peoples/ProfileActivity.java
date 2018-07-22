@@ -1,5 +1,6 @@
 package com.infobox.hasnat.ume.ume.Peoples;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -33,8 +38,10 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String CURRENT_STATE;
 
-    private String receiver_userID; // Visited profile's id
-    private String senderID; // Owner ID
+    public String receiver_userID; // Visited profile's id
+    public String senderID; // Owner ID
+
+    private DatabaseReference friendsDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,8 @@ public class ProfileActivity extends AppCompatActivity {
         friendRequestReference = FirebaseDatabase.getInstance().getReference().child("friend_requests");
         mAuth = FirebaseAuth.getInstance();
         senderID = mAuth.getCurrentUser().getUid(); // GET SENDER ID
+
+        friendsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("friends");
 
 
         /**
@@ -88,14 +97,22 @@ public class ProfileActivity extends AppCompatActivity {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.hasChild(receiver_userID)){
-                                    String requestType = dataSnapshot.child(receiver_userID)
-                                            .child("request_type").getValue().toString();
+                                if (dataSnapshot.exists()){
+                                    // if in database has these data then, execute conditions below
+                                    if (dataSnapshot.hasChild(receiver_userID)){
+                                        String requestType = dataSnapshot.child(receiver_userID)
+                                                .child("request_type").getValue().toString();
 
-                                    if (requestType.equals("sent")){
-                                        CURRENT_STATE = "request_sent";
-                                        sendFriendRequest_Button.setText("Cancel Friend Request");
+                                        if (requestType.equals("sent")){
+                                            CURRENT_STATE = "request_sent";
+                                            sendFriendRequest_Button.setText("Cancel Friend Request");
+
+                                        } else if (requestType.equals("received")){
+                                            CURRENT_STATE = "request_received";
+                                            sendFriendRequest_Button.setText("Accept Friend Request");
+                                        }
                                     }
+
                                 }
                             }
 
@@ -114,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        /** Send Friend request mechanism */
+        /** Send / Cancel / Accept >> Friend request mechanism */
         sendFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,8 +141,11 @@ public class ProfileActivity extends AppCompatActivity {
                 if (CURRENT_STATE.equals("not_friends")){
                     sendFriendRequest();
 
-                } if(CURRENT_STATE.equals("request_sent")){
+                } else if(CURRENT_STATE.equals("request_sent")){
                     cancelFriendRequest();
+
+                } else if (CURRENT_STATE.equals("request_received")){
+                    acceptFriendRequest();
                 }
 
             }
@@ -134,9 +154,61 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    private void acceptFriendRequest() {
+        //
+        Calendar myCalendar = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+        final String friendshipDate = currentDate.format(myCalendar.getTime());
+
+        friendsDatabaseReference.child(senderID).child(receiver_userID).setValue(friendshipDate)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        friendsDatabaseReference.child(receiver_userID).child(senderID).setValue(friendshipDate)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        /**
+                                         *  because of accepting friend request,
+                                         *  there have no more request them. So, for delete these node
+                                         */
+                                        friendRequestReference.child(senderID).child(receiver_userID).removeValue()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()){
+                                                            // delete from, receiver >> sender > values
+                                                            friendRequestReference.child(receiver_userID).child(senderID).removeValue()
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @SuppressLint("SetTextI18n")
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                // after deleting data, just set button attributes
+                                                                                sendFriendRequest_Button.setEnabled(true);
+                                                                                CURRENT_STATE = "friends";
+                                                                                sendFriendRequest_Button.setText("Unfriend This Person");
+                                                                            }
+                                                                        }
+
+                                                                    });
+
+                                                        }
+                                                    }
+
+                                                }); //
+
+                                    }
+                                });
+                    }
+                });
+    }
+
+
+
     private void cancelFriendRequest() {
         //for cancellation, delete data from user nodes
-
         // delete from, sender >> receiver > values
         friendRequestReference.child(senderID).child(receiver_userID).removeValue()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -167,9 +239,8 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-
     private void sendFriendRequest() {
-        // change or, put data to >> sender >> receiver >> request_type >> sent
+        // insert or, put data to >> sender >> receiver >> request_type >> sent
         friendRequestReference.child(senderID).child(receiver_userID)
                 .child("request_type").setValue("sent")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

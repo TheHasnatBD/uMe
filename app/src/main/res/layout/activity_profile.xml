@@ -16,23 +16,25 @@
         layout="@layout/all_app_bar_layout"
         />
 
-    <ImageView
-        android:layout_marginTop="15dp"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="13dp"
         android:id="@+id/visit_user_profile_image"
         android:layout_below="@id/single_profile_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_width="195dp"
+        android:layout_height="195dp"
         android:layout_centerInParent="true"
         android:src="@drawable/default_profile_image"
-        android:scaleType="fitCenter"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="1dp"
         />
+
     <TextView
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/visit_user_profile_image"
         android:id="@+id/visitUserProfileName"
-        android:text="@string/student_name"
+        android:text=""
         android:textSize="24sp"
         android:textColor="@color/black"
         android:layout_centerInParent="true"
@@ -42,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/visitUserProfileName"
         android:id="@+id/visitUserProfileStatus"
-        android:text="Software Developer, uMe"
+        android:text=""
         android:textSize="18sp"
         android:layout_centerInParent="true"
         android:gravity="center"

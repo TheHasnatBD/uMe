@@ -118,7 +118,7 @@ public class PeoplesActivity extends AppCompatActivity {
             if(!thumb_image.equals("default_image")) { // default image condition for new user
                 Picasso.get()
                         .load(user_thumb_image)
-                        .placeholder(R.drawable.userac)
+                        .placeholder(R.drawable.default_profile_image)
                         .into(thumb_image);
             }
         }

@@ -56,9 +56,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/sir_image"
             android:layout_centerHorizontal="true"
-            android:text="Instructed by-"
+            android:text="instructed by-"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/sir_name"
@@ -102,9 +102,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/dev_photo"
             android:layout_centerHorizontal="true"
-            android:text="Developed by-"
+            android:text="developed by-"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic" />
 
         <TextView
             android:id="@+id/dev_name"
@@ -151,7 +151,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="7dp"
-                android:background="@drawable/ic_github" />
+                android:background="@drawable/ic_github"
+                />
 
             <Button
                 android:id="@+id/insta_btn"
