@@ -49,13 +49,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return "Chats";
+                return ""; // ChatsFragment
 
             case 1:
-                return "Requests";
+                return ""; // RequestsFragment
 
             case 2:
-                return "Friends";
+                return ""; // FriendsFragment
 
             default:
                 return null;

@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private TabsPagerAdapter mTabsPagerAdapter;
+    private int[] tabIcons = {
+            R.drawable.ic_chats,
+            R.drawable.ic_request_friend,
+            R.drawable.ic_friends
+    };
+
 
 
 
@@ -68,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout = (TabLayout)findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+        setupTabIcons();
+
 
 
 
@@ -80,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void setupTabIcons() {
+        mTabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        mTabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        mTabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     @Override
