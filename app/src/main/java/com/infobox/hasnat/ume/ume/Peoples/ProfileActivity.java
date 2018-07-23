@@ -116,11 +116,25 @@ public class ProfileActivity extends AppCompatActivity {
                                             CURRENT_STATE = "request_sent";
                                             sendFriendRequest_Button.setText("Cancel Friend Request");
 
+                                            declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                            declineFriendRequest_Button.setEnabled(false);
+
                                         } else if (requestType.equals("received")){
                                             CURRENT_STATE = "request_received";
                                             sendFriendRequest_Button.setText("Accept Friend Request");
 
+                                            declineFriendRequest_Button.setVisibility(View.VISIBLE);
+                                            declineFriendRequest_Button.setEnabled(true);
+
+                                            declineFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    declineFriendRequest();
+                                                }
+                                            });
+
                                         }
+
 
                                     }
 
@@ -133,7 +147,11 @@ public class ProfileActivity extends AppCompatActivity {
                                                     if (dataSnapshot.hasChild(receiver_userID)){
                                                         CURRENT_STATE = "friends";
                                                         sendFriendRequest_Button.setText("Unfriend This Person");
-                                                        sendFriendRequest_Button.setTextColor(Color.RED);
+                                                        //sendFriendRequest_Button.setTextColor(Color.RED);
+
+                                                        declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                                        declineFriendRequest_Button.setEnabled(false);
+
                                                     }
                                                 }
 
@@ -159,6 +177,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+        declineFriendRequest_Button.setEnabled(false);
 
         /** Send / Cancel / Accept / Unfriend >> request mechanism */
         if (!senderID.equals(receiver_userID)){ // condition for current owner / sender id
@@ -180,6 +200,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     } else if (CURRENT_STATE.equals("friends")){
                         unfriendPerson();
+
                     }
 
                 }
@@ -193,6 +214,39 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     } // ending OnCreate
+
+    private void declineFriendRequest() {
+        //for declination, delete data from friends_request nodes
+        // delete from, sender >> receiver > values
+        friendRequestReference.child(senderID).child(receiver_userID).removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            // delete from, receiver >> sender > values
+                            friendRequestReference.child(receiver_userID).child(senderID).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                // after deleting data, just set button attributes
+                                                sendFriendRequest_Button.setEnabled(true);
+                                                CURRENT_STATE = "not_friends";
+                                                sendFriendRequest_Button.setText("Send Friend Request");
+
+                                                declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                                declineFriendRequest_Button.setEnabled(false);
+
+                                            }
+                                        }
+
+                                    });
+
+                        }
+                    }
+
+                });
+    }
 
     private void unfriendPerson() {
         //for unfriend, delete data from friends nodes
@@ -211,6 +265,10 @@ public class ProfileActivity extends AppCompatActivity {
                                             sendFriendRequest_Button.setEnabled(true);
                                             CURRENT_STATE = "not_friends";
                                             sendFriendRequest_Button.setText("Send Friend Request");
+
+                                            declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                            declineFriendRequest_Button.setEnabled(false);
+
                                         }
                                     });
                         }
@@ -225,14 +283,14 @@ public class ProfileActivity extends AppCompatActivity {
         final String friendshipDate = currentDate.format(myCalendar.getTime());
 
         friendsDatabaseReference.child(senderID).child(receiver_userID).setValue(friendshipDate)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
+                    public void onComplete(@NonNull Task<Void> task) {
 
                         friendsDatabaseReference.child(receiver_userID).child(senderID).setValue(friendshipDate)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
-                                    public void onSuccess(Void aVoid) {
+                                    public void onComplete(@NonNull Task<Void> task) {
                                         /**
                                          *  because of accepting friend request,
                                          *  there have no more request them. So, for delete these node
@@ -245,7 +303,6 @@ public class ProfileActivity extends AppCompatActivity {
                                                             // delete from users friend_requests node, receiver >> sender > values
                                                             friendRequestReference.child(receiver_userID).child(senderID).removeValue()
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @SuppressLint("SetTextI18n")
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()){
@@ -253,7 +310,10 @@ public class ProfileActivity extends AppCompatActivity {
                                                                                 sendFriendRequest_Button.setEnabled(true);
                                                                                 CURRENT_STATE = "friends";
                                                                                 sendFriendRequest_Button.setText("Unfriend This Person");
-                                                                                sendFriendRequest_Button.setTextColor(Color.RED);
+                                                                                //sendFriendRequest_Button.setTextColor(Color.RED);
+
+                                                                                declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                                                                declineFriendRequest_Button.setEnabled(false);
                                                                             }
                                                                         }
 
@@ -290,6 +350,10 @@ public class ProfileActivity extends AppCompatActivity {
                                                 sendFriendRequest_Button.setEnabled(true);
                                                 CURRENT_STATE = "not_friends";
                                                 sendFriendRequest_Button.setText("Send Friend Request");
+
+                                                declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                                declineFriendRequest_Button.setEnabled(false);
+
                                             }
                                         }
 
@@ -324,9 +388,12 @@ public class ProfileActivity extends AppCompatActivity {
                                             if (task.isSuccessful()){
 
                                                 sendFriendRequest_Button.setEnabled(true);
-
                                                 CURRENT_STATE = "request_sent";
                                                 sendFriendRequest_Button.setText("Cancel Friend Request");
+
+                                                declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                                declineFriendRequest_Button.setEnabled(false);
+
                                             }
                                         }
                                     });
