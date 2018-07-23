@@ -57,10 +57,13 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
     // Picasso Library
     implementation 'com.squareup.picasso:picasso:2.71828'
+    // HTTP & HTTP/2 client for Android
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:1.1.1'
     // image Compressor library
     compile 'id.zelory:compressor:2.1.0'
+
 
 
 

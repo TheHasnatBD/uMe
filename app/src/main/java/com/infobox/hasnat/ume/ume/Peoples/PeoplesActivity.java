@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.Models.AllPeoplesRecyclerView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,6 +44,7 @@ public class PeoplesActivity extends AppCompatActivity {
         peoples_list.setLayoutManager(new LinearLayoutManager(this));
 
         peoplesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        peoplesDatabaseReference.keepSynced(true); // for offline
 
 
     }
@@ -112,14 +115,29 @@ public class PeoplesActivity extends AppCompatActivity {
             TextView status = (TextView)view.findViewById(R.id.all_user_status);
             status.setText(user_status);
         }
-        public void setUser_thumb_image(Context applicationContext, String user_thumb_image) {
-            CircleImageView thumb_image = (CircleImageView)view.findViewById(R.id.all_user_profile_img);
+        public void setUser_thumb_image(final Context applicationContext, final String user_thumb_image) {
+
+            final CircleImageView thumb_image = (CircleImageView)view.findViewById(R.id.all_user_profile_img);
 
             if(!thumb_image.equals("default_image")) { // default image condition for new user
                 Picasso.get()
                         .load(user_thumb_image)
+                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
                         .placeholder(R.drawable.default_profile_image)
-                        .into(thumb_image);
+                        .into(thumb_image, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get()
+                                        .load(user_thumb_image)
+                                        .placeholder(R.drawable.default_profile_image)
+                                        .into(thumb_image);
+                            }
+                        });
             }
         }
 

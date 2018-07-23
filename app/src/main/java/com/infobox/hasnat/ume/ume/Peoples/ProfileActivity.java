@@ -1,6 +1,7 @@
 package com.infobox.hasnat.ume.ume.Peoples;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import java.util.Calendar;
 public class ProfileActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private Button sendFriendRequest_Button, declineFriendRequest;
+    private Button sendFriendRequest_Button, declineFriendRequest_Button;
     private TextView profileName, profileStatus;
     private ImageView profileImage;
 
@@ -43,6 +44,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private DatabaseReference friendsDatabaseReference;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +55,13 @@ public class ProfileActivity extends AppCompatActivity {
         userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         friendRequestReference = FirebaseDatabase.getInstance().getReference().child("friend_requests");
+        friendRequestReference.keepSynced(true); // for offline
+
         mAuth = FirebaseAuth.getInstance();
         senderID = mAuth.getCurrentUser().getUid(); // GET SENDER ID
 
         friendsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("friends");
+        friendsDatabaseReference.keepSynced(true);// for offline
 
 
         /**
@@ -68,7 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
         receiver_userID = getIntent().getExtras().get("visitUserId").toString();
 
         sendFriendRequest_Button = (Button)findViewById(R.id.visitUserFrndRqstSendButton);
-        declineFriendRequest = (Button)findViewById(R.id.visitUserFrndRqstDeclineButton);
+        declineFriendRequest_Button = (Button)findViewById(R.id.visitUserFrndRqstDeclineButton);
         profileName = (TextView)findViewById(R.id.visitUserProfileName);
         profileStatus = (TextView)findViewById(R.id.visitUserProfileStatus);
         profileImage = (ImageView)findViewById(R.id.visit_user_profile_image);
@@ -92,14 +99,16 @@ public class ProfileActivity extends AppCompatActivity {
                         .placeholder(R.drawable.default_profile_image)
                         .into(profileImage);
 
-                // for fixing dynamic cancel button
+                // for fixing dynamic cancel / friend / unfriend / accept button
                 friendRequestReference.child(senderID)
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+
                                 if (dataSnapshot.exists()){
                                     // if in database has these data then, execute conditions below
                                     if (dataSnapshot.hasChild(receiver_userID)){
+
                                         String requestType = dataSnapshot.child(receiver_userID)
                                                 .child("request_type").getValue().toString();
 
@@ -110,9 +119,29 @@ public class ProfileActivity extends AppCompatActivity {
                                         } else if (requestType.equals("received")){
                                             CURRENT_STATE = "request_received";
                                             sendFriendRequest_Button.setText("Accept Friend Request");
+
                                         }
+
                                     }
 
+                                } else {
+                                    friendsDatabaseReference.child(senderID)
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                                    if (dataSnapshot.hasChild(receiver_userID)){
+                                                        CURRENT_STATE = "friends";
+                                                        sendFriendRequest_Button.setText("Unfriend This Person");
+                                                        sendFriendRequest_Button.setTextColor(Color.RED);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
                                 }
                             }
 
@@ -131,27 +160,62 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-        /** Send / Cancel / Accept >> Friend request mechanism */
-        sendFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        /** Send / Cancel / Accept / Unfriend >> request mechanism */
+        if (!senderID.equals(receiver_userID)){ // condition for current owner / sender id
 
-                sendFriendRequest_Button.setEnabled(false);
+            sendFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                if (CURRENT_STATE.equals("not_friends")){
-                    sendFriendRequest();
+                    sendFriendRequest_Button.setEnabled(false);
 
-                } else if(CURRENT_STATE.equals("request_sent")){
-                    cancelFriendRequest();
+                    if (CURRENT_STATE.equals("not_friends")){
+                        sendFriendRequest();
 
-                } else if (CURRENT_STATE.equals("request_received")){
-                    acceptFriendRequest();
+                    } else if(CURRENT_STATE.equals("request_sent")){
+                        cancelFriendRequest();
+
+                    } else if (CURRENT_STATE.equals("request_received")){
+                        acceptFriendRequest();
+
+                    } else if (CURRENT_STATE.equals("friends")){
+                        unfriendPerson();
+                    }
+
                 }
+            });
+        } else {
+            System.out.println("Oh, I'm the owner of this account!!!");
+            sendFriendRequest_Button.setVisibility(View.INVISIBLE);
+            declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+        }
 
-            }
-        });
 
 
+    } // ending OnCreate
+
+    private void unfriendPerson() {
+        //for unfriend, delete data from friends nodes
+        // delete from, sender >> receiver > values
+        friendsDatabaseReference.child(senderID).child(receiver_userID).removeValue()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()){
+                            friendsDatabaseReference.child(receiver_userID).child(senderID).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                            sendFriendRequest_Button.setEnabled(true);
+                                            CURRENT_STATE = "not_friends";
+                                            sendFriendRequest_Button.setText("Send Friend Request");
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 
     private void acceptFriendRequest() {
@@ -178,7 +242,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()){
-                                                            // delete from, receiver >> sender > values
+                                                            // delete from users friend_requests node, receiver >> sender > values
                                                             friendRequestReference.child(receiver_userID).child(senderID).removeValue()
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @SuppressLint("SetTextI18n")
@@ -189,6 +253,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                                                 sendFriendRequest_Button.setEnabled(true);
                                                                                 CURRENT_STATE = "friends";
                                                                                 sendFriendRequest_Button.setText("Unfriend This Person");
+                                                                                sendFriendRequest_Button.setTextColor(Color.RED);
                                                                             }
                                                                         }
 

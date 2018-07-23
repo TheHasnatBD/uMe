@@ -7,7 +7,7 @@
     <!-- My Common Strings -->
     <string name="student_name">Abdullah Al-Hasnat</string>
     <string name="copyright">uMe © 2018</string>
-    <string name="profile_settings">Profile Settings</string>
+    <string name="profile_settings">My Profile</string>
     <string name="log_in">Log In</string>
     <string name="log_out">Log Out</string>
     <string name="profile">Profile</string>
@@ -23,7 +23,7 @@
     <string name="title_slide1">No Cost</string>
     <string name="desc_slide1">uMe is completely FREE of cost, no subscription fees.</string>
     <string name="title_slide2">Secure</string>
-    <string name="desc_slide2">uMe keeps your messages safe from web attackers.</string>
+    <string name="desc_slide2">uMe keeps your messages secure</string>
     <string name="title_slide3">Personal Chatting</string>
     <string name="desc_slide3">fully one to one personal &amp; premium chatting system</string>
 

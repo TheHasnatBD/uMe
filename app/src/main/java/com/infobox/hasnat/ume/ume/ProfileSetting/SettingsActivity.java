@@ -25,6 +25,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.infobox.hasnat.ume.ume.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -65,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         String user_id = mAuth.getCurrentUser().getUid();
         getUserDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
+        getUserDatabaseReference.keepSynced(true); // for offline
 
         mProfileImgStorageRef = FirebaseStorage.getInstance().getReference().child("profile_image");
         thumb_image_ref = FirebaseStorage.getInstance().getReference().child("thumb_image");
@@ -90,12 +93,11 @@ public class SettingsActivity extends AppCompatActivity {
         getUserDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 // retrieve data from db
                 String name = dataSnapshot.child("user_name").getValue().toString();
                 String email = dataSnapshot.child("user_email").getValue().toString();
                 String status = dataSnapshot.child("user_status").getValue().toString();
-                String image = dataSnapshot.child("user_image").getValue().toString();
+                final String image = dataSnapshot.child("user_image").getValue().toString();
                 String thumbImage = dataSnapshot.child("user_thumb_image").getValue().toString();
 
 
@@ -104,12 +106,28 @@ public class SettingsActivity extends AppCompatActivity {
                 display_status.setText(status);
 
                 if(!image.equals("default_image")){ // default image condition for new user
+
                     // Picasso LIBRARY
+
                     Picasso.get()
                             .load(image)
-                            //.load(thumbImage)
+                            .networkPolicy(NetworkPolicy.OFFLINE) // for offline
                             .placeholder(R.drawable.default_profile_image)
-                            .into(profile_settings_image);
+                            .into(profile_settings_image, new Callback() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    Picasso.get()
+                                            .load(image)
+                                            //.load(thumbImage)
+                                            .placeholder(R.drawable.default_profile_image)
+                                            .into(profile_settings_image);
+                                }
+                            });
                 }
 
 
