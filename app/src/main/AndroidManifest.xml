@@ -22,48 +22,63 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".Utils.uMeOffline">
+
         <activity
             android:name=".WelcomeSlide.WelcomeActivity"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".WelcomeSlide.IntroActivity"
             android:configChanges="orientation|screenSize" />
+
         <activity
             android:name=".Home.MainActivity"
             android:configChanges="orientation|screenSize" />
+
         <activity
             android:name=".Login.LoginActivity"
             android:configChanges="orientation|screenSize" />
+
         <activity
             android:name=".Login.RegisterActivity"
             android:configChanges="orientation|screenSize" />
+
         <activity
             android:name=".About.AboutAppActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".Home.MainActivity"></activity>
+            android:parentActivityName=".Home.MainActivity">
+        </activity>
+
         <activity
             android:name=".ProfileSetting.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".Home.MainActivity" />
+
         <activity
             android:name=".ProfileSetting.StatusUpdateActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".ProfileSetting.SettingsActivity"></activity>
+            android:parentActivityName=".ProfileSetting.SettingsActivity">
+        </activity>
+
         <activity
             android:name=".Peoples.PeoplesActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".Home.MainActivity"></activity>
+            android:parentActivityName=".Home.MainActivity">
+        </activity>
 
         <activity android:name=".Peoples.ProfileActivity"
             android:parentActivityName=".Peoples.PeoplesActivity"
             android:configChanges="orientation|screenSize|screenLayout">
         </activity>
+
+
 
 
         <!-- fabric -->
