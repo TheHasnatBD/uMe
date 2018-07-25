@@ -15,9 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
 
@@ -36,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     //Firebase Auth
     private FirebaseAuth mAuth;
 
+    private DatabaseReference userDatabaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         userEmail = (EditText)findViewById(R.id.inputEmail);
         userPassword = (EditText)findViewById(R.id.inputPassword);
@@ -103,15 +110,20 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()){
-
-                                //Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
-
-
+                                // these lines for taking device token for notification
+                                String userUID = mAuth.getCurrentUser().getUid();
+                                String userDeiceToken = FirebaseInstanceId.getInstance().getToken();
+                                userDatabaseReference.child(userUID).child("device_token").setValue(userDeiceToken)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                //Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        });
 
                             } else {
                                 Toast.makeText(LoginActivity.this, "Your email and password may be incorrect. Please check & try again.", Toast.LENGTH_SHORT).show();

@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
 import com.infobox.hasnat.ume.ume.Utils.TabsPagerAdapter;
 
 import io.fabric.sdk.android.Fabric;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,8 +79,6 @@ public class MainActivity extends AppCompatActivity {
         setupTabIcons();
 
 
-
-
         /**
          * Set Home Activity Toolbar Name
          */
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    }
+    } // ending onCreate
 
     private void setupTabIcons() {
         mTabLayout.getTabAt(0).setIcon(tabIcons[0]);
@@ -162,15 +162,16 @@ public class MainActivity extends AppCompatActivity {
 
             title.setText("Hello !");
             imageButton.setImageResource(R.drawable.logout);
-            builder.setCancelable(false);
+            builder.setCancelable(true);
 
-            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(Html.fromHtml("<font color='#000000'>Cancel</font>"), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
-            builder.setPositiveButton("YES, Log out", new DialogInterface.OnClickListener() {
+
+            builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>YES, Log out</font>"), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
@@ -181,8 +182,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+
             builder.setView(view);
             builder.show();
+
         }
 
 

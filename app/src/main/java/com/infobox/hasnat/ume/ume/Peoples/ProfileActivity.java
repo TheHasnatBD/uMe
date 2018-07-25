@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -43,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     public String senderID; // Owner ID
 
     private DatabaseReference friendsDatabaseReference;
+    private DatabaseReference notificationDatabaseReference;
 
 
 
@@ -61,7 +63,10 @@ public class ProfileActivity extends AppCompatActivity {
         senderID = mAuth.getCurrentUser().getUid(); // GET SENDER ID
 
         friendsDatabaseReference = FirebaseDatabase.getInstance().getReference().child("friends");
-        friendsDatabaseReference.keepSynced(true);// for offline
+        friendsDatabaseReference.keepSynced(true); // for offline
+
+        notificationDatabaseReference = FirebaseDatabase.getInstance().getReference().child("notifications");
+        notificationDatabaseReference.keepSynced(true); // for offline
 
 
         /**
@@ -387,12 +392,28 @@ public class ProfileActivity extends AppCompatActivity {
 
                                             if (task.isSuccessful()){
 
-                                                sendFriendRequest_Button.setEnabled(true);
-                                                CURRENT_STATE = "request_sent";
-                                                sendFriendRequest_Button.setText("Cancel Friend Request");
+                                                //Request notification mechanism
+                                                HashMap<String, String> notificationData = new HashMap<String, String>();
+                                                notificationData.put("from", senderID);
+                                                notificationData.put("type", "request");
 
-                                                declineFriendRequest_Button.setVisibility(View.INVISIBLE);
-                                                declineFriendRequest_Button.setEnabled(false);
+                                                notificationDatabaseReference.child(receiver_userID).push().setValue(notificationData)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                if (task.isSuccessful()){
+                                                                    // Request main mechanism
+                                                                    sendFriendRequest_Button.setEnabled(true);
+                                                                    CURRENT_STATE = "request_sent";
+                                                                    sendFriendRequest_Button.setText("Cancel Friend Request");
+
+                                                                    declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                                                    declineFriendRequest_Button.setEnabled(false);
+                                                                }
+
+                                                            }
+                                                        });
 
                                             }
                                         }

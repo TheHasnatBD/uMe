@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.infobox.hasnat.ume.ume.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -112,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()){
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
 
                                 // get and link storage
                                 String current_userID =  mAuth.getCurrentUser().getUid();
@@ -122,6 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 storeDefaultDatabaseReference.child("user_email").setValue(email);
                                 storeDefaultDatabaseReference.child("user_status").setValue("Hi, I'm a new uMe user");
                                 storeDefaultDatabaseReference.child("user_image").setValue("default_image"); // Original image
+                                storeDefaultDatabaseReference.child("device_token").setValue(deviceToken);
                                 storeDefaultDatabaseReference.child("user_thumb_image").setValue("default_image")
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
