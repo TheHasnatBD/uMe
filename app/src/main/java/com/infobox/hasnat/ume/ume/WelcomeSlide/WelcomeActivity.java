@@ -13,9 +13,6 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //fabric
-        Fabric.with(this, new Crashlytics());
-
         startActivity(new Intent(WelcomeActivity.this, IntroActivity.class));
         finish();
 
