@@ -19,8 +19,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         super.onMessageReceived(remoteMessage);
 
 
+
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        String NOTIFICATION_CHANNEL_ID = "uMeHasnat";
+        String NOTIFICATION_CHANNEL_ID = "uMe_Channel_1";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "uMe Notifications", NotificationManager.IMPORTANCE_HIGH);
@@ -34,16 +35,20 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
+        // retrieve title and notification body from index.js function through remote
+        String notificationTitle = remoteMessage.getNotification().getTitle();
+        String notificationBody = remoteMessage.getNotification().getBody();
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
 
         notificationBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("Hearty365")
+                .setSmallIcon(R.drawable.logo)
+                .setTicker("infbox.com.bd")
                 .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("New Friend Request")
-                .setContentText("Hi user");
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationBody);
 
         int mNotificationId = (int) System.currentTimeMillis();
         notificationManager.notify(mNotificationId, notificationBuilder.build());
