@@ -3,6 +3,8 @@ package com.infobox.hasnat.ume.ume.Utils;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,8 +19,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         super.onMessageReceived(remoteMessage);
-
-
+        
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "uMe_Channel_1";
@@ -36,8 +37,18 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
 
         // retrieve title and notification body from index.js function through remote
-        String notificationTitle = remoteMessage.getNotification().getTitle();
-        String notificationBody = remoteMessage.getNotification().getBody();
+
+        String from_sender_id = remoteMessage.getData().get("from_sender_id");
+        String click_action = remoteMessage.getData().get("click_action");
+        String notificationTitle = remoteMessage.getData().get("title");
+        String notificationBody = remoteMessage.getData().get("body");
+
+
+        //String notificationTitle = remoteMessage.getNotification().getTitle();
+        //String notificationBody = remoteMessage.getNotification().getBody();
+
+        //String click_action = remoteMessage.getNotification().getClickAction();
+        //String from_sender_id = remoteMessage.getData().get("from_sender_id").toString();
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
 
@@ -50,8 +61,26 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationBody);
 
+
+        //
+        Intent intent = new Intent(click_action);
+        intent.putExtra("visitUserId", from_sender_id);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        notificationBuilder.setContentIntent(pendingIntent);
+        //
+
         int mNotificationId = (int) System.currentTimeMillis();
         notificationManager.notify(mNotificationId, notificationBuilder.build());
+
+
+
 
 
     }

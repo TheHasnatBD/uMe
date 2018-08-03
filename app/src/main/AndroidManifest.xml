@@ -76,6 +76,10 @@
         <activity android:name=".Peoples.ProfileActivity"
             android:parentActivityName=".Peoples.PeoplesActivity"
             android:configChanges="orientation|screenSize|screenLayout">
+            <intent-filter>
+                <action android:name="com.infobox.hasnat.ume.ume_TARGET_NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
 
 
