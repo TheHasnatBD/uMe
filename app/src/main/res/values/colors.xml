@@ -16,13 +16,13 @@
 
 
     <!-- Slider Screens background -->
-    <color name="bg_screen1">#0390FB</color>
-    <color name="bg_screen2">#af69f5</color>
-    <color name="bg_screen3">#007632</color>
+    <color name="bg_screen1">#ffffff</color>
+    <color name="bg_screen2">#ffffff</color>
+    <color name="bg_screen3">#ffffff</color>
 
     <!-- Slider Screens dots active colors -->
     <color name="dot_active">#000000</color>
     <!-- Slider Screens dots in-active colors -->
-    <color name="dot_inactive">#cccccc</color>
+    <color name="dot_inactive">#aaa</color>
 
 </resources>

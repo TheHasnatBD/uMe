@@ -38,7 +38,7 @@
         android:background="@null"
         android:text="@string/next"
         android:onClick="btnNextClick"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/btn_skip"
@@ -50,6 +50,6 @@
         android:background="@null"
         android:text="@string/skip"
         android:onClick="btnSkipClick"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/black" />
 
 </RelativeLayout>

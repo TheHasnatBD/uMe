@@ -19,7 +19,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         super.onMessageReceived(remoteMessage);
-        
+
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         String NOTIFICATION_CHANNEL_ID = "uMe_Channel_1";
@@ -37,18 +37,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
 
         // retrieve title and notification body from index.js function through remote
-
         String from_sender_id = remoteMessage.getData().get("from_sender_id");
         String click_action = remoteMessage.getData().get("click_action");
         String notificationTitle = remoteMessage.getData().get("title");
         String notificationBody = remoteMessage.getData().get("body");
 
-
-        //String notificationTitle = remoteMessage.getNotification().getTitle();
-        //String notificationBody = remoteMessage.getNotification().getBody();
-
-        //String click_action = remoteMessage.getNotification().getClickAction();
-        //String from_sender_id = remoteMessage.getData().get("from_sender_id").toString();
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
 
@@ -62,7 +55,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentText(notificationBody);
 
 
-        //
+
+        // clicking notification goes to sender profile
         Intent intent = new Intent(click_action);
         intent.putExtra("visitUserId", from_sender_id);
 
@@ -73,12 +67,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
-        notificationBuilder.setContentIntent(pendingIntent);
-        //
+        notificationBuilder.setContentIntent(pendingIntent); // end
+
 
         int mNotificationId = (int) System.currentTimeMillis();
         notificationManager.notify(mNotificationId, notificationBuilder.build());
-
 
 
 

@@ -1,7 +1,6 @@
 package com.infobox.hasnat.ume.ume.Peoples;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -109,27 +108,27 @@ public class ProfileActivity extends AppCompatActivity {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
                                 if (dataSnapshot.exists()){
                                     // if in database has these data then, execute conditions below
-                                    if (dataSnapshot.hasChild(receiver_userID)){
+                                    if (dataSnapshot.hasChild(receiver_userID)) {
 
                                         String requestType = dataSnapshot.child(receiver_userID)
                                                 .child("request_type").getValue().toString();
 
-                                        if (requestType.equals("sent")){
+                                        if (requestType.equals("sent")) {
                                             CURRENT_STATE = "request_sent";
                                             sendFriendRequest_Button.setText("Cancel Friend Request");
 
                                             declineFriendRequest_Button.setVisibility(View.INVISIBLE);
                                             declineFriendRequest_Button.setEnabled(false);
 
-                                        } else if (requestType.equals("received")){
+                                        } else if (requestType.equals("received")) {
                                             CURRENT_STATE = "request_received";
                                             sendFriendRequest_Button.setText("Accept Friend Request");
 
                                             declineFriendRequest_Button.setVisibility(View.VISIBLE);
                                             declineFriendRequest_Button.setEnabled(true);
+
 
                                             declineFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
                                                 @Override
@@ -140,10 +139,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                                         }
 
-
                                     }
 
-                                } else {
+
+                                    } else {
+
                                     friendsDatabaseReference.child(senderID)
                                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
@@ -152,7 +152,6 @@ public class ProfileActivity extends AppCompatActivity {
                                                     if (dataSnapshot.hasChild(receiver_userID)){
                                                         CURRENT_STATE = "friends";
                                                         sendFriendRequest_Button.setText("Unfriend This Person");
-                                                        //sendFriendRequest_Button.setTextColor(Color.RED);
 
                                                         declineFriendRequest_Button.setVisibility(View.INVISIBLE);
                                                         declineFriendRequest_Button.setEnabled(false);
@@ -287,12 +286,12 @@ public class ProfileActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
         final String friendshipDate = currentDate.format(myCalendar.getTime());
 
-        friendsDatabaseReference.child(senderID).child(receiver_userID).setValue(friendshipDate)
+        friendsDatabaseReference.child(senderID).child(receiver_userID).child("date").setValue(friendshipDate)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        friendsDatabaseReference.child(receiver_userID).child(senderID).setValue(friendshipDate)
+                        friendsDatabaseReference.child(receiver_userID).child(senderID).child("date").setValue(friendshipDate)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -315,7 +314,6 @@ public class ProfileActivity extends AppCompatActivity {
                                                                                 sendFriendRequest_Button.setEnabled(true);
                                                                                 CURRENT_STATE = "friends";
                                                                                 sendFriendRequest_Button.setText("Unfriend This Person");
-                                                                                //sendFriendRequest_Button.setTextColor(Color.RED);
 
                                                                                 declineFriendRequest_Button.setVisibility(View.INVISIBLE);
                                                                                 declineFriendRequest_Button.setEnabled(false);

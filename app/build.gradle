@@ -30,7 +30,6 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -62,7 +61,7 @@ dependencies {
     // FirebaseUI for Firebase Realtime Database
     implementation 'com.firebaseui:firebase-ui-database:1.1.1'
     // image Compressor library
-    compile 'id.zelory:compressor:2.1.0'
+    implementation 'id.zelory:compressor:2.1.0'
 
 
 

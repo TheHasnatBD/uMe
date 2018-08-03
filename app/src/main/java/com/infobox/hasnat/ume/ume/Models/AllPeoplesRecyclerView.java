@@ -2,13 +2,12 @@ package com.infobox.hasnat.ume.ume.Models;
 
 public class AllPeoplesRecyclerView {
 
-    public String user_name;
-    public String user_image;
-    public String user_status;
-    public String user_thumb_image;
+    private String user_name;
+    private String user_image;
+    private String user_status;
+    private String user_thumb_image;
 
     public AllPeoplesRecyclerView() {
-
     }
 
     public AllPeoplesRecyclerView(String user_name, String user_image, String user_status, String user_thumb_image) {
