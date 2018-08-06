@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.infobox.hasnat.ume.ume.About.AboutAppActivity;
 import com.infobox.hasnat.ume.ume.Login.LoginActivity;
 import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Firebase
     private FirebaseAuth mAuth;
+    private DatabaseReference userDatabaseReference;
+    public FirebaseUser currentUser;
 
     //Firebase analytics
 
@@ -65,6 +69,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null){
+            String user_uID = mAuth.getCurrentUser().getUid();
+
+            userDatabaseReference = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(user_uID);
+        }
 
 
         /**
@@ -100,12 +112,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
 
         //checking logging, if not login redirect to Login ACTIVITY
 
         if (currentUser == null){
             logOutUser(); // Return to Login activity
+
+        } else if (currentUser != null){
+            userDatabaseReference.child("active_now").setValue("true");
+
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (currentUser != null){
+            userDatabaseReference.child("active_now").setValue("false");
+
         }
 
     }

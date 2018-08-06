@@ -1,6 +1,5 @@
 package com.infobox.hasnat.ume.ume.Fragments;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -98,6 +98,14 @@ public class FriendsFragment extends Fragment {
                         String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
 
+                        // online active status
+                        if (dataSnapshot.hasChild("active_now")){
+
+                            String active_status = (String) dataSnapshot.child("active_now").getValue();
+
+                            viewHolder.setActiveUser(active_status);
+                        }
+
                         viewHolder.setUserName(userName);
                         viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
                     }
@@ -159,6 +167,21 @@ public class FriendsFragment extends Fragment {
                                         .into(thumb_photo);
                             }
                         });
+            }
+
+        }
+
+
+        public void setActiveUser(String activeUser) {
+
+            ImageView active_image =  m_view.findViewById(R.id.activeIcon);
+
+            if (activeUser.contentEquals("true")){
+                active_image.setVisibility(View.VISIBLE);
+
+            } else {
+                active_image.setVisibility(View.INVISIBLE);
+
             }
 
         }
