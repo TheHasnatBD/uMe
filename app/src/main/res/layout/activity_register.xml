@@ -122,14 +122,15 @@
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.AppCompatButton
+            <Button
                 android:id="@+id/resisterButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/white_rounded_button"
-                android:padding="13dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:padding="10dp"
                 android:text="R e g i s t e r"
                 android:textAllCaps="false" />
             <!--

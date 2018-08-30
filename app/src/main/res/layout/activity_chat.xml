@@ -5,11 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Chat.ChatActivity"
-    android:background="@color/gray">
+    >
 
     <include
         layout="@layout/all_app_bar_layout"
         android:id="@+id/chats_appbar"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/chats_appbar"
+        android:id="@+id/message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="55dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,14 +30,14 @@
         android:background="@color/white">
 
         <ImageView
-            android:id="@+id/chat_select_image"
+            android:id="@+id/c_send_image_BTN"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add_a_photo"
             android:padding="5dp"/>
 
         <EditText
-            android:id="@+id/chat_input_message"
+            android:id="@+id/c_input_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +47,7 @@
             android:padding="10dp"/>
 
         <ImageView
-            android:id="@+id/chat_send_message"
+            android:id="@+id/c_send_message_BTN"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_send"

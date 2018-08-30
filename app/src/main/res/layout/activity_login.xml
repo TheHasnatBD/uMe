@@ -58,14 +58,15 @@
                 />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/loginButton"
             android:text="Log In"
             android:textAllCaps="false"
-            android:padding="13dp"
-            android:background="@drawable/white_rounded_button"
+            android:padding="10dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             />
