@@ -1,6 +1,9 @@
 package com.infobox.hasnat.ume.ume.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,13 +15,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.infobox.hasnat.ume.ume.Chat.ChatActivity;
 import com.infobox.hasnat.ume.ume.Models.Friends;
+import com.infobox.hasnat.ume.ume.Peoples.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -89,25 +96,76 @@ public class FriendsFragment extends Fragment {
 
                 viewHolder.setDate(model.getDate());
 
-                String user_id_list = getRef(position).getKey();
+                final String user_id_list = getRef(position).getKey();
 
                 userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                        String userName = dataSnapshot.child("user_name").getValue().toString();
+                        final String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
 
                         // online active status
                         if (dataSnapshot.hasChild("active_now")){
 
-                            String active_status = (String) dataSnapshot.child("active_now").getValue();
+                            String active_status = dataSnapshot.child("active_now").getValue().toString();
 
                             viewHolder.setActiveUser(active_status);
                         }
 
                         viewHolder.setUserName(userName);
                         viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
+
+                        //click item, 2 options in a dialogue will be appear
+                        viewHolder.m_view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CharSequence options[] =  new CharSequence[]{"Send Message", userName+"'s profile"};
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        if (which == 0){
+                                            // user active status validation
+                                            if (dataSnapshot.child("active_now").exists()){
+
+                                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                chatIntent.putExtra("visitUserId", user_id_list);
+                                                chatIntent.putExtra("userName", userName);
+                                                startActivity(chatIntent);
+
+                                            } else {
+                                                userDatabaseReference.child(user_id_list).child("active_now")
+                                                        .setValue(ServerValue.TIMESTAMP).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                        chatIntent.putExtra("visitUserId", user_id_list);
+                                                        chatIntent.putExtra("userName", userName);
+                                                        startActivity(chatIntent);
+                                                    }
+                                                });
+
+
+                                            }
+
+                                        }
+
+                                        if (which == 1){
+                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                            profileIntent.putExtra("visitUserId", user_id_list);
+                                            startActivity(profileIntent);
+                                        }
+
+                                    }
+                                });
+                                builder.show();
+
+                            }
+                        });
                     }
 
                     @Override
@@ -175,8 +233,7 @@ public class FriendsFragment extends Fragment {
         public void setActiveUser(String activeUser) {
 
             ImageView active_image =  m_view.findViewById(R.id.activeIcon);
-
-            if (activeUser.contentEquals("true")){
+            if (activeUser.equals("true")){
                 active_image.setVisibility(View.VISIBLE);
 
             } else {

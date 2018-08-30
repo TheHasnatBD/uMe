@@ -12,17 +12,16 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".Utils.uMeOffline"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".Utils.uMeOffline">
-
+        android:theme="@style/AppTheme">
         <activity
             android:name=".WelcomeSlide.WelcomeActivity"
             android:configChanges="orientation|screenSize"
@@ -32,57 +31,58 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".WelcomeSlide.IntroActivity"
             android:configChanges="orientation|screenSize" />
-
         <activity
             android:name=".Home.MainActivity"
             android:configChanges="orientation|screenSize" />
-
         <activity
             android:name=".Login.LoginActivity"
             android:configChanges="orientation|screenSize" />
-
         <activity
             android:name=".Login.RegisterActivity"
             android:configChanges="orientation|screenSize" />
-
         <activity
             android:name=".About.AboutAppActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".Home.MainActivity">
-        </activity>
-
+            android:parentActivityName=".Home.MainActivity"></activity>
         <activity
             android:name=".ProfileSetting.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".Home.MainActivity" />
-
         <activity
             android:name=".ProfileSetting.StatusUpdateActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".ProfileSetting.SettingsActivity">
         </activity>
-
         <activity
             android:name=".Peoples.PeoplesActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".Home.MainActivity">
         </activity>
 
-        <activity android:name=".Peoples.ProfileActivity"
-            android:parentActivityName=".Peoples.PeoplesActivity"
-            android:configChanges="orientation|screenSize|screenLayout">
+        <activity
+            android:name=".Peoples.ProfileActivity"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:parentActivityName=".Peoples.PeoplesActivity">
             <intent-filter>
-                <action android:name="com.infobox.hasnat.ume.ume_TARGET_NOTIFICATION"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.infobox.hasnat.ume.ume_TARGET_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-
+        <activity android:name=".Chat.ChatActivity"
+            android:parentActivityName=".Home.MainActivity"></activity>
 
 
         <!-- fabric -->
@@ -96,10 +96,9 @@
             android:theme="@style/Base.Theme.AppCompat" />
 
         <!-- Firebase Messaging Service -->
-        <service
-            android:name=".Utils.FirebaseMessagingService">
+        <service android:name=".Utils.FirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 

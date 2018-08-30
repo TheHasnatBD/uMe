@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.infobox.hasnat.ume.ume.About.AboutAppActivity;
 import com.infobox.hasnat.ume.ume.Login.LoginActivity;
 import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
@@ -130,11 +131,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        // google kore aro jana lagbe, bug aache ekhane
+
+//        if (currentUser != null){
+//            userDatabaseReference.child("active_now").setValue(ServerValue.TIMESTAMP);
+//        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+// from onStop
         if (currentUser != null){
-            userDatabaseReference.child("active_now").setValue("false");
-
+            userDatabaseReference.child("active_now").setValue(ServerValue.TIMESTAMP);
         }
-
     }
 
     private void logOutUser() {
@@ -202,8 +212,11 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    mAuth.signOut();
+                    if (currentUser != null){
+                        userDatabaseReference.child("active_now").setValue(ServerValue.TIMESTAMP);
+                    }
 
+                    mAuth.signOut();
                     logOutUser();
 
                 }

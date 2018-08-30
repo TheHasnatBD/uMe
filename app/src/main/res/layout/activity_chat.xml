@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Chat.ChatActivity"
+    android:background="@color/gray">
+
+    <include
+        layout="@layout/all_app_bar_layout"
+        android:id="@+id/chats_appbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:padding="5dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/chat_select_image"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_a_photo"
+            android:padding="5dp"/>
+
+        <EditText
+            android:id="@+id/chat_input_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Type a message"
+            android:inputType="textMultiLine"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:id="@+id/chat_send_message"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send"
+            android:padding="5dp"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
