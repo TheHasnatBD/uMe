@@ -4,6 +4,11 @@
     >
 
     <item
+        android:title="@string/menu_search"
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="always"/>
+    <item
         android:title="@string/profile_settings"
         android:id="@+id/profile_settings"
         app:showAsAction="never"/>

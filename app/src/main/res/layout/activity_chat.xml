@@ -27,7 +27,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:padding="5dp"
-        android:background="@color/white">
+        android:background="@drawable/white_gray_border_top"
+        >
 
         <ImageView
             android:id="@+id/c_send_image_BTN"
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Type a message"
+            android:hint="Write your message"
             android:inputType="textMultiLine"
             android:padding="10dp"/>
 

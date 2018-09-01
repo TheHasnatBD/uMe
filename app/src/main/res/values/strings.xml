@@ -51,6 +51,7 @@
 
     <!-- Remove or change this placeholder text -->
     <string name="on_internet_msg">No internet connection! Please check internet.</string>
+    <string name="menu_search">Search</string>
 
     <!-- TODO: Firebase Database node / fields -->
 

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:padding="3dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/default_profile_image"
+            android:id="@+id/r_profileImage"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="0.50dp"
+            />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r_profileName"
+                android:textSize="16sp"
+                android:layout_marginLeft="5dp"
+                android:paddingTop="5dp"
+                android:text="@string/student_name"
+                android:textStyle="normal"
+                android:textColor="@color/black"
+                android:paddingStart="5dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r_profileStatus"
+                android:textSize="13sp"
+                android:paddingStart="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:text="profileStatus"
+                android:textStyle="normal"/>
+
+            <LinearLayout
+                android:layout_marginLeft="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:text="Confirm"
+                    android:textAllCaps="false"
+                    android:id="@+id/r_acceptRequestBTN"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    />
+                <Button
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:id="@+id/r_cancelRequestBTN"
+                    android:background="@color/gray"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="7dp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

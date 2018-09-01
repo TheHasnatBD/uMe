@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onOptionsItemSelected(item);
 
+
         if (item.getItemId() == R.id.profile_settings){
             Intent intent =  new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
@@ -226,6 +227,10 @@ public class MainActivity extends AppCompatActivity {
             builder.setView(view);
             builder.show();
 
+        }
+
+        if (item.getItemId() == R.id.menu_search){
+            Toast.makeText(this, "Upcoming feature", Toast.LENGTH_SHORT).show();
         }
 
 

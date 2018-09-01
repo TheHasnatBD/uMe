@@ -1,13 +1,30 @@
 package com.infobox.hasnat.ume.ume.Fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.infobox.hasnat.ume.ume.Models.Requests;
 import com.infobox.hasnat.ume.ume.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -15,6 +32,14 @@ import com.infobox.hasnat.ume.ume.R;
  */
 public class RequestsFragment extends Fragment {
 
+    private View view;
+    private RecyclerView request_list;
+    private Context context;
+
+    private DatabaseReference databaseReference;
+    private FirebaseAuth mAuth;
+    String user_UId;
+    private DatabaseReference userDatabaseReference;
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -25,7 +50,112 @@ public class RequestsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_requests, container, false);
+        view =  inflater.inflate(R.layout.fragment_requests, container, false);
+
+        request_list = view.findViewById(R.id.requestList);
+        request_list.setHasFixedSize(true);
+
+        mAuth = FirebaseAuth.getInstance();
+        user_UId = mAuth.getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("friend_requests").child(user_UId);
+        userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+
+        request_list.setLayoutManager(linearLayoutManager);
+
+        return view;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseRecyclerAdapter<Requests, RequestsViewHolder> firebaseRecyclerAdapter
+                = new FirebaseRecyclerAdapter<Requests, RequestsViewHolder>
+                (
+                        Requests.class,
+                        R.layout.request_single,
+                        RequestsFragment.RequestsViewHolder.class,
+                        databaseReference
+                ) {
+            @Override
+            protected void populateViewHolder(final RequestsViewHolder viewHolder, Requests model, int position) {
+
+                final String user_id_list = getRef(position).getKey();
+                userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        final String userName = dataSnapshot.child("user_name").getValue().toString();
+                        final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
+                        final String user_status = dataSnapshot.child("user_status").getValue().toString();
+
+                        viewHolder.setUserName(userName);
+                        viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
+                        viewHolder.setUserStatus(user_status);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+        };
+
+        request_list.setAdapter(firebaseRecyclerAdapter);
+    }
+
+
+    public static class RequestsViewHolder extends RecyclerView.ViewHolder{
+
+        View view;
+
+        public RequestsViewHolder(View itemView) {
+            super(itemView);
+            view = itemView;
+        }
+
+        public void setUserName(String userName) {
+            TextView Name = view.findViewById(R.id.r_profileName);
+            Name.setText(userName);
+        }
+
+        public void setUserThumbPhoto(final String userThumbPhoto, final Context context) {
+            final CircleImageView thumb_photo = view.findViewById(R.id.r_profileImage);
+
+            if(!thumb_photo.equals("default_image")) { // default image condition for new user
+
+                Picasso.get()
+                        .load(userThumbPhoto)
+                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                        .placeholder(R.drawable.default_profile_image)
+                        .into(thumb_photo, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Picasso.get()
+                                        .load(userThumbPhoto)
+                                        .placeholder(R.drawable.default_profile_image)
+                                        .into(thumb_photo);
+                            }
+                        });
+            }
+        }
+
+        public void setUserStatus(String user_status) {
+            TextView Status = view.findViewById(R.id.r_profileStatus);
+            Status.setText(user_status);
+        }
     }
 
 }

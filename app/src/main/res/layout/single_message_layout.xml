@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="5dp">
 
 
@@ -9,7 +10,10 @@
         android:id="@+id/messageUserImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/default_profile_image"/>
+        android:src="@drawable/default_profile_image"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="0.40dp"
+        />
 
     <TextView
         android:id="@+id/receiverMessageText"

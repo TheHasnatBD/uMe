@@ -103,7 +103,6 @@ public class ChatsFragment extends Fragment {
 
                         final String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
-
                         String user_status = dataSnapshot.child("user_status").getValue().toString();
 
                         // online active status
