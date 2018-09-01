@@ -193,7 +193,7 @@ public class FriendsFragment extends Fragment {
 
         public void setDate(String date){
             TextView friendshipDate = (TextView)m_view.findViewById(R.id.all_user_status);
-            friendshipDate.setText(date);
+            friendshipDate.setText("Friend Since: \n" + date);
         }
 
         public void setUserName(String userName){

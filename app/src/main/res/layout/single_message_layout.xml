@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="5dp">
 
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/messageUserImage"
         android:layout_width="50dp"
@@ -11,17 +12,32 @@
         android:src="@drawable/default_profile_image"/>
 
     <TextView
-        android:id="@+id/messageText"
+        android:id="@+id/receiverMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="55dp"
-        android:layout_alignParentStart="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@id/messageUserImage"
         android:background="@drawable/single_message_text_background"
         android:padding="10dp"
         android:text="fghfghfhfghgfh"
         android:textColor="@color/white"
+         />
+    <TextView
+        android:id="@+id/senderMessageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentTop="@id/messageUserImage"
+        android:background="@drawable/single_message_text_another_background"
+        android:padding="10dp"
+        android:text="fghfghfhfghgfh"
+        android:textColor="@color/black"
          />
 
 </RelativeLayout>

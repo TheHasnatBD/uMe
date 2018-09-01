@@ -109,6 +109,8 @@ public class ChatActivity extends AppCompatActivity {
         messageList_ReCyVw.setHasFixedSize(true);
         messageList_ReCyVw.setLayoutManager(linearLayoutManager);
         messageList_ReCyVw.setAdapter(messageAdapter);
+        linearLayoutManager.setStackFromEnd(true);
+        //linearLayoutManager.setReverseLayout(true);
         fetchMessages();
 
         chatUserName.setText(messageReceiverName);
@@ -190,9 +192,12 @@ public class ChatActivity extends AppCompatActivity {
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Message message = dataSnapshot.getValue(Message.class);
-                        messageList.add(message);
-                        messageAdapter.notifyDataSetChanged();
+                        if (dataSnapshot.exists()){
+                            Message message = dataSnapshot.getValue(Message.class);
+                            messageList.add(message);
+                            messageAdapter.notifyDataSetChanged();
+                        }
+
                     }
 
                     @Override
@@ -237,6 +242,7 @@ public class ChatActivity extends AppCompatActivity {
             message_text_body.put("seen", false);
             message_text_body.put("type", "text");
             message_text_body.put("time", ServerValue.TIMESTAMP);
+            message_text_body.put("from", messageSenderId);
 
             Map messageBodyDetails = new HashMap();
             messageBodyDetails.put(message_sender_reference + "/" + message_push_id, message_text_body);

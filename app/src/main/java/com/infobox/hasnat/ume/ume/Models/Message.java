@@ -4,6 +4,7 @@ public class Message {
     private String message, type;
     private long time;
     private boolean seen;
+    private String from;
 
     // default constructor
 
@@ -13,11 +14,12 @@ public class Message {
 
     // constructor
 
-    public Message(String message, String type, long time, boolean seen) {
+    public Message(String message, String type, long time, boolean seen, String from) {
         this.message = message;
         this.type = type;
         this.time = time;
         this.seen = seen;
+        this.from = from;
     }
 
 
@@ -56,6 +58,14 @@ public class Message {
         this.seen = seen;
     }
 
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -63,6 +73,7 @@ public class Message {
                 ", type='" + type + '\'' +
                 ", time=" + time +
                 ", seen=" + seen +
+                ", from='" + from + '\'' +
                 '}';
     }
 }

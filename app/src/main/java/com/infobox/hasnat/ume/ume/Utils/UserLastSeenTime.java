@@ -36,7 +36,9 @@ public class UserLastSeenTime extends Application{
 
         long now = System.currentTimeMillis();
         if (time > now || time <= 0) {
-            return null;
+
+            return "Active just now";
+            //return null;
         }
 
         // TODO: localize

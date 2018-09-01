@@ -32,7 +32,7 @@ public class PeoplesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_peoples);
 
-        toolbar = (Toolbar) findViewById(R.id.people_appbar);
+        toolbar = findViewById(R.id.people_appbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Peoples");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
