@@ -3,6 +3,7 @@ package com.infobox.hasnat.ume.ume.Login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -96,8 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             //progress bar
-            progressDialog.setTitle("Login account");
-            progressDialog.setMessage("Please wait, verifying your credentials...");
+            progressDialog.setMessage("Please wait...");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
 

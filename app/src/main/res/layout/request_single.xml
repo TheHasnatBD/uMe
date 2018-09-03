@@ -56,7 +56,7 @@
                 android:padding="5dp">
 
                 <Button
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:text="Confirm"
                     android:textAllCaps="false"
@@ -64,15 +64,20 @@
                     android:background="@color/colorPrimary"
                     android:textColor="@color/white"
                     />
+
+                <!--
+                NB : In app UI, we use DECLINE, but, somehow we use in coding CANCEL
+                -->
                 <Button
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="Cancel"
+                    android:text="Decline"
                     android:textAllCaps="false"
                     android:id="@+id/r_cancelRequestBTN"
                     android:background="@color/gray"
                     android:textColor="@color/black"
                     android:layout_marginLeft="7dp"
+
                     />
             </LinearLayout>
 
