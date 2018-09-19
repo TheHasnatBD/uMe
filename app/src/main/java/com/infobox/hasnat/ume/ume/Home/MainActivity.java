@@ -28,7 +28,7 @@ import com.infobox.hasnat.ume.ume.Login.LoginActivity;
 import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
-import com.infobox.hasnat.ume.ume.Utils.TabsPagerAdapter;
+import com.infobox.hasnat.ume.ume.Adapter.TabsPagerAdapter;
 
 import io.fabric.sdk.android.Fabric;
 

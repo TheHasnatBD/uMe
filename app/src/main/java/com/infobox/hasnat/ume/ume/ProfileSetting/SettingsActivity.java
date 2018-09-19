@@ -198,6 +198,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Uri resultUri = result.getUri();
 
+
                 File thumb_filePath_Uri = new File(resultUri.getPath());
 
                 String user_id = mAuth.getCurrentUser().getUid();

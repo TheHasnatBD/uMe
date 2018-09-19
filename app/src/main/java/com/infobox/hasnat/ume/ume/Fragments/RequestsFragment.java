@@ -108,6 +108,9 @@ public class RequestsFragment extends Fragment {
 
                 final String user_id_list = getRef(position).getKey();
 
+                acceptBtn = viewHolder.view.findViewById(R.id.r_acceptRequestBTN);
+                cancelBtn = viewHolder.view.findViewById(R.id.r_cancelRequestBTN);
+
                 // handling accept/cancel button
                 DatabaseReference getTypeReference = getRef(position).child("request_type").getRef();
                 getTypeReference.addValueEventListener(new ValueEventListener() {
@@ -117,8 +120,8 @@ public class RequestsFragment extends Fragment {
                         if (dataSnapshot.exists()){
                             String requestType = dataSnapshot.getValue().toString();
 
-                            acceptBtn = viewHolder.view.findViewById(R.id.r_acceptRequestBTN);
-                            cancelBtn = viewHolder.view.findViewById(R.id.r_cancelRequestBTN);
+//                            acceptBtn = viewHolder.view.findViewById(R.id.r_acceptRequestBTN);
+//                            cancelBtn = viewHolder.view.findViewById(R.id.r_cancelRequestBTN);
 
                             if (requestType.equals("received")){
 
@@ -168,7 +171,8 @@ public class RequestsFragment extends Fragment {
                                                                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                                                                     if (task.isSuccessful()){
                                                                                                                         // after deleting data
-                                                                                                                        Toast.makeText(getActivity(), "This person is now your friend", Toast.LENGTH_SHORT).show();
+                                                                                                                        Snackbar.make(view, "This person is now your friend", 1000).show();
+                                                                                                                        //Toast.makeText(getActivity(), "This person is now your friend", Toast.LENGTH_SHORT).show();
 
                                                                                                                     }
                                                                                                                 }
@@ -267,7 +271,7 @@ public class RequestsFragment extends Fragment {
                                                                                 @Override
                                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                                     if (task.isSuccessful()){
-                                                                                        Snackbar.make(view, "Cancel Request", 1000);
+                                                                                        //Snackbar.make(view, "Cancel Sent Request", 1000).show();
                                                                                         //Toast.makeText(getActivity(), "Cancel Request", Toast.LENGTH_SHORT).show();
 
 

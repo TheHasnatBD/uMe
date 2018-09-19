@@ -1,6 +1,13 @@
 package com.infobox.hasnat.ume.ume.Chat;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,20 +34,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.infobox.hasnat.ume.ume.Models.Message;
 import com.infobox.hasnat.ume.ume.R;
-import com.infobox.hasnat.ume.ume.Utils.MessageAdapter;
+import com.infobox.hasnat.ume.ume.Adapter.MessageAdapter;
 import com.infobox.hasnat.ume.ume.Utils.UserLastSeenTime;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -65,6 +81,8 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MessageAdapter messageAdapter;
 
+    private final static int GALLERY_PICK_CODE = 2;
+    private StorageReference imageMessageStorageRef;
 
 
     @Override
@@ -80,7 +98,10 @@ public class ChatActivity extends AppCompatActivity {
         messageReceiverID = getIntent().getExtras().get("visitUserId").toString();
         messageReceiverName = getIntent().getExtras().get("userName").toString();
 
+        imageMessageStorageRef = FirebaseStorage.getInstance().getReference().child("messages_image");
 
+
+        // appbar / toolbar
         chatToolbar = findViewById(R.id.chats_appbar);
         setSupportActionBar(chatToolbar);
         final ActionBar actionBar = getSupportActionBar();
@@ -111,6 +132,7 @@ public class ChatActivity extends AppCompatActivity {
         messageList_ReCyVw.setAdapter(messageAdapter);
         linearLayoutManager.setStackFromEnd(true);
         //linearLayoutManager.setReverseLayout(true);
+
         fetchMessages();
 
         chatUserName.setText(messageReceiverName);
@@ -175,7 +197,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         /**
-         *  SEND MESSAGE BUTTON
+         *  SEND TEXT MESSAGE BUTTON
          */
         send_message.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,7 +207,101 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
+        /** SEND IMAGE MESSAGE BUTTON */
+        send_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent galleryIntent = new Intent().setAction(Intent.ACTION_GET_CONTENT);
+                galleryIntent.setType("image/*");
+                startActivityForResult(galleryIntent, GALLERY_PICK_CODE);
+
+            }
+        });
+
+
+    } // ending onCreate
+
+
+    @Override // for gallery picking
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(this);
+
+
+         //  For image sending
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_PICK_CODE && resultCode == RESULT_OK && data != null){
+            progressDialog.setMessage("Please wait...."); // ProgressDialog
+            progressDialog.show();
+
+            Uri imageUri = data.getData();
+
+            // image message sending size compressing will be placed below
+
+
+            final String message_sender_reference = "messages/" + messageSenderId + "/" + messageReceiverID;
+            final String message_receiver_reference = "messages/" + messageReceiverID + "/" + messageSenderId;
+
+            DatabaseReference user_message_key = rootReference.child("messages").child(messageSenderId).child(messageReceiverID).push();
+            final String message_push_id = user_message_key.getKey();
+
+            StorageReference file_path = imageMessageStorageRef.child(message_push_id + ".jpg");
+
+
+            file_path.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if (task.isSuccessful()){
+                        String downloadUrl = String.valueOf(task.getResult().getDownloadUrl());
+
+                        Map message_text_body = new HashMap();
+                        message_text_body.put("message", downloadUrl);
+                        message_text_body.put("seen", false);
+                        message_text_body.put("type", "image");
+                        message_text_body.put("time", ServerValue.TIMESTAMP);
+                        message_text_body.put("from", messageSenderId);
+
+                        Map messageBodyDetails = new HashMap();
+                        messageBodyDetails.put(message_sender_reference + "/" + message_push_id, message_text_body);
+                        messageBodyDetails.put(message_receiver_reference + "/" + message_push_id, message_text_body);
+
+                        rootReference.updateChildren(messageBodyDetails, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if (databaseError != null){
+                                    Log.e("from_image_chat: ", databaseError.getMessage().toString());
+                                }
+
+                                input_user_message.setText("");
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                        Toast.makeText(ChatActivity.this, "Image sent successfully", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    } else{
+                        Toast.makeText(ChatActivity.this, "Image not sent. Try again", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(ChatActivity.this, "Error: "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+        }
+
+
     }
+
 
     private void fetchMessages() {
         rootReference.child("messages").child(messageSenderId).child(messageReceiverID)

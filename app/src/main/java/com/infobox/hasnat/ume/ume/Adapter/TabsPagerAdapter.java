@@ -1,4 +1,4 @@
-package com.infobox.hasnat.ume.ume.Utils;
+package com.infobox.hasnat.ume.ume.Adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/loginButton"
             android:text="Log In"
+            android:textSize="18sp"
             android:textAllCaps="false"
             android:padding="10dp"
             android:background="@color/colorPrimary"
@@ -78,9 +79,18 @@
             android:text="New here? Create an account"
             android:textColor="@color/blue_link"
             android:layout_marginTop="07dp"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/linkForgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Forgot password?"
+            android:textColor="@color/red"
+            android:layout_marginTop="02dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:textSize="16dp"/>
+            />
 
         <!--
         <TextView
