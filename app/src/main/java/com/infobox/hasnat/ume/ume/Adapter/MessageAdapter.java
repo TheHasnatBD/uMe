@@ -118,7 +118,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.receiverImageMsg.setVisibility(View.GONE);
                 Picasso.get()
                         .load(message.getMessage())
-                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                        //.networkPolicy(NetworkPolicy.OFFLINE) // for Offline
                         // .placeholder(R.drawable.default_profile_image)
                         .into(holder.senderImageMsg);
             } else {
@@ -126,7 +126,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.senderImageMsg.setVisibility(View.GONE);
                 Picasso.get()
                         .load(message.getMessage())
-                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                        //.networkPolicy(NetworkPolicy.OFFLINE) // for Offline
                         // .placeholder(R.drawable.default_profile_image)
                         .into(holder.receiverImageMsg);
 

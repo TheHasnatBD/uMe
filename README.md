@@ -19,17 +19,20 @@
 
 >with full UI design
 
-
+[Download APK](https://github.com/TheHasnatBD/uMe/tree/master/myFiles/uMe-(developed_by_Hasnat).apk)
 #### Some Screenshots of this app
 
- Intro Slider                          |  Registration                          |  Login			                  | Home
-:-------------------------------------:|:--------------------------------------:|:-----------------------------------:|:-------------------------------------:
- <img src="myFiles/1.png" width="200"> |  <img src="myFiles/2.png" width="200"> |<img src="myFiles/3.png" width="200">|<img src="myFiles/4.png" width="200">
+ Intro Slider                          |  Create Account                                 |  Login			                         | Home
+:-------------------------------------:|:-----------------------------------------------:|:-----------------------------------------:|:----------------------------------------:
+ <img src="myFiles/1.into.png" width="200"> |  <img src="myFiles/2.reg.png" width="200"> |<img src="myFiles/3.login.png" width="200">|<img src="myFiles/4.home.png" width="200">
 
- Registered user Profile              | Friend Request UI                    | Friend List UI                      | Find/Search Friends
-:------------------------------------:|:------------------------------------:|:-----------------------------------:|:-------------------------------------:
- <img src="myFiles/5.png" width="200">| <img src="myFiles/-.png" width="200">|<img src="myFiles/-.png" width="200">|<img src="myFiles/-.png" width="200">
+ Friend Request UI                                 | Friend List UI                                 | Owner Profile UI                                | All Users of uMe
+:-------------------------------------------------:|:----------------------------------------------:|:-----------------------------------------------:|:-------------------------------------:
+ <img src="myFiles/5.request_page.png" width="200">| <img src="myFiles/6.frnd_page.png" width="200">|<img src="myFiles/7.own_profile.png" width="200">|<img src="myFiles/8.peoples.png" width="200">
 
+ uMe user profile UI                                 | When someone send request                        | When two persons become friend                   |  LIVE CHATTING in uMe
+:---------------------------------------------------:|:------------------------------------------------:|:------------------------------------------------:|:-------------------------------------:
+ <img src="myFiles/9.people_profile.png" width="200">| <img src="myFiles/10.accept_req.png" width="200">|<img src="myFiles/11.unfriend_fr.png" width="200">|<img src="myFiles/12.chats.png" width="200">
 
 
 

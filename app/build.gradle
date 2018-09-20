@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
 
@@ -52,6 +53,7 @@ dependencies {
 
     // circle image view library
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
     // cropping image library
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
     // Picasso Library

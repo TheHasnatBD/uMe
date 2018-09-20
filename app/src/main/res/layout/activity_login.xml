@@ -77,8 +77,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="New here? Create an account"
-            android:textColor="@color/blue_link"
+            android:textColor="@color/colorPrimary"
             android:layout_marginTop="07dp"
+            android:textSize="18sp"
             android:gravity="center"
             />
         <TextView
@@ -86,8 +87,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Forgot password?"
-            android:textColor="@color/red"
-            android:layout_marginTop="02dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="07dp"
+            android:textSize="18sp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
             />
