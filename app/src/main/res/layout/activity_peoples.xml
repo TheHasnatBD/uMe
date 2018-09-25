@@ -1,22 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Peoples.PeoplesActivity">
 
+    <!--
     <include layout="@layout/all_app_bar_layout"
         android:id="@+id/people_appbar"/>
+-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/people_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+    </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:background="@drawable/gray_border_bottom"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View By: "/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
 
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/userLIst"
-        android:layout_below="@id/people_appbar">
+        android:layout_margin="3dp"
+        >
 
     </android.support.v7.widget.RecyclerView>
 
 
-</RelativeLayout>
+</LinearLayout>

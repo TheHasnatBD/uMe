@@ -8,6 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -25,6 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PeoplesActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private Spinner spinner;
     private RecyclerView peoples_list;
     private DatabaseReference peoplesDatabaseReference;
 
@@ -39,13 +43,32 @@ public class PeoplesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        peoplesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        peoplesDatabaseReference.keepSynced(true); // for offline
+
+        spinner = findViewById(R.id.spinner);
+        String[] categoryName = getResources().getStringArray(R.array.spinerViewPeople);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item ,categoryName);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String catName = adapterView.getItemAtPosition(i).toString().toLowerCase();
+                showPeopleList(catName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         // Setup recycler view
         peoples_list = (RecyclerView)findViewById(R.id.userLIst);
         peoples_list.setHasFixedSize(true);
         peoples_list.setLayoutManager(new LinearLayoutManager(this));
 
-        peoplesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
-        peoplesDatabaseReference.keepSynced(true); // for offline
+
 
 
 
@@ -56,12 +79,15 @@ public class PeoplesActivity extends AppCompatActivity {
      *
      *  Library link- https://github.com/firebase/FirebaseUI-Android
      */
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-        Query orderByDate = peoplesDatabaseReference.orderByChild("created_at");
-        //Query orderByName = peoplesDatabaseReference.orderByChild("user_name");
+    private void showPeopleList(String catName) {
+        Query query = null;
+        if (catName.equals("default")){
+            query = peoplesDatabaseReference.orderByValue();
+        } else if (catName.equals("name")){
+            query = peoplesDatabaseReference.orderByChild("user_name");
+        } else if (catName.equals("date")){
+            query = peoplesDatabaseReference.orderByChild("created_at");
+        }
 
         FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder> firebaseRecyclerAdapter
                 = new FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder>
@@ -69,7 +95,7 @@ public class PeoplesActivity extends AppCompatActivity {
                         AllPeoplesRecyclerView.class,
                         R.layout.all_peoples_profile_display,
                         peoplesViewHolder.class,
-                        orderByDate
+                        query
                 ) {
             @Override
             protected void populateViewHolder(peoplesViewHolder viewHolder, AllPeoplesRecyclerView model, final int position) {

@@ -53,6 +53,12 @@
     <string name="on_internet_msg">No internet connection! Please check internet.</string>
     <string name="menu_search">Search</string>
 
+    <string-array name="spinerViewPeople">
+        <item>Default</item>
+        <item>Name</item>
+        <item>Date</item>
+    </string-array>
+
     <!-- TODO: Firebase Database node / fields -->
 
 
