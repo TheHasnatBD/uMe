@@ -100,7 +100,9 @@ public class ChatsFragment extends Fragment {
                 userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
-
+                        if (dataSnapshot==null){
+                            return;
+                        }
                         final String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
                         String user_status = dataSnapshot.child("user_status").getValue().toString();

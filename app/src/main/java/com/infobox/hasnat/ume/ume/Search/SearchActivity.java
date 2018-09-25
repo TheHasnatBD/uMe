@@ -1,53 +1,94 @@
-package com.infobox.hasnat.ume.ume.Peoples;
+package com.infobox.hasnat.ume.ume.Search;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.Models.AllPeoplesRecyclerView;
+import com.infobox.hasnat.ume.ume.Peoples.ProfileActivity;
+import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PeoplesActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private EditText serachInput;
+    private ImageView backButton;
+    private ImageButton searchBtn;
+
     private RecyclerView peoples_list;
     private DatabaseReference peoplesDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_peoples);
+        setContentView(R.layout.activity_search);
 
-        toolbar = findViewById(R.id.people_appbar);
+        // appbar / toolbar
+        toolbar = findViewById(R.id.search_appbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Peoples");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        LayoutInflater layoutInflater = (LayoutInflater)
+                this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.appbar_search, null);
+        actionBar.setCustomView(view);
+
+        serachInput = findViewById(R.id.serachInput);
+        backButton = findViewById(R.id.backButton);
+        searchBtn = findViewById(R.id.searchBtn);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchString = serachInput.getText().toString();
+
+                if (TextUtils.isEmpty(searchString)){
+                    Toast.makeText(SearchActivity.this, "Write a name", Toast.LENGTH_SHORT).show();
+                }
+
+                searchPeopleProfile(searchString);
+
+            }
+        });
+
 
         // Setup recycler view
-        peoples_list = (RecyclerView)findViewById(R.id.userLIst);
+        peoples_list = findViewById(R.id.SearchList);
         peoples_list.setHasFixedSize(true);
         peoples_list.setLayoutManager(new LinearLayoutManager(this));
 
         peoplesDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
         peoplesDatabaseReference.keepSynced(true); // for offline
-
-
 
     }
 
@@ -56,12 +97,11 @@ public class PeoplesActivity extends AppCompatActivity {
      *
      *  Library link- https://github.com/firebase/FirebaseUI-Android
      */
-    @Override
-    protected void onStart() {
+    private void searchPeopleProfile(String searchString) {
+        Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT).show();
 
-        super.onStart();
-        Query orderByDate = peoplesDatabaseReference.orderByChild("created_at");
-        //Query orderByName = peoplesDatabaseReference.orderByChild("user_name");
+        Query searchQuery = peoplesDatabaseReference.orderByChild("user_name")
+                .startAt(searchString.toUpperCase()).endAt(searchString.toLowerCase() + "\uf8ff");
 
         FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder> firebaseRecyclerAdapter
                 = new FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder>
@@ -69,7 +109,7 @@ public class PeoplesActivity extends AppCompatActivity {
                         AllPeoplesRecyclerView.class,
                         R.layout.all_peoples_profile_display,
                         peoplesViewHolder.class,
-                        orderByDate
+                        searchQuery
                 ) {
             @Override
             protected void populateViewHolder(peoplesViewHolder viewHolder, AllPeoplesRecyclerView model, final int position) {
@@ -77,6 +117,7 @@ public class PeoplesActivity extends AppCompatActivity {
                 viewHolder.setUser_name(model.getUser_name());
                 viewHolder.setUser_status(model.getUser_status());
                 viewHolder.setUser_thumb_image(getApplicationContext(), model.getUser_thumb_image());
+
 
                 /**
                  *  on list >> clicking item, then, go to single user profile
@@ -87,7 +128,7 @@ public class PeoplesActivity extends AppCompatActivity {
 
                         String visit_user_id = getRef(position).getKey();
 
-                        Intent intent = new Intent(PeoplesActivity.this, ProfileActivity.class);
+                        Intent intent = new Intent(SearchActivity.this, ProfileActivity.class);
                         intent.putExtra("visitUserId", visit_user_id);
                         startActivity(intent);
                     }
@@ -101,25 +142,23 @@ public class PeoplesActivity extends AppCompatActivity {
     }
 
     public static class peoplesViewHolder extends RecyclerView.ViewHolder{
-
         View view;
-
         public peoplesViewHolder(View itemView) {
             super(itemView);
             view = itemView;
         }
 
         public void setUser_name(String user_name) {
-            TextView name = (TextView)view.findViewById(R.id.all_user_name);
+            TextView name = view.findViewById(R.id.all_user_name);
             name.setText(user_name);
         }
         public void setUser_status(String user_status) {
-            TextView status = (TextView)view.findViewById(R.id.all_user_status);
+            TextView status = view.findViewById(R.id.all_user_status);
             status.setText(user_status);
         }
         public void setUser_thumb_image(final Context applicationContext, final String user_thumb_image) {
 
-            final CircleImageView thumb_image = (CircleImageView)view.findViewById(R.id.all_user_profile_img);
+            final CircleImageView thumb_image = view.findViewById(R.id.all_user_profile_img);
 
             if(!thumb_image.equals("default_image")) { // default image condition for new user
                 Picasso.get()
@@ -147,4 +186,6 @@ public class PeoplesActivity extends AppCompatActivity {
 
 
     }
+
+
 }

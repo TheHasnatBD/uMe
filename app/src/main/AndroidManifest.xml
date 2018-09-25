@@ -83,6 +83,11 @@
 
         <activity android:name=".Chat.ChatActivity"
             android:parentActivityName=".Home.MainActivity"></activity>
+        <activity
+            android:name=".Search.SearchActivity"
+            android:configChanges="orientation|screenSize"
+            >
+        </activity>
 
 
         <!-- fabric -->

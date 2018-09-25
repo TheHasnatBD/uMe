@@ -29,6 +29,7 @@ import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
 import com.infobox.hasnat.ume.ume.Adapter.TabsPagerAdapter;
+import com.infobox.hasnat.ume.ume.Search.SearchActivity;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -172,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onOptionsItemSelected(item);
 
+        if (item.getItemId() == R.id.menu_search){
+            Intent intent =  new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
+        }
 
         if (item.getItemId() == R.id.profile_settings){
             Intent intent =  new Intent(MainActivity.this, SettingsActivity.class);
@@ -229,9 +234,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        if (item.getItemId() == R.id.menu_search){
-            Toast.makeText(this, "Upcoming feature", Toast.LENGTH_SHORT).show();
-        }
 
 
         return true;
