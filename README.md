@@ -28,7 +28,7 @@
 
  Search a person                           | All Users of uMe                             | When someone send request                       | LIVE CHATTING in uMe
 :-----------------------------------------:|:--------------------------------------------:|:-----------------------------------------------:|:-------------------------------------:
- <img src="myFiles/search.png" width="200">| <img src="myFiles/8.peoples.png" width="200">|<img src="myFiles/10.accept_req.png" width="200">|<img src="myFiles/12.chats.png" width="200">
+ <img src="myFiles/search.png" width="200">| <img src="myFiles/peoples.png" width="200">|<img src="myFiles/10.accept_req.png" width="200">|<img src="myFiles/12.chats.png" width="200">
 
 
 
