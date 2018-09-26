@@ -8,6 +8,7 @@
     <string name="student_name">Abdullah Al-Hasnat</string>
     <string name="copyright">uMe © 2018</string>
     <string name="profile_settings">My Profile</string>
+    <string name="thehasnatbd">@TheHasnatBD</string>
     <string name="log_in">Log In</string>
     <string name="log_out">Log Out</string>
     <string name="profile">Profile</string>
@@ -30,6 +31,7 @@
 
     <!-- About App Strings -->
     <string name="varsity_name">BANGLADESH UNIVERSITY</string>
+    <string name="instructor1_name">Md. Sadiq Iqbal</string>
     <string name="instructor_name">Omor Faruk</string>
     <string name="about_text">This application is built for learning purpose.\nProject Source Code Link-</string>
     <string name="project_git_link"><u>https://github.com/TheHasnatBD/uMe</u></string>

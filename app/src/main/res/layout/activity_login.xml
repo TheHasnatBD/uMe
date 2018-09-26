@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_height="match_parent"
+<ScrollView
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-    android:layout_width="match_parent"
+        android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+        >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingTop="55dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:orientation="vertical">
 
         <ImageView
@@ -35,9 +36,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint=" Your Email"
                 android:id="@+id/inputEmail"
                 android:inputType="textEmailAddress"
+                android:hint=" Email"
                 />
         </android.support.design.widget.TextInputLayout>
 
@@ -53,7 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint=" Your Password"
+                android:hint=" Password"
+
                 android:id="@+id/inputPassword"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -89,23 +91,9 @@
             android:text="Forgot password?"
             android:textColor="@color/colorPrimary"
             android:layout_marginTop="07dp"
-            android:textSize="18sp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
             />
-
-        <!--
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Developed by- Abdullah Al-Hasnat"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:textColor="@color/gray"
-            android:textSize="11sp"
-            />
-            -->
 
     </LinearLayout>
 

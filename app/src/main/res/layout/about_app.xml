@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".About.AboutAppActivity">
+
+    <include
+        android:id="@+id/about_page_toolbar"
+        layout="@layout/all_app_bar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <!-- links -->
+            <TextView
+                android:id="@+id/about_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:text="@string/about_text"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/project_git_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0sp"
+                android:autoLink="web"
+                android:text="@string/project_git_link"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal" />
+
+            <!-- instructor part-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="instructed by"
+                        android:textSize="16sp"
+                        android:textStyle="bold|italic" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
+                        android:background="@color/gray" />
+
+                    <!-- SADIQ SIR -->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:src="@drawable/sadiq_iqbal_sir"
+                        app:civ_border_color="@color/black"
+                        app:civ_border_width="0.70dp" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/instructor1_name"
+                        android:fontFamily="@font/comfortaa"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Associate Professor &amp; Chairman\nDept of CSE, Bangladesh University"
+                        android:textAlignment="center"
+                        android:textStyle="normal" />
+
+
+                    <!-- FARUKH SIR -->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/sir_image"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:src="@drawable/omor_faruk_sir"
+                        app:civ_border_color="@color/black"
+                        app:civ_border_width="0.70dp" />
+
+
+                    <TextView
+                        android:id="@+id/sir_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/comfortaa"
+                        android:text="@string/instructor_name"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/about_sir"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
+                        android:text="Lecturer, Dept of CSE\nBangladesh University"
+                        android:textAlignment="center"
+                        android:textStyle="normal" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <!-- Developer part-->
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="30dp"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/dev_photo"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="30dp"
+                        android:src="@drawable/hasnat"
+                        app:civ_border_color="@color/black"
+                        app:civ_border_width="0.70dp" />
+
+                    <TextView
+                        android:id="@+id/developed_by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="developed by-"
+                        android:textSize="16sp"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:id="@+id/dev_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/comfortaa"
+                        android:text="@string/student_name"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/about_dev1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Student, Bangladesh University"
+                        android:textStyle="normal" />
+
+                    <TextView
+                        android:id="@+id/student_id_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/student_id_details"
+                        android:textAlignment="center"
+                        android:textStyle="normal" />
+
+
+                    <LinearLayout
+                        android:id="@+id/linLayout1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/git_btn"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/ic_github" />
+
+                        <Button
+                            android:id="@+id/insta_btn"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/ic_instagram" />
+
+                        <Button
+                            android:id="@+id/lin_btn"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/ic_linkedin" />
+
+                        <Button
+                            android:id="@+id/tw_btn"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="7dp"
+                            android:background="@drawable/ic_twitter" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/username_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/linLayout1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="30dp"
+                        android:text="@string/thehasnatbd"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
