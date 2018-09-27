@@ -127,11 +127,12 @@ public class ChatActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(messageList);
         messageList_ReCyVw = findViewById(R.id.message_list);
         linearLayoutManager = new LinearLayoutManager(this);
-        messageList_ReCyVw.setHasFixedSize(true);
-        messageList_ReCyVw.setLayoutManager(linearLayoutManager);
-        messageList_ReCyVw.setAdapter(messageAdapter);
         linearLayoutManager.setStackFromEnd(true);
+        messageList_ReCyVw.setLayoutManager(linearLayoutManager);
+        messageList_ReCyVw.setHasFixedSize(true);
         //linearLayoutManager.setReverseLayout(true);
+        messageList_ReCyVw.setAdapter(messageAdapter);
+
 
         fetchMessages();
 
@@ -144,7 +145,7 @@ public class ChatActivity extends AppCompatActivity {
                         final String active_status = dataSnapshot.child("active_now").getValue().toString();
                         final String thumb_image = dataSnapshot.child("user_thumb_image").getValue().toString();
 
-//                        // fkghkjfdhgkdfhg dfgdfg
+//                        // FOR TESTING
 //                        if (currentUser != null){
 //                            rootReference.child("active_now").setValue(ServerValue.TIMESTAMP);
 //                        }

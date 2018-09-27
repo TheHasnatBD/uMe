@@ -1,14 +1,13 @@
 package com.infobox.hasnat.ume.ume.Fragments;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +25,8 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.infobox.hasnat.ume.ume.Chat.ChatActivity;
 import com.infobox.hasnat.ume.ume.Models.Chats;
-import com.infobox.hasnat.ume.ume.Models.Friends;
-import com.infobox.hasnat.ume.ume.Peoples.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
+import com.infobox.hasnat.ume.ume.Utils.UserLastSeenTime;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -105,20 +103,19 @@ public class ChatsFragment extends Fragment {
                         }
                         final String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
-                        String user_status = dataSnapshot.child("user_status").getValue().toString();
+                        //String user_status = dataSnapshot.child("user_status").getValue().toString();
 
                         // online active status
                         if (dataSnapshot.hasChild("active_now")){
-
                             String active_status = dataSnapshot.child("active_now").getValue().toString();
-
                             viewHolder.setActiveUser(active_status);
+                            viewHolder.setUserActiveTimeStatus(active_status);
                         }
 
                         viewHolder.setUserName(userName);
                         viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
-                        viewHolder.setUserStatus(user_status);
 
+                        //active status
                         viewHolder.m_view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -166,7 +163,6 @@ public class ChatsFragment extends Fragment {
 
         public ChatsViewHolder(View itemView) {
             super(itemView);
-
             m_view = itemView;
         }
 
@@ -189,7 +185,6 @@ public class ChatsFragment extends Fragment {
                         .into(thumb_photo, new Callback() {
                             @Override
                             public void onSuccess() {
-
                             }
 
                             @Override
@@ -205,24 +200,37 @@ public class ChatsFragment extends Fragment {
         }
 
 
+        //set green icon for active user
         public void setActiveUser(String activeUser) {
-
             ImageView active_image =  m_view.findViewById(R.id.activeIcon);
             if (activeUser.equals("true")){
                 active_image.setVisibility(View.VISIBLE);
-
             } else {
                 active_image.setVisibility(View.INVISIBLE);
-
             }
-
         }
 
 
-        public void setUserStatus(String user_status) {
-
+        public void setUserActiveTimeStatus(String active_status) {
             TextView u_status = m_view.findViewById(R.id.all_user_status);
-            u_status.setText(user_status);
+            //u_status.setText(active_status);
+
+            //active status
+            if (active_status.contains("true")){
+                u_status.setText("Active now");
+            } else {
+
+                UserLastSeenTime lastSeenTime = new UserLastSeenTime();
+                long last_seen = Long.parseLong(active_status);
+
+                //String lastSeenOnScreenTime = lastSeenTime.getTimeAgo(last_seen).toString();
+                String lastSeenOnScreenTime = lastSeenTime.getTimeAgo(last_seen, m_view.getContext()).toString();
+                Log.e("lastSeenTime", lastSeenOnScreenTime);
+
+                if (lastSeenOnScreenTime != null){
+                    u_status.setText(lastSeenOnScreenTime);
+                }
+            }
 
         }
     }

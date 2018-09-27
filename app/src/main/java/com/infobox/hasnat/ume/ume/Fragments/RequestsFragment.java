@@ -80,12 +80,9 @@ public class RequestsFragment extends Fragment {
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-
+        //linearLayoutManager.setStackFromEnd(true);
+        request_list.setHasFixedSize(true);
         request_list.setLayoutManager(linearLayoutManager);
-
-
 
         return view;
     }
@@ -120,9 +117,6 @@ public class RequestsFragment extends Fragment {
                         if (dataSnapshot.exists()){
                             String requestType = dataSnapshot.getValue().toString();
 
-//                            acceptBtn = viewHolder.view.findViewById(R.id.r_acceptRequestBTN);
-//                            cancelBtn = viewHolder.view.findViewById(R.id.r_cancelRequestBTN);
-
                             if (requestType.equals("received")){
 
                                 userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
@@ -143,7 +137,7 @@ public class RequestsFragment extends Fragment {
                                                 //Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
                                                 //
                                                 Calendar myCalendar = Calendar.getInstance();
-                                                SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+                                                SimpleDateFormat currentDate = new SimpleDateFormat("EEEE, dd MMM, yyyy");
                                                 final String friendshipDate = currentDate.format(myCalendar.getTime());
 
                                                 friendsDatabaseReference.child(user_UId).child(user_id_list).child("date").setValue(friendshipDate)
@@ -172,7 +166,6 @@ public class RequestsFragment extends Fragment {
                                                                                                                     if (task.isSuccessful()){
                                                                                                                         // after deleting data
                                                                                                                         Snackbar.make(view, "This person is now your friend", 1000).show();
-                                                                                                                        //Toast.makeText(getActivity(), "This person is now your friend", Toast.LENGTH_SHORT).show();
 
                                                                                                                     }
                                                                                                                 }

@@ -19,12 +19,12 @@
 
 >with full UI design
 
-[Download APK](https://github.com/TheHasnatBD/uMe/tree/master/myFiles/uMe-(developed_by_Hasnat).apk)
+[Download APK](https://github.com/TheHasnatBD/uMe/tree/master/myFiles/uMe.apk)
 #### Some Screenshots of this app
 
  Intro Slider                               | Home                                        | Owner Profile UI 			                    | Friend Request UI 
 :------------------------------------------:|:-------------------------------------------:|:-----------------------------------------------:|:----------------------------------------:
- <img src="myFiles/1.into.png" width="200"> | <img src="myFiles/4.home.png" width="200">  |<img src="myFiles/7.own_profile.png" width="200">|<img src="myFiles/5.request_page.png" width="200">
+ <img src="myFiles/1.into.png" width="200"> | <img src="myFiles/home.png" width="200">  |<img src="myFiles/7.own_profile.png" width="200">|<img src="myFiles/5.request_page.png" width="200">
 
  Search a person                           | All Users of uMe                             | When someone send request                       | LIVE CHATTING in uMe
 :-----------------------------------------:|:--------------------------------------------:|:-----------------------------------------------:|:-------------------------------------:

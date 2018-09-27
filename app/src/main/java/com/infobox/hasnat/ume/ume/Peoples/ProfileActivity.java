@@ -108,47 +108,42 @@ public class ProfileActivity extends AppCompatActivity {
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()){
-                                    // if in database has these data then, execute conditions below
-                                    if (dataSnapshot.hasChild(receiver_userID)) {
+                                // if in database has these data then, execute conditions below
+                                if (dataSnapshot.hasChild(receiver_userID)) {
+                                    String requestType = dataSnapshot.child(receiver_userID)
+                                            .child("request_type").getValue().toString();
 
-                                        String requestType = dataSnapshot.child(receiver_userID)
-                                                .child("request_type").getValue().toString();
+                                    if (requestType.equals("sent")) {
+                                        CURRENT_STATE = "request_sent";
+                                        sendFriendRequest_Button.setText("Cancel Friend Request");
 
-                                        if (requestType.equals("sent")) {
-                                            CURRENT_STATE = "request_sent";
-                                            sendFriendRequest_Button.setText("Cancel Friend Request");
+                                        declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+                                        declineFriendRequest_Button.setEnabled(false);
 
-                                            declineFriendRequest_Button.setVisibility(View.INVISIBLE);
-                                            declineFriendRequest_Button.setEnabled(false);
+                                    } else if (requestType.equals("received")) {
+                                        CURRENT_STATE = "request_received";
+                                        sendFriendRequest_Button.setText("Accept Friend Request");
 
-                                        } else if (requestType.equals("received")) {
-                                            CURRENT_STATE = "request_received";
-                                            sendFriendRequest_Button.setText("Accept Friend Request");
-
-                                            declineFriendRequest_Button.setVisibility(View.VISIBLE);
-                                            declineFriendRequest_Button.setEnabled(true);
+                                        declineFriendRequest_Button.setVisibility(View.VISIBLE);
+                                        declineFriendRequest_Button.setEnabled(true);
 
 
-                                            declineFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    declineFriendRequest();
-                                                }
-                                            });
-
-                                        }
+                                        declineFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                declineFriendRequest();
+                                            }
+                                        });
 
                                     }
 
+                                } else {
 
-                                    } else {
-
-                                    friendsDatabaseReference.child(senderID)
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-
+                                friendsDatabaseReference.child(senderID)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()){
                                                     if (dataSnapshot.hasChild(receiver_userID)){
                                                         CURRENT_STATE = "friends";
                                                         sendFriendRequest_Button.setText("Unfriend This Person");
@@ -158,12 +153,13 @@ public class ProfileActivity extends AppCompatActivity {
 
                                                     }
                                                 }
+                                            }
 
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
 
-                                                }
-                                            });
+                                            }
+                                        });
                                 }
                             }
 
@@ -181,16 +177,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+        declineFriendRequest_Button.setVisibility(View.GONE);
         declineFriendRequest_Button.setEnabled(false);
 
         /** Send / Cancel / Accept / Unfriend >> request mechanism */
         if (!senderID.equals(receiver_userID)){ // condition for current owner / sender id
-
             sendFriendRequest_Button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     sendFriendRequest_Button.setEnabled(false);
 
                     if (CURRENT_STATE.equals("not_friends")){
@@ -283,7 +277,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void acceptFriendRequest() {
         //
         Calendar myCalendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("EEEE, dd MMM, yyyy");
         final String friendshipDate = currentDate.format(myCalendar.getTime());
 
         friendsDatabaseReference.child(senderID).child(receiver_userID).child("date").setValue(friendshipDate)
