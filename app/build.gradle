@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-database:1.1.1'
     // image Compressor library
     implementation 'id.zelory:compressor:2.1.0'
+    //RememberEditText
+    implementation 'cn.zhaiyifan:rememberedittext:0.9.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

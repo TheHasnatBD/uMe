@@ -19,7 +19,7 @@
 
 >with full UI design
 
-[Download APK](https://github.com/TheHasnatBD/uMe/tree/master/myFiles/uMe.apk)
+[Download APK](myFiles/uMe.apk)
 #### Some Screenshots of this app
 
  Intro Slider                               | Home                                        | Owner Profile UI 			                    | Friend Request UI 

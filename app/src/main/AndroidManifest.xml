@@ -89,12 +89,6 @@
             >
         </activity>
 
-
-        <!-- fabric -->
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="f7dc8e6a921afdd8026d4716fb509b70ac2680c5" />
-
         <!-- Cropping image library -->
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

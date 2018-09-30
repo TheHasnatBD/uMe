@@ -5,8 +5,6 @@
     android:layout_gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-
-
         <ImageView
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
@@ -16,15 +14,24 @@
             android:padding="10dp"
             android:src="@drawable/ic_close_black_24dp" />
 
-        <EditText
+        <!-- Library
+        https://github.com/markzhai/RememberEditText -->
+        <cn.zhaiyifan.rememberedittext.RememberEditText
             android:id="@+id/serachInput"
-            android:layout_marginStart="10dp"
-            android:layout_width="200dp"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/backButton"
-            android:hint="Search people..."
-            android:inputType="textCapWords"/>
+            android:hint="Search..."
+            android:inputType="textCapWords"
+            app:autoFill="false"
+            app:autoSave="true"
+            app:rememberId="searchText"
+            app:rememberCount="5"
+            app:deleteIcon="@drawable/search_clear"
+            app:dropDownIcon="@drawable/search_down"
+            app:dropUpIcon="@drawable/search_up"
+            />
 
         <ImageButton
             android:id="@+id/searchBtn"
@@ -32,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:background="@null"
             android:padding="10dp"
             android:src="@drawable/ic_search_black_24dp" />

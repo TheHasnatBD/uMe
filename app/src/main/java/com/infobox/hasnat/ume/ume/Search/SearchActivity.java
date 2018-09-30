@@ -1,8 +1,10 @@
 package com.infobox.hasnat.ume.ume.Search;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import cn.zhaiyifan.rememberedittext.RememberEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SearchActivity extends AppCompatActivity {
@@ -67,6 +70,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +81,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 searchPeopleProfile(searchString);
-
             }
         });
 
