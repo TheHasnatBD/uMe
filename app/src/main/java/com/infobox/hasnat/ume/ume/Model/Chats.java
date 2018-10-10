@@ -1,4 +1,4 @@
-package com.infobox.hasnat.ume.ume.Models;
+package com.infobox.hasnat.ume.ume.Model;
 
 public class Chats {
 

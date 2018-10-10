@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.infobox.hasnat.ume.ume.Chat.ChatActivity;
-import com.infobox.hasnat.ume.ume.Models.Friends;
+import com.infobox.hasnat.ume.ume.Model.Friends;
 import com.infobox.hasnat.ume.ume.Peoples.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
@@ -101,7 +101,6 @@ public class FriendsFragment extends Fragment {
                 userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
-
                         final String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
 

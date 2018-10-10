@@ -121,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 storeDefaultDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(current_userID);
 
                                 storeDefaultDatabaseReference.child("user_name").setValue(name);
+                                storeDefaultDatabaseReference.child("search_name").setValue(name.toLowerCase());
                                 storeDefaultDatabaseReference.child("user_mobile").setValue(mobile);
                                 storeDefaultDatabaseReference.child("user_email").setValue(email);
                                 storeDefaultDatabaseReference.child("created_at").setValue(ServerValue.TIMESTAMP);

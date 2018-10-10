@@ -3,10 +3,7 @@ package com.infobox.hasnat.ume.ume.Chat;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.infobox.hasnat.ume.ume.Models.Message;
+import com.infobox.hasnat.ume.ume.Model.Message;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.Adapter.MessageAdapter;
 import com.infobox.hasnat.ume.ume.Utils.UserLastSeenTime;
@@ -45,16 +42,12 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import id.zelory.compressor.Compressor;
 
 
 public class ChatActivity extends AppCompatActivity {

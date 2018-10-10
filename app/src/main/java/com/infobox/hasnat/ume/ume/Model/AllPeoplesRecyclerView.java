@@ -1,17 +1,24 @@
-package com.infobox.hasnat.ume.ume.Models;
+package com.infobox.hasnat.ume.ume.Model;
 
-public class Requests {
+public class AllPeoplesRecyclerView {
 
-    private String user_name, user_status, user_thumb_image;
+    private String user_name;
+    private String user_image;
+    private String user_status;
+    private String user_thumb_image;
 
-    public Requests() {
+    public AllPeoplesRecyclerView() {
     }
 
-    public Requests(String user_name, String user_status, String user_thumb_image) {
+    public AllPeoplesRecyclerView(String user_name, String user_image, String user_status, String user_thumb_image) {
         this.user_name = user_name;
+        this.user_image = user_image;
         this.user_status = user_status;
         this.user_thumb_image = user_thumb_image;
     }
+
+
+
 
     public String getUser_name() {
         return user_name;
@@ -19,6 +26,14 @@ public class Requests {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public String getUser_image() {
+        return user_image;
+    }
+
+    public void setUser_image(String user_image) {
+        this.user_image = user_image;
     }
 
     public String getUser_status() {

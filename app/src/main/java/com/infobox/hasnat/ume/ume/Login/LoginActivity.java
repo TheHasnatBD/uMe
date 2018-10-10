@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.infobox.hasnat.ume.ume.ForgotPassActivity;
 import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
 
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userEmail, userPassword;
     private Button loginButton;
-    private TextView linkSingUp;
+    private TextView linkSingUp, linkForgotPassword;
 
 
     private ProgressDialog progressDialog;
@@ -56,7 +57,19 @@ public class LoginActivity extends AppCompatActivity {
         userPassword = (EditText)findViewById(R.id.inputPassword);
         loginButton = (Button) findViewById(R.id.loginButton);
         linkSingUp = (TextView)findViewById(R.id.linkSingUp);
+        linkForgotPassword = findViewById(R.id.linkForgotPassword);
         progressDialog = new ProgressDialog(this);
+
+        //redirect to FORGOT PASS activity
+        linkForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d( TAG, "onClick: go to FORGOT Activity");
+                Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         //redirect to register activity
         linkSingUp.setOnClickListener(new View.OnClickListener() {

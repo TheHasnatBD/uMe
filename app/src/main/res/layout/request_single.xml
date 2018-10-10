@@ -7,6 +7,7 @@
     android:padding="5dp">
 
     <LinearLayout
+        android:padding="5dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -29,12 +30,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/r_profileName"
                 android:textSize="16sp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:paddingTop="5dp"
                 android:text="@string/student_name"
                 android:textStyle="normal"
                 android:textColor="@color/black"
-                android:paddingStart="5dp"
                 />
 
             <TextView
@@ -44,18 +44,19 @@
                 android:textSize="13sp"
                 android:paddingStart="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:text="profileStatus"
                 android:textStyle="normal"/>
 
             <LinearLayout
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="5dp">
 
                 <Button
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:text="Confirm"
@@ -64,11 +65,21 @@
                     android:background="@color/colorPrimary"
                     android:textColor="@color/white"
                     />
-
+                <Button
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Cancel Sent Request"
+                    android:textAllCaps="false"
+                    android:id="@+id/r_cancelSentRequestBTN"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    />
                 <!--
                 NB : In app UI, we use DECLINE, but, somehow we use in coding CANCEL
                 -->
                 <Button
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:text="Decline"
@@ -76,7 +87,7 @@
                     android:id="@+id/r_cancelRequestBTN"
                     android:background="@color/gray"
                     android:textColor="@color/black"
-                    android:layout_marginLeft="7dp"
+                    android:layout_marginStart="7dp"
 
                     />
             </LinearLayout>

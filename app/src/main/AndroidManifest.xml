@@ -31,13 +31,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
-            </intent-filter>
+                <action android:name="android.intent.action.SEND" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".WelcomeSlide.IntroActivity"
@@ -48,13 +48,15 @@
         <activity
             android:name=".Login.LoginActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".ForgotPassActivity"
+            android:parentActivityName=".Login.LoginActivity"></activity>
         <activity
             android:name=".Login.RegisterActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".About.AboutAppActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".Home.MainActivity"></activity>
+            android:parentActivityName=".Home.MainActivity" />
         <activity
             android:name=".ProfileSetting.SettingsActivity"
             android:configChanges="orientation|screenSize"
@@ -62,14 +64,11 @@
         <activity
             android:name=".ProfileSetting.StatusUpdateActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".ProfileSetting.SettingsActivity">
-        </activity>
+            android:parentActivityName=".ProfileSetting.SettingsActivity"></activity>
         <activity
             android:name=".Peoples.PeoplesActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".Home.MainActivity">
-        </activity>
-
+            android:parentActivityName=".Home.MainActivity"></activity>
         <activity
             android:name=".Peoples.ProfileActivity"
             android:configChanges="orientation|screenSize|screenLayout"
@@ -80,14 +79,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Chat.ChatActivity"
-            android:parentActivityName=".Home.MainActivity"></activity>
+        <activity
+            android:name=".Chat.ChatActivity"
+            android:parentActivityName=".Home.MainActivity" />
         <activity
             android:name=".Search.SearchActivity"
-            android:configChanges="orientation|screenSize"
-            >
-        </activity>
+            android:configChanges="orientation|screenSize"></activity>
 
         <!-- Cropping image library -->
         <activity
@@ -100,6 +97,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
 
     </application>
 

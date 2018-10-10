@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.infobox.hasnat.ume.ume.R;
-import com.infobox.hasnat.ume.ume.Models.AllPeoplesRecyclerView;
+import com.infobox.hasnat.ume.ume.Model.AllPeoplesRecyclerView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;

@@ -1,16 +1,17 @@
 package com.infobox.hasnat.ume.ume.Search;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -20,17 +21,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.infobox.hasnat.ume.ume.Models.AllPeoplesRecyclerView;
+import com.google.firebase.database.ValueEventListener;
+import com.infobox.hasnat.ume.ume.Model.AllPeoplesRecyclerView;
 import com.infobox.hasnat.ume.ume.Peoples.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import cn.zhaiyifan.rememberedittext.RememberEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SearchActivity extends AppCompatActivity {
@@ -38,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText serachInput;
     private ImageView backButton;
-    private ImageButton searchBtn;
+    private TextView notFoundTV;
 
     private RecyclerView peoples_list;
     private DatabaseReference peoplesDatabaseReference;
@@ -60,27 +63,29 @@ public class SearchActivity extends AppCompatActivity {
         actionBar.setCustomView(view);
 
         serachInput = findViewById(R.id.serachInput);
+        notFoundTV = findViewById(R.id.notFoundTV);
         backButton = findViewById(R.id.backButton);
-        searchBtn = findViewById(R.id.searchBtn);
+        serachInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchPeopleProfile(serachInput.getText().toString().toLowerCase());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-
-
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchString = serachInput.getText().toString();
-
-                if (TextUtils.isEmpty(searchString)){
-                    Toast.makeText(SearchActivity.this, "Write a name", Toast.LENGTH_SHORT).show();
-                }
-
-                searchPeopleProfile(searchString);
             }
         });
 
@@ -95,16 +100,15 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+
     /**
      *  FirebaseUI for Android — UI Bindings for Firebase
-     *
      *  Library link- https://github.com/firebase/FirebaseUI-Android
      */
-    private void searchPeopleProfile(String searchString) {
-        Toast.makeText(this, "Searching...", Toast.LENGTH_SHORT).show();
-
-        Query searchQuery = peoplesDatabaseReference.orderByChild("user_name")
+    private void searchPeopleProfile(final String searchString) {
+        final Query searchQuery = peoplesDatabaseReference.orderByChild("search_name")
                 .startAt(searchString).endAt(searchString + "\uf8ff");
+        //final Query searchQuery = peoplesDatabaseReference.orderByChild("search_name").equalTo(searchString);
 
         FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder> firebaseRecyclerAdapter
                 = new FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder>
@@ -115,31 +119,47 @@ public class SearchActivity extends AppCompatActivity {
                         searchQuery
                 ) {
             @Override
-            protected void populateViewHolder(peoplesViewHolder viewHolder, AllPeoplesRecyclerView model, final int position) {
+            protected void populateViewHolder(final peoplesViewHolder viewHolder, final AllPeoplesRecyclerView model, final int position) {
 
-                viewHolder.setUser_name(model.getUser_name());
-                viewHolder.setUser_status(model.getUser_status());
-                viewHolder.setUser_thumb_image(getApplicationContext(), model.getUser_thumb_image());
-
-
-                /**
-                 *  on list >> clicking item, then, go to single user profile
-                 */
-                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                searchQuery.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e("tag", "all size: "+getItemCount());
+                        if (getItemCount() >= 1){
+                            Log.e("tag", "0 + = "+getItemCount());
+                            notFoundTV.setVisibility(View.GONE);
+                            viewHolder.setUser_name(model.getUser_name());
+                            viewHolder.setUser_status(model.getUser_status());
+                            viewHolder.setUser_thumb_image(getApplicationContext(), model.getUser_thumb_image());
 
-                        String visit_user_id = getRef(position).getKey();
+                            /**on list >> clicking item, then, go to single user profile*/
+                            viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String visit_user_id = getRef(position).getKey();
+                                    Intent intent = new Intent(SearchActivity.this, ProfileActivity.class);
+                                    intent.putExtra("visitUserId", visit_user_id);
+                                    startActivity(intent);
+                                }
+                            });
 
-                        Intent intent = new Intent(SearchActivity.this, ProfileActivity.class);
-                        intent.putExtra("visitUserId", visit_user_id);
-                        startActivity(intent);
+                        } else {
+                            notFoundTV.setText("Not found");
+                            notFoundTV.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(SearchActivity.this, "Error : "+ databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
 
             }
         };
+        peoples_list.hasFixedSize();
         peoples_list.setAdapter(firebaseRecyclerAdapter);
 
     }

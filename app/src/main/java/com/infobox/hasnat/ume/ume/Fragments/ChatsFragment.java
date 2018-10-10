@@ -24,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.infobox.hasnat.ume.ume.Chat.ChatActivity;
-import com.infobox.hasnat.ume.ume.Models.Chats;
+import com.infobox.hasnat.ume.ume.Model.Chats;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.Utils.UserLastSeenTime;
 import com.squareup.picasso.Callback;

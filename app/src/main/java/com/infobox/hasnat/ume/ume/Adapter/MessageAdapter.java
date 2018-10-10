@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.infobox.hasnat.ume.ume.Models.Message;
+import com.infobox.hasnat.ume.ume.Model.Message;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;

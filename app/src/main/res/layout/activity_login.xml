@@ -73,6 +73,17 @@
             android:layout_marginTop="50dp"
             android:layout_marginBottom="10dp"
             />
+        <TextView
+            android:id="@+id/linkForgotPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Forgot password?"
+            android:textColor="@color/red"
+            android:layout_marginTop="07dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            />
 
         <TextView
             android:id="@+id/linkSingUp"
@@ -80,20 +91,12 @@
             android:layout_height="wrap_content"
             android:text="New here? Create an account"
             android:textColor="@color/colorPrimary"
-            android:layout_marginTop="07dp"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
             android:textSize="18sp"
             android:gravity="center"
             />
-        <TextView
-            android:id="@+id/linkForgotPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Forgot password?"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginTop="07dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            />
+
 
     </LinearLayout>
 

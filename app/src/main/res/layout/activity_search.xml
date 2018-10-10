@@ -12,6 +12,16 @@
         layout="@layout/all_app_bar_layout"
         android:id="@+id/search_appbar"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Not found"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:id="@+id/notFoundTV"
+        android:visibility="gone"
+        />
+
     <android.support.v7.widget.RecyclerView
         android:layout_margin="5dp"
         android:layout_width="match_parent"
