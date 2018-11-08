@@ -1,4 +1,4 @@
-package com.infobox.hasnat.ume.ume.Login;
+package com.infobox.hasnat.ume.ume.LoginReg;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,11 +18,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.infobox.hasnat.ume.ume.R;
+
+import es.dmoral.toasty.Toasty;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -42,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Firebase
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     private DatabaseReference storeDefaultDatabaseReference;
 
@@ -52,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "on Create : started");
 
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
 
         registerUserFullName = (EditText)findViewById(R.id.registerFullName);
         registerUserEmail = (EditText)findViewById(R.id.registerEmail);
@@ -75,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         progressDialog = new ProgressDialog(myContext);
-    }
+    }// ending onCreate
 
 
 
@@ -83,30 +88,30 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Validation for empty fields
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(myContext,"Your name is required.", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Your name is required.", Toast.LENGTH_SHORT).show();
         } else if (name.length() < 3 || name.length() > 60){
-            Toast.makeText(myContext,"Your name should be 3 to 50 numbers of characters.", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Your name should be 3 to 50 numbers of characters.", Toast.LENGTH_SHORT).show();
 
         } else if (TextUtils.isEmpty(email)){
-            Toast.makeText(myContext,"Your email is required.", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Your email is required.", Toast.LENGTH_SHORT).show();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(myContext,"Your email is not valid.", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Your email is not valid.", Toast.LENGTH_SHORT).show();
 
         } else if (TextUtils.isEmpty(mobile)){
-            Toast.makeText(myContext,"Your mobile no is required.", Toast.LENGTH_SHORT).show();
-        } else if (mobile.length() != 11){
-            Toast.makeText(myContext,"Mobile number should be 11 characters.", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Your mobile number is required.", Toast.LENGTH_SHORT).show();
+        } else if (mobile.length() < 11){
+            Toasty.error(myContext, "Mobile number should be min 11 characters.", Toast.LENGTH_SHORT).show();
 
         } else if (TextUtils.isEmpty(password)){
-            Toast.makeText(myContext,"Please fill this password field", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Please fill this password field", Toast.LENGTH_SHORT).show();
         } else if (password.length() < 6){
-            Toast.makeText(myContext,"Create a password at least 6 characters long.", Toast.LENGTH_SHORT).show();
+            Toasty.error(myContext, "Create a password at least 6 characters long.", Toast.LENGTH_SHORT).show();
         }else if (TextUtils.isEmpty(confirmPassword)){
-            Toast.makeText(myContext,"Please retype in password field", Toast.LENGTH_SHORT).show();
+            Toasty.warning(myContext, "Please retype in password field", Toast.LENGTH_SHORT).show();
         } else if (!password.equals(confirmPassword)){
-            Toast.makeText(myContext,"Your password don't match with your confirm password", Toast.LENGTH_SHORT).show();
-        } else {
+            Toasty.error(myContext, "Your password don't match with your confirm password", Toast.LENGTH_SHORT).show();
 
+        } else {
             //NOw ready to create a user a/c
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -121,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 storeDefaultDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(current_userID);
 
                                 storeDefaultDatabaseReference.child("user_name").setValue(name);
+                                storeDefaultDatabaseReference.child("verified").setValue("false");
                                 storeDefaultDatabaseReference.child("search_name").setValue(name.toLowerCase());
                                 storeDefaultDatabaseReference.child("user_mobile").setValue(mobile);
                                 storeDefaultDatabaseReference.child("user_email").setValue(email);
@@ -132,16 +138,29 @@ public class RegisterActivity extends AppCompatActivity {
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-
                                                 if (task.isSuccessful()){
-                                                    Toast.makeText(myContext,"You are registered successfully.", Toast.LENGTH_SHORT).show();
+                                                    // SENDING VERIFICATION EMAIL TO THE REGISTERED USER'S EMAIL
+                                                    user = mAuth.getCurrentUser();
+                                                    if (user != null){
+                                                        user.sendEmailVerification()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()){
+                                                                            Toasty.success(myContext, "Registered successfully. Verification email has been sent. Please verify email", Toast.LENGTH_LONG).show();
 
-                                                    mAuth.signOut();
+                                                                            mAuth.signOut();
 
-                                                    Intent mainIntent =  new Intent(myContext, LoginActivity.class);
-                                                    mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(mainIntent);
-                                                    finish();
+                                                                            Intent mainIntent =  new Intent(myContext, LoginActivity.class);
+                                                                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                            startActivity(mainIntent);
+                                                                            finish();
+                                                                        } else {
+                                                                            mAuth.signOut();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
 
                                                 }
                                             }
@@ -149,16 +168,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                             } else {
                                 String message = task.getException().getMessage();
-                                Toast.makeText(myContext,"Error occurred : " + message, Toast.LENGTH_LONG).show();
-
+                                Toasty.error(myContext, "Error occurred : " + message, Toast.LENGTH_SHORT).show();
                             }
 
                             progressDialog.dismiss();
 
                         }
                     });
-
-
 
 
             //config progressbar
@@ -172,4 +188,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+
+
 }

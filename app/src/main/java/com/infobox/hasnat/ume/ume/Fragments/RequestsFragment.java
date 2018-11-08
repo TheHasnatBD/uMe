@@ -1,6 +1,8 @@
 package com.infobox.hasnat.ume.ume.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -10,7 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -52,7 +54,6 @@ public class RequestsFragment extends Fragment {
     private DatabaseReference friendsDatabaseReference;
     private DatabaseReference friendReqDatabaseReference;
 
-    private Button acceptBtn,cancelBtn, cancelSentRequestBTN;
 
     public RequestsFragment() {
         // Required empty public constructor
@@ -103,9 +104,6 @@ public class RequestsFragment extends Fragment {
             protected void populateViewHolder(final RequestsViewHolder viewHolder, Requests model, int position) {
                 final String user_id_list = getRef(position).getKey();
 
-                acceptBtn = viewHolder.view.findViewById(R.id.r_acceptRequestBTN);
-                cancelBtn = viewHolder.view.findViewById(R.id.r_cancelRequestBTN);
-                cancelSentRequestBTN = viewHolder.view.findViewById(R.id.r_cancelSentRequestBTN);
 
                 // handling accept/cancel button
                 DatabaseReference getTypeReference = getRef(position).child("request_type").getRef();
@@ -114,104 +112,121 @@ public class RequestsFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             String requestType = dataSnapshot.getValue().toString();
-                            if (requestType.equals("received")){
-                                cancelBtn.setVisibility(View.VISIBLE);
-                                acceptBtn.setVisibility(View.VISIBLE);
-                                // cancelSentRequestBTN Gone when, someone send request
-                                cancelSentRequestBTN.setVisibility(View.GONE);
 
+                            ImageView re_icon = viewHolder.view.findViewById(R.id.receivedIcon);
+                            ImageView se_icon = viewHolder.view.findViewById(R.id.sentIcon);
+                            final ImageView verified_icon = viewHolder.view.findViewById(R.id.verifiedIcon);
+                            verified_icon.setVisibility(View.GONE);
+
+                            if (requestType.equals("received")){
+                                re_icon.setVisibility(View.VISIBLE);
+                                se_icon.setVisibility(View.GONE);
                                 userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         final String userName = dataSnapshot.child("user_name").getValue().toString();
+                                        final String userVerified = dataSnapshot.child("verified").getValue().toString();
                                         final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
                                         final String user_status = dataSnapshot.child("user_status").getValue().toString();
+
                                         viewHolder.setUserName(userName);
                                         viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
                                         viewHolder.setUserStatus(user_status);
+                                        if (userVerified.contains("true")){
+                                            verified_icon.setVisibility(View.VISIBLE);
+                                        }
 
-
-                                        acceptBtn.setOnClickListener(new View.OnClickListener() {
+                                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                //Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                                                Calendar myCalendar = Calendar.getInstance();
-                                                SimpleDateFormat currentDate = new SimpleDateFormat("EEEE, dd MMM, yyyy");
-                                                final String friendshipDate = currentDate.format(myCalendar.getTime());
+                                                CharSequence options[] =  new CharSequence[]{"Accept Request", "Cancel Request"};
 
-                                                friendsDatabaseReference.child(user_UId).child(user_id_list).child("date").setValue(friendshipDate)
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                                                                friendsDatabaseReference.child(user_id_list).child(user_UId).child("date").setValue(friendshipDate)
-                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                /**
-                                                                                 *  because of accepting friend request,
-                                                                                 *  there have no more request them. So, for delete these node
-                                                                                 */
-                                                                                friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                        if (which == 0){
+                                                            Calendar myCalendar = Calendar.getInstance();
+                                                            SimpleDateFormat currentDate = new SimpleDateFormat("EEEE, dd MMM, yyyy");
+                                                            final String friendshipDate = currentDate.format(myCalendar.getTime());
+
+                                                            friendsDatabaseReference.child(user_UId).child(user_id_list).child("date").setValue(friendshipDate)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                                            friendsDatabaseReference.child(user_id_list).child(user_UId).child("date").setValue(friendshipDate)
+                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                            /**
+                                                                                             *  because of accepting friend request,
+                                                                                             *  there have no more request them. So, for delete these node
+                                                                                             */
+                                                                                            friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                            if (task.isSuccessful()){
+                                                                                                                // delete from users friend_requests node, receiver >> sender > values
+                                                                                                                friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
+                                                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                                            @Override
+                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                if (task.isSuccessful()){
+                                                                                                                                    // after deleting data
+                                                                                                                                    Snackbar.make(view, "This person is now your friend", 1000).show();
+
+                                                                                                                                }
+                                                                                                                            }
+
+                                                                                                                        });
+
+                                                                                                            }
+                                                                                                        }
+
+                                                                                                    }); //
+
+                                                                                        }
+                                                                                    });
+                                                                        }
+                                                                    });
+                                                            }
+
+
+                                                        if (which == 1){
+                                                            //for cancellation, delete data from user nodes
+                                                            // delete from, sender >> receiver > values
+                                                            friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                // delete from, receiver >> sender > values
+                                                                                friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                                 if (task.isSuccessful()){
-                                                                                                    // delete from users friend_requests node, receiver >> sender > values
-                                                                                                    friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
-                                                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                                                @Override
-                                                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                    if (task.isSuccessful()){
-                                                                                                                        // after deleting data
-                                                                                                                        Snackbar.make(view, "This person is now your friend", 1000).show();
-
-                                                                                                                    }
-                                                                                                                }
-
-                                                                                                            });
+                                                                                                    //Toast.makeText(getActivity(), "Cancel Request", Toast.LENGTH_SHORT).show();
+                                                                                                    Snackbar.make(view, "Canceled Request", 1000).show();
 
                                                                                                 }
                                                                                             }
 
-                                                                                        }); //
+                                                                                        });
 
                                                                             }
-                                                                        });
-                                                            }
-                                                        });
+                                                                        }
 
+                                                                    });
+                                                        }
 
-                                            }
-                                        });
-
-                                        cancelBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                //for cancellation, delete data from user nodes
-                                                // delete from, sender >> receiver > values
-                                                friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()){
-                                                                    // delete from, receiver >> sender > values
-                                                                    friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
-                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    if (task.isSuccessful()){
-                                                                                        //Toast.makeText(getActivity(), "Cancel Request", Toast.LENGTH_SHORT).show();
-
-                                                                                    }
-                                                                                }
-
-                                                                            });
-
-                                                                }
-                                                            }
-
-                                                        });
+                                                    }
+                                                });
+                                                builder.show();
                                             }
                                         });
                                     }
@@ -224,56 +239,66 @@ public class RequestsFragment extends Fragment {
                             }
 
                             if (requestType.equals("sent")){
-                                /** */
-                                cancelBtn.setVisibility(View.GONE);
-                                acceptBtn.setVisibility(View.GONE);
-
-                                cancelSentRequestBTN.setVisibility(View.VISIBLE);
-                                cancelSentRequestBTN.setPadding(15, 0, 15, 0);
-
+                                re_icon.setVisibility(View.GONE);
+                                se_icon.setVisibility(View.VISIBLE);
                                 userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         final String userName = dataSnapshot.child("user_name").getValue().toString();
+                                        final String userVerified = dataSnapshot.child("verified").getValue().toString();
                                         final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
                                         final String user_status = dataSnapshot.child("user_status").getValue().toString();
 
                                         viewHolder.setUserName(userName);
                                         viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
                                         viewHolder.setUserStatus(user_status);
+                                        if (userVerified.contains("true")){
+                                            verified_icon.setVisibility(View.VISIBLE);
+                                        }
 
-                                        cancelSentRequestBTN.setOnClickListener(new View.OnClickListener() {
+                                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                //for cancellation, delete data from user nodes
-                                                // delete from, sender >> receiver > values
-                                                friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful()){
-                                                                    // delete from, receiver >> sender > values
-                                                                    friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
-                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    if (task.isSuccessful()){
-                                                                                        //Snackbar.make(view, "Cancel Sent Request", 1000).show();
-                                                                                        //Toast.makeText(getActivity(), "Cancel Request", Toast.LENGTH_SHORT).show();
+                                                CharSequence options[] =  new CharSequence[]{"Cancel Sent Request"};
 
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                                                                                    }
-                                                                                }
+                                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        if (which == 0){
+                                                            //for cancellation, delete data from user nodes
+                                                            // delete from, sender >> receiver > values
+                                                            friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()){
+                                                                                // delete from, receiver >> sender > values
+                                                                                friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
+                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                if (task.isSuccessful()){
+                                                                                                    Snackbar.make(view, "Cancel Sent Request", 1000).show();
 
-                                                                            });
+                                                                                                }
+                                                                                            }
 
-                                                                }
-                                                            }
+                                                                                        });
 
-                                                        });
+                                                                            }
+                                                                        }
+
+                                                                    });
+                                                        }
+
+                                                    }
+                                                });
+                                                builder.show();
                                             }
-                                        });
 
+                                        });
                                     }
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
@@ -284,7 +309,6 @@ public class RequestsFragment extends Fragment {
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
 

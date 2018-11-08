@@ -1,89 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Peoples.ProfileActivity">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Profile.ProfileActivity">
 
-    <include
-        android:id="@+id/single_profile_toolbar"
-        layout="@layout/all_app_bar_layout"
-        />
+        <include
+            android:id="@+id/single_profile_toolbar"
+            layout="@layout/all_app_bar_layout" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_marginTop="13dp"
-        android:id="@+id/visit_user_profile_image"
-        android:layout_below="@id/single_profile_toolbar"
-        android:layout_width="195dp"
-        android:layout_height="195dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/default_profile_image"
-        app:civ_border_color="@color/colorPrimary"
-        app:civ_border_width="1dp"
-        />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/visit_user_profile_image"
+            android:layout_width="195dp"
+            android:layout_height="195dp"
+            android:layout_below="@id/single_profile_toolbar"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/default_profile_image"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="1dp" />
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/visit_user_profile_image"
-        android:id="@+id/visitUserProfileName"
-        android:text=""
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:layout_centerInParent="true"
-        android:gravity="center"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/visitUserProfileName"
-        android:id="@+id/visitUserProfileStatus"
-        android:text=""
-        android:textSize="18sp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:layout_marginBottom="50dp"/>
+        <TextView
+            android:id="@+id/visitUserProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visit_user_profile_image"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/visitUserFrndRqstSendButton"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/visitUserProfileStatus"
-        android:layout_marginTop="50dp"
-        android:text="Send Friend Request"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:background="@drawable/ripplebutton"
-        android:textColor="@color/black"
-        android:layout_marginBottom="07dp"
-        />
+        <TextView
+            android:id="@+id/visitUserProfileStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitUserProfileName"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text=""
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/visitUserFrndRqstDeclineButton"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/visitUserFrndRqstSendButton"
-        android:layout_marginTop="07dp"
-        android:text="Decline Friend Request"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:background="@drawable/ripplebutton"
-        android:textColor="@color/black"
-        android:layout_marginBottom="50dp"
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/visit_verified_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitUserProfileStatus"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:drawableLeft="@drawable/ic_check_circle"
+            android:gravity="center"
+            android:text=" verified"
+            android:textColor="#009f08"
+            android:textStyle="italic" />
 
-        />
+        <Button
+            android:id="@+id/visitUserFrndRqstSendButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visit_verified_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="07dp"
+            android:background="@drawable/ripplebutton"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Send Friend Request"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/visitUserFrndRqstDeclineButton"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitUserFrndRqstSendButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="07dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/ripplebutton"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Decline Friend Request"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+
+            />
+
+    </RelativeLayout>
 </ScrollView>

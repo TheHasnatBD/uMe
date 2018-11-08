@@ -13,8 +13,8 @@
         android:id="@+id/profile_settings"
         app:showAsAction="never"/>
     <item
-        android:title="@string/all_peoples"
-        android:id="@+id/all_peoples"
+        android:title="@string/all_friends"
+        android:id="@+id/all_friends"
         app:showAsAction="never"/>
     <item
         android:title="@string/about_app"

@@ -1,16 +1,16 @@
 package com.infobox.hasnat.ume.ume.Model;
 
-public class AllPeoplesRecyclerView {
+public class ProfileInfo {
 
     private String user_name;
     private String user_image;
     private String user_status;
     private String user_thumb_image;
 
-    public AllPeoplesRecyclerView() {
+    public ProfileInfo() {
     }
 
-    public AllPeoplesRecyclerView(String user_name, String user_image, String user_status, String user_thumb_image) {
+    public ProfileInfo(String user_name, String user_image, String user_status, String user_thumb_image) {
         this.user_name = user_name;
         this.user_image = user_image;
         this.user_status = user_status;

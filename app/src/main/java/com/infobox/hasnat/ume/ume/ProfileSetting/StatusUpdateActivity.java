@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.infobox.hasnat.ume.ume.R;
 
+import es.dmoral.toasty.Toasty;
+
 public class StatusUpdateActivity extends AppCompatActivity {
 
     private static final String TAG = "StatusUpdateActivity";
@@ -66,7 +68,6 @@ public class StatusUpdateActivity extends AppCompatActivity {
          */
         String previousStatus = getIntent().getExtras().get("ex_status").toString();
         status_from_input.setText(previousStatus);
-
     }
 
 
@@ -81,15 +82,11 @@ public class StatusUpdateActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         super.onOptionsItemSelected(item);
 
         if (item.getItemId() == R.id.status_update_done){
-
             String new_status = status_from_input.getText().toString();
-
             changeProfileStatus(new_status);
-
         }
 
         return true;
@@ -98,10 +95,8 @@ public class StatusUpdateActivity extends AppCompatActivity {
     private void changeProfileStatus(String new_status) {
 
         if (TextUtils.isEmpty(new_status)){
-            Toast.makeText(getApplicationContext(), "Please write something about status", Toast.LENGTH_SHORT).show();
-
+            Toasty.warning(getApplicationContext(), "Please write something about status", Toast.LENGTH_SHORT).show();
         } else {
-
             progressDialog.setTitle("Updating profile status");
             progressDialog.setMessage("Please wait...");
             progressDialog.show();
@@ -118,10 +113,10 @@ public class StatusUpdateActivity extends AppCompatActivity {
 
                                 finish();
 
-                                Toast.makeText(getApplicationContext(), "Profile status updated successful.", Toast.LENGTH_SHORT).show();
+                                Toasty.success(getApplicationContext(), "Profile status updated successful.", Toast.LENGTH_SHORT).show();
 
                             } else {
-                                Toast.makeText(getApplicationContext(), "Error occurred: failed to update.", Toast.LENGTH_SHORT).show();
+                                Toasty.warning(getApplicationContext(), "Error occurred: failed to update.", Toast.LENGTH_SHORT).show();
 
                             }
 

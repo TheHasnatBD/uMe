@@ -9,13 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,14 +27,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.infobox.hasnat.ume.ume.Model.AllPeoplesRecyclerView;
-import com.infobox.hasnat.ume.ume.Peoples.ProfileActivity;
+import com.infobox.hasnat.ume.ume.Model.ProfileInfo;
+import com.infobox.hasnat.ume.ume.Profile.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import cn.zhaiyifan.rememberedittext.RememberEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -110,16 +112,16 @@ public class SearchActivity extends AppCompatActivity {
                 .startAt(searchString).endAt(searchString + "\uf8ff");
         //final Query searchQuery = peoplesDatabaseReference.orderByChild("search_name").equalTo(searchString);
 
-        FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder> firebaseRecyclerAdapter
-                = new FirebaseRecyclerAdapter<AllPeoplesRecyclerView, peoplesViewHolder>
+        FirebaseRecyclerAdapter<ProfileInfo, peoplesViewHolder> firebaseRecyclerAdapter
+                = new FirebaseRecyclerAdapter<ProfileInfo, peoplesViewHolder>
                 (
-                        AllPeoplesRecyclerView.class,
-                        R.layout.all_peoples_profile_display,
+                        ProfileInfo.class,
+                        R.layout.all_single_profile_display,
                         peoplesViewHolder.class,
                         searchQuery
                 ) {
             @Override
-            protected void populateViewHolder(final peoplesViewHolder viewHolder, final AllPeoplesRecyclerView model, final int position) {
+            protected void populateViewHolder(final peoplesViewHolder viewHolder, final ProfileInfo model, final int position) {
 
                 searchQuery.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -191,7 +193,6 @@ public class SearchActivity extends AppCompatActivity {
                         .into(thumb_image, new Callback() {
                             @Override
                             public void onSuccess() {
-
                             }
 
                             @Override
@@ -206,9 +207,23 @@ public class SearchActivity extends AppCompatActivity {
         }
 
 
-
-
     }
 
-
+    // Toolbar menu for clearing search history
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_clear_search){
+            RememberEditText.clearCache(SearchActivity.this);
+            Toasty.success(this, "Search history cleared successfully.", Toast.LENGTH_SHORT, true).show();
+            this.finish();
+        }
+        return true;
+    }
 }

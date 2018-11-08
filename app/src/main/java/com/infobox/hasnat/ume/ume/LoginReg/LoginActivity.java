@@ -1,9 +1,8 @@
-package com.infobox.hasnat.ume.ume.Login;
+package com.infobox.hasnat.ume.ume.LoginReg;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,12 +19,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.infobox.hasnat.ume.ume.ForgotPassActivity;
+import com.infobox.hasnat.ume.ume.ForgotPassword.ForgotPassActivity;
 import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
+
+import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //Firebase Auth
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     private DatabaseReference userDatabaseReference;
 
@@ -51,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
         userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         userEmail = (EditText)findViewById(R.id.inputEmail);
@@ -100,13 +105,13 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUserAccount(String email, String password) {
         //just validation
         if(TextUtils.isEmpty(email)){
-            Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Email is required",Toast.LENGTH_SHORT, true).show();
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toast.makeText(this,"Your email is not valid.", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Your email is not valid.",Toast.LENGTH_SHORT, true).show();
         } else if(TextUtils.isEmpty(password)){
-            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Password is required", Toast.LENGTH_SHORT, true).show();
         } else if (password.length() < 6){
-            Toast.makeText(this,"May be your password had minimum 6 numbers of character.", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "May be your password had minimum 6 numbers of character.", Toast.LENGTH_SHORT, true).show();
         } else {
 
             //progress bar
@@ -123,30 +128,46 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()){
-                                // these lines for taking device token for notification
+                                // these lines for taking DEVICE TOKEN for sending device to device notification
                                 String userUID = mAuth.getCurrentUser().getUid();
                                 String userDeiceToken = FirebaseInstanceId.getInstance().getToken();
                                 userDatabaseReference.child(userUID).child("device_token").setValue(userDeiceToken)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                //Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(intent);
-                                                finish();
+                                                checkVerifiedEmail();
                                             }
                                         });
 
                             } else {
-                                Toast.makeText(LoginActivity.this, "Your email and password may be incorrect. Please check & try again.", Toast.LENGTH_SHORT).show();
-
+                                Toasty.error(LoginActivity.this, "Your email and password may be incorrect. Please check & try again.", Toast.LENGTH_SHORT, true).show();
                             }
 
                             progressDialog.dismiss();
 
                         }
                     });
+        }
+    }
+
+    /** checking email verified or NOT */
+    private void checkVerifiedEmail() {
+        user = mAuth.getCurrentUser();
+        boolean isVerified = false;
+        if (user != null) {
+            isVerified = user.isEmailVerified();
+        }
+        if (isVerified){
+            String UID = mAuth.getCurrentUser().getUid();
+            userDatabaseReference.child(UID).child("verified").setValue("true");
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            Toasty.info(LoginActivity.this, "Email not verified. Please verify first", Toast.LENGTH_LONG, true).show();
+            mAuth.signOut();
         }
     }
 

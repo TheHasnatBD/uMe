@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -274,18 +275,17 @@ public class ChatActivity extends AppCompatActivity {
                             }
                         });
 
-                        Toast.makeText(ChatActivity.this, "Image sent successfully", Toast.LENGTH_SHORT).show();
+                        Toasty.success(ChatActivity.this, "Image sent successfully", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     } else{
-                        Toast.makeText(ChatActivity.this, "Image not sent. Try again", Toast.LENGTH_SHORT).show();
+                        Toasty.warning(ChatActivity.this, "Image not sent. Try again", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
-                    Toast.makeText(ChatActivity.this, "Error: "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Toasty.error(ChatActivity.this, "Error: "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -338,7 +338,7 @@ public class ChatActivity extends AppCompatActivity {
         String message = input_user_message.getText().toString();
 
         if (TextUtils.isEmpty(message)){
-            Toast.makeText(ChatActivity.this, "Please type a message", Toast.LENGTH_SHORT).show();
+            Toasty.info(ChatActivity.this, "Please type a message", Toast.LENGTH_SHORT).show();
 
         } else {
             String message_sender_reference = "messages/" + messageSenderId + "/" + messageReceiverID;

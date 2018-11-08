@@ -1,17 +1,16 @@
-package com.infobox.hasnat.ume.ume.Peoples;
+package com.infobox.hasnat.ume.ume.Profile;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private Button sendFriendRequest_Button, declineFriendRequest_Button;
-    private TextView profileName, profileStatus;
+    private TextView profileName, profileStatus, verified_icon;
     private ImageView profileImage;
 
     private DatabaseReference userDatabaseReference;
@@ -71,18 +70,31 @@ public class ProfileActivity extends AppCompatActivity {
         /**
          * Set Home Activity Toolbar Name
          */
-        mToolbar = (Toolbar)findViewById(R.id.single_profile_toolbar);
+        mToolbar = findViewById(R.id.single_profile_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // back on previous activity
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tag", "onClick : navigating back to back activity ");
+                finish();
+            }
+        });
 
         receiver_userID = getIntent().getExtras().get("visitUserId").toString();
 
-        sendFriendRequest_Button = (Button)findViewById(R.id.visitUserFrndRqstSendButton);
-        declineFriendRequest_Button = (Button)findViewById(R.id.visitUserFrndRqstDeclineButton);
-        profileName = (TextView)findViewById(R.id.visitUserProfileName);
-        profileStatus = (TextView)findViewById(R.id.visitUserProfileStatus);
-        profileImage = (ImageView)findViewById(R.id.visit_user_profile_image);
+        sendFriendRequest_Button = findViewById(R.id.visitUserFrndRqstSendButton);
+        declineFriendRequest_Button = findViewById(R.id.visitUserFrndRqstDeclineButton);
+        profileName = findViewById(R.id.visitUserProfileName);
+        profileStatus = findViewById(R.id.visitUserProfileStatus);
+        verified_icon = findViewById(R.id.visit_verified_icon);
+        profileImage = findViewById(R.id.visit_user_profile_image);
+
+        verified_icon.setVisibility(View.INVISIBLE);
 
         CURRENT_STATE = "not_friends";
 
@@ -95,6 +107,8 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = dataSnapshot.child("user_name").getValue().toString();
                 String status = dataSnapshot.child("user_status").getValue().toString();
                 String image = dataSnapshot.child("user_image").getValue().toString();
+                String verified = dataSnapshot.child("verified").getValue().toString();
+
 
                 profileName.setText(name);
                 profileStatus.setText(status);
@@ -102,6 +116,10 @@ public class ProfileActivity extends AppCompatActivity {
                         .load(image)
                         .placeholder(R.drawable.default_profile_image)
                         .into(profileImage);
+
+                if (verified.contains("true")){
+                    verified_icon.setVisibility(View.VISIBLE);
+                }
 
                 // for fixing dynamic cancel / friend / unfriend / accept button
                 friendRequestReference.child(senderID)

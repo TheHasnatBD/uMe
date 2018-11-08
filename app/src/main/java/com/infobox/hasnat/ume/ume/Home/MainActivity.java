@@ -23,8 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.infobox.hasnat.ume.ume.About.AboutAppActivity;
-import com.infobox.hasnat.ume.ume.Login.LoginActivity;
-import com.infobox.hasnat.ume.ume.Peoples.PeoplesActivity;
+import com.infobox.hasnat.ume.ume.LoginReg.LoginActivity;
+import com.infobox.hasnat.ume.ume.Friends.FriendsActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
 import com.infobox.hasnat.ume.ume.Adapter.TabsPagerAdapter;
@@ -42,14 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private TabsPagerAdapter mTabsPagerAdapter;
-    private int[] tabIcons = {
-            R.drawable.ic_chats,
-            R.drawable.ic_request_friend,
-            R.drawable.ic_friends
-    };
-
-
-
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -66,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
         if (currentUser != null){
             String user_uID = mAuth.getCurrentUser().getUid();
 
@@ -78,30 +69,26 @@ public class MainActivity extends AppCompatActivity {
         /**
          * Tabs >> Viewpager for MainActivity
          */
-        mViewPager = (ViewPager)findViewById(R.id.tabs_pager);
+        mViewPager = findViewById(R.id.tabs_pager);
         mTabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mTabsPagerAdapter);
 
-        mTabLayout = (TabLayout)findViewById(R.id.main_tabs);
+        mTabLayout = findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-        setupTabIcons();
-
+        //setupTabIcons();
 
         /**
          * Set Home Activity Toolbar Name
          */
-        mToolbar = (Toolbar)findViewById(R.id.main_page_toolbar);
+        mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         //getSupportActionBar().setTitle("uMe");
-
-
-
     } // ending onCreate
 
     private void setupTabIcons() {
-        mTabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        mTabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        mTabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        //mTabLayout.getTabAt(0).setText("CHATS");
+        //mTabLayout.getTabAt(1).setText("REQUESTS");
+        //mTabLayout.getTabAt(2).setText("FRIENDS");
     }
 
     @Override
@@ -111,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         //checking logging, if not login redirect to Login ACTIVITY
-
         if (currentUser == null){
             logOutUser(); // Return to Login activity
 
@@ -164,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         super.onOptionsItemSelected(item);
 
         if (item.getItemId() == R.id.menu_search){
@@ -177,8 +162,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        if (item.getItemId() == R.id.all_peoples){
-            Intent intent =  new Intent(MainActivity.this, PeoplesActivity.class);
+        if (item.getItemId() == R.id.all_friends){
+            Intent intent =  new Intent(MainActivity.this, FriendsActivity.class);
             startActivity(intent);
         }
 
@@ -190,18 +175,17 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.main_logout){
 
             // Custom Alert Dialog
-
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.logout_dailog, null);
 
-            TextView title = (TextView)view.findViewById(R.id.title);
-            ImageButton imageButton = (ImageButton) view.findViewById(R.id.logoutImg);
+            TextView title = view.findViewById(R.id.title);
+            ImageButton imageButton = view.findViewById(R.id.logoutImg);
 
-            title.setText("Hello !");
+            title.setText("Logout");
             imageButton.setImageResource(R.drawable.logout);
             builder.setCancelable(true);
 
-            builder.setNegativeButton(Html.fromHtml("<font color='#000000'>Cancel</font>"), new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
@@ -211,32 +195,18 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>YES, Log out</font>"), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
                     if (currentUser != null){
                         userDatabaseReference.child("active_now").setValue(ServerValue.TIMESTAMP);
                     }
-
                     mAuth.signOut();
                     logOutUser();
-
                 }
             });
-
-
             builder.setView(view);
             builder.show();
-
         }
-
-
-
         return true;
     }
-
-
-
-
-
 
 
 

@@ -1,4 +1,4 @@
-package com.infobox.hasnat.ume.ume;
+package com.infobox.hasnat.ume.ume.ForgotPassword;
 
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.infobox.hasnat.ume.ume.R;
+
+import es.dmoral.toasty.Toasty;
 
 public class ForgotPassActivity extends AppCompatActivity {
     private Toolbar mToolbar;
@@ -43,24 +46,22 @@ public class ForgotPassActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = forgotEmail.getText().toString();
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(ForgotPassActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
+                    Toasty.error(ForgotPassActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    Toast.makeText(ForgotPassActivity.this,"Email format is not valid.", Toast.LENGTH_SHORT).show();
+                    Toasty.error(ForgotPassActivity.this,"Email format is not valid.", Toast.LENGTH_SHORT).show();
                 } else {
                     // send email to reset password
                     auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
-                                Toast.makeText(ForgotPassActivity.this, "Please check your email.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(ForgotPassActivity.this, "Oops! Please retry.\n"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toasty.success(ForgotPassActivity.this, "Please check your email.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ForgotPassActivity.this, "Error : "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toasty.error(ForgotPassActivity.this, "Oops!! "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.infobox.hasnat.ume.ume.Fragments.ChatsFragment;
-import com.infobox.hasnat.ume.ume.Fragments.FriendsFragment;
 import com.infobox.hasnat.ume.ume.Fragments.RequestsFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter{
@@ -28,10 +27,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
                 RequestsFragment requestsFragment = new RequestsFragment();
                 return requestsFragment;
 
-            case 2:
-                FriendsFragment friendsFragment = new FriendsFragment();
-                return friendsFragment;
-
             default:
                 return null;
 
@@ -40,7 +35,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public int getCount() {
-        return 3; // 3 is total fragment number (e.x- Friends, Chats, Requests)
+        return 2; // 2 is total fragment number (e.x- Chats, Requests)
     }
 
 
@@ -49,13 +44,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return ""; // ChatsFragment
+                return "CHATS"; // ChatsFragment
 
             case 1:
-                return ""; // RequestsFragment
-
-            case 2:
-                return ""; // FriendsFragment
+                return "REQUESTS"; // ttttRequestsFragment
 
             default:
                 return null;

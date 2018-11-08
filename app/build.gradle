@@ -66,6 +66,9 @@ dependencies {
     implementation 'id.zelory:compressor:2.1.0'
     //RememberEditText
     implementation 'cn.zhaiyifan:rememberedittext:0.9.0'
+    // for stylist toast
+    implementation 'com.github.GrenderG:Toasty:1.3.0'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

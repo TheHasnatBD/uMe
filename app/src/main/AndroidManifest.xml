@@ -46,12 +46,12 @@
             android:name=".Home.MainActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".LoginReg.LoginActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".ForgotPassActivity"
-            android:parentActivityName=".Login.LoginActivity"></activity>
+        <activity android:name=".ForgotPassword.ForgotPassActivity"
+            android:parentActivityName=".LoginReg.LoginActivity"></activity>
         <activity
-            android:name=".Login.RegisterActivity"
+            android:name=".LoginReg.RegisterActivity"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".About.AboutAppActivity"
@@ -66,13 +66,12 @@
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".ProfileSetting.SettingsActivity"></activity>
         <activity
-            android:name=".Peoples.PeoplesActivity"
+            android:name=".Friends.FriendsActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".Home.MainActivity"></activity>
         <activity
-            android:name=".Peoples.ProfileActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
-            android:parentActivityName=".Peoples.PeoplesActivity">
+            android:name=".Profile.ProfileActivity"
+            android:configChanges="orientation|screenSize|screenLayout">
             <intent-filter>
                 <action android:name="com.infobox.hasnat.ume.ume_TARGET_NOTIFICATION" />
 

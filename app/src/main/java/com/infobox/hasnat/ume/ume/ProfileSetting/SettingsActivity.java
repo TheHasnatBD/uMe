@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 import id.zelory.compressor.Compressor;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -233,7 +234,7 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onComplete(@NonNull final Task<UploadTask.TaskSnapshot> task) {
 
                        if (task.isSuccessful()){
-                           Toast.makeText(SettingsActivity.this,"Your profile photo is uploaded successfully.", Toast.LENGTH_SHORT).show();
+                           Toasty.info(SettingsActivity.this, "Your profile photo is uploaded successfully.", Toast.LENGTH_SHORT).show();
 
                            // retrieve the stored image as profile photo
                            final String download_url = task.getResult().getDownloadUrl().toString();
@@ -259,7 +260,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                                                        progressDialog.dismiss();
 
-                                                       Toast.makeText(SettingsActivity.this,"Profile photo is updated successfully.", Toast.LENGTH_SHORT).show();
+                                                       Toasty.success(SettingsActivity.this,"Profile photo is updated successfully.", Toast.LENGTH_SHORT).show();
 
                                                    }
                                                });
@@ -272,8 +273,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
                        } else {
-                           Toast.makeText(SettingsActivity.this,"Error occurred!! Failed to upload profile photo.", Toast.LENGTH_SHORT).show();
-
+                           Toasty.warning(SettingsActivity.this,"Error occurred!! Failed to upload profile photo.", Toast.LENGTH_SHORT).show();
                            progressDialog.dismiss();
                        }
 
@@ -281,7 +281,7 @@ public class SettingsActivity extends AppCompatActivity {
                 });
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+                //Exception error = result.getError();
             }
         }
 

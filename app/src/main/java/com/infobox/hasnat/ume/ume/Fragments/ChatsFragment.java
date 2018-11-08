@@ -86,7 +86,7 @@ public class ChatsFragment extends Fragment {
                 = new FirebaseRecyclerAdapter<Chats, ChatsViewHolder>
                 (
                         Chats.class,
-                        R.layout.all_peoples_profile_display,
+                        R.layout.all_single_profile_display,
                         ChatsFragment.ChatsViewHolder.class,
                         friendsDatabaseReference
                 ) {
