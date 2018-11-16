@@ -48,15 +48,16 @@ public class IntroActivity extends Activity {
 
 
         // initializations
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
-        btnNext = (Button) findViewById(R.id.btn_next);
+        viewPager = findViewById(R.id.view_pager);
+        dotsLayout = findViewById(R.id.layoutDots);
+        btnSkip = findViewById(R.id.btn_skip);
+        btnNext = findViewById(R.id.btn_next);
 
         layouts = new int[]{
                 R.layout.slide1,
                 R.layout.slide2,
-                R.layout.slide3};
+                R.layout.slide3,
+                R.layout.slide4};
 
         // adding bottom dots
         addBottomDots(0);

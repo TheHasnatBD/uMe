@@ -40,13 +40,28 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
+            android:visibility="invisible"
+            android:id="@+id/visit_verified_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visitUserProfileStatus"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:drawableLeft="@drawable/ic_check_circle"
+            android:gravity="center"
+            android:text=" verified"
+            android:textColor="#009f08"
+            android:textStyle="italic" />
+
+        <TextView
             android:padding="5dp"
             android:id="@+id/userEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_display_name"
             android:text=""
-            android:textSize="12sp"
+            android:textColor="#009f08"
+            android:drawableLeft="@drawable/ic_check_circle"
             android:textStyle="italic"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="0dp"/>

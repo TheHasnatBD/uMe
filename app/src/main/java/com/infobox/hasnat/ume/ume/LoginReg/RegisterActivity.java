@@ -4,11 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.infobox.hasnat.ume.ume.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import es.dmoral.toasty.Toasty;
 
@@ -147,14 +152,29 @@ public class RegisterActivity extends AppCompatActivity {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()){
-                                                                            Toasty.success(myContext, "Registered successfully. Verification email has been sent. Please verify email", Toast.LENGTH_LONG).show();
 
-                                                                            mAuth.signOut();
+                                                                            registerSuccessPopUp();
 
-                                                                            Intent mainIntent =  new Intent(myContext, LoginActivity.class);
-                                                                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                            startActivity(mainIntent);
-                                                                            finish();
+                                                                            // LAUNCH activity after certain time period
+                                                                            new Timer().schedule(new TimerTask(){
+                                                                                public void run() {
+                                                                                    RegisterActivity.this.runOnUiThread(new Runnable() {
+                                                                                        public void run() {
+                                                                                            mAuth.signOut();
+
+                                                                                            Intent mainIntent =  new Intent(myContext, LoginActivity.class);
+                                                                                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                            startActivity(mainIntent);
+                                                                                            finish();
+
+                                                                                            Toasty.info(myContext, "Please check your email & verify.", Toast.LENGTH_LONG).show();
+
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            }, 8000);
+
+
                                                                         } else {
                                                                             mAuth.signOut();
                                                                         }
@@ -182,12 +202,24 @@ public class RegisterActivity extends AppCompatActivity {
             progressDialog.setMessage("Please wait a moment....");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
-
-
         }
 
-
     }
+
+    private void registerSuccessPopUp() {
+        // Custom Alert Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+        View view = LayoutInflater.from(RegisterActivity.this).inflate(R.layout.register_success_popup, null);
+
+        //ImageButton imageButton = view.findViewById(R.id.successIcon);
+        //imageButton.setImageResource(R.drawable.logout);
+        builder.setCancelable(false);
+
+        builder.setView(view);
+        builder.show();
+    }
+
+
 
 
 }

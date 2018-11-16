@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,9 +37,10 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FriendsActivity extends AppCompatActivity {
+public class OldFriendsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private Spinner spinner;
     private RecyclerView friend_list_RV;
 
     private DatabaseReference friendsDatabaseReference;
@@ -70,12 +70,30 @@ public class FriendsActivity extends AppCompatActivity {
         userDatabaseReference.keepSynced(true); // for offline
 
 
+        spinner = findViewById(R.id.spinner);
+        String[] categoryName = getResources().getStringArray(R.array.spinerViewPeople);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item ,categoryName);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String catName = adapterView.getItemAtPosition(i).toString().toLowerCase();
+                showPeopleList(catName);
+                Log.e("tag", "spinner: "+catName);
+                //Toast.makeText(FriendsActivity.this, catName, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         // Setup recycler view
         friend_list_RV = findViewById(R.id.friendList);
         friend_list_RV.setHasFixedSize(true);
         friend_list_RV.setLayoutManager(new LinearLayoutManager(this));
 
-        showPeopleList();
     }
 
     /**
@@ -83,7 +101,18 @@ public class FriendsActivity extends AppCompatActivity {
      *
      *  Library link- https://github.com/firebase/FirebaseUI-Android
      */
-    private void showPeopleList() {
+    private void showPeopleList(String catName) {
+        Query query = null;
+        if (catName.equals("default")){
+            query = friendsDatabaseReference.orderByValue();
+            Log.e("tag", "spinner: default");
+        } else if (catName.equals("name")){
+            query = friendsDatabaseReference.orderByChild("user_name");
+            Log.e("tag", "spinner: name");
+        } else if (catName.equals("date")){
+            query = friendsDatabaseReference.orderByChild("created_at");
+            Log.e("tag", "spinner: date");
+        }
 
         FirebaseRecyclerAdapter<Friends, FriendsViewHolder> firebaseRecyclerAdapter
                 = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>
@@ -91,7 +120,7 @@ public class FriendsActivity extends AppCompatActivity {
                         Friends.class,
                         R.layout.all_single_profile_display,
                         FriendsViewHolder.class,
-                        friendsDatabaseReference
+                        query
                 ) {
             @Override
             protected void populateViewHolder(final FriendsViewHolder viewHolder, Friends model, final int position) {
@@ -113,14 +142,14 @@ public class FriendsActivity extends AppCompatActivity {
                         }
 
                         viewHolder.setUserName(userName);
-                        viewHolder.setUserThumbPhoto(userThumbPhoto, FriendsActivity.this);
+                        viewHolder.setUserThumbPhoto(userThumbPhoto, OldFriendsActivity.this);
 
                         //click item, 2 options in a dialogue will be appear
                         viewHolder.m_view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CharSequence options[] =  new CharSequence[]{"Send Message", userName+"'s profile"};
-                                AlertDialog.Builder builder = new AlertDialog.Builder(FriendsActivity.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(OldFriendsActivity.this);
                                 builder.setItems(options, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -128,7 +157,7 @@ public class FriendsActivity extends AppCompatActivity {
                                             // user active status validation
                                             if (dataSnapshot.child("active_now").exists()){
 
-                                                Intent chatIntent = new Intent(FriendsActivity.this, ChatActivity.class);
+                                                Intent chatIntent = new Intent(OldFriendsActivity.this, ChatActivity.class);
                                                 chatIntent.putExtra("visitUserId", user_id_list);
                                                 chatIntent.putExtra("userName", userName);
                                                 startActivity(chatIntent);
@@ -138,7 +167,7 @@ public class FriendsActivity extends AppCompatActivity {
                                                         .setValue(ServerValue.TIMESTAMP).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
-                                                        Intent chatIntent = new Intent(FriendsActivity.this, ChatActivity.class);
+                                                        Intent chatIntent = new Intent(OldFriendsActivity.this, ChatActivity.class);
                                                         chatIntent.putExtra("visitUserId", user_id_list);
                                                         chatIntent.putExtra("userName", userName);
                                                         startActivity(chatIntent);
@@ -151,7 +180,7 @@ public class FriendsActivity extends AppCompatActivity {
                                         }
 
                                         if (which == 1){
-                                            Intent profileIntent = new Intent(FriendsActivity.this, ProfileActivity.class);
+                                            Intent profileIntent = new Intent(OldFriendsActivity.this, ProfileActivity.class);
                                             profileIntent.putExtra("visitUserId", user_id_list);
                                             startActivity(profileIntent);
                                         }
@@ -178,6 +207,7 @@ public class FriendsActivity extends AppCompatActivity {
     }
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder{
+
         View m_view;
 
         public FriendsViewHolder(View itemView) {

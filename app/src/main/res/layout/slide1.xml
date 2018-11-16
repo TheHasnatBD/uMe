@@ -13,9 +13,10 @@
         <ImageView
             android:layout_width="@dimen/img_width"
             android:layout_height="@dimen/img_height"
-            android:src="@drawable/free" />
+            android:src="@drawable/friendship" />
 
         <TextView
+            android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title_slide1"
@@ -26,7 +27,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:paddingLeft="@dimen/desc_padding"
             android:paddingRight="@dimen/desc_padding"
             android:text="@string/desc_slide1"

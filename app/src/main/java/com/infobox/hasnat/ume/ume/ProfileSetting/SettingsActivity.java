@@ -73,14 +73,14 @@ public class SettingsActivity extends AppCompatActivity {
         mProfileImgStorageRef = FirebaseStorage.getInstance().getReference().child("profile_image");
         thumb_image_ref = FirebaseStorage.getInstance().getReference().child("thumb_image");
 
-        profile_settings_image = (CircleImageView)findViewById(R.id.profile_img);
-        display_name = (TextView)findViewById(R.id.user_display_name);
-        display_email = (TextView)findViewById(R.id.userEmail);
-        display_status = (TextView)findViewById(R.id.userProfileStatus);
-        changePhotoLInk = (TextView)findViewById(R.id.changeProfileImageLink);
-        updateStatusBtn = (Button)findViewById(R.id.updateStatus);
+        profile_settings_image = findViewById(R.id.profile_img);
+        display_name = findViewById(R.id.user_display_name);
+        display_email = findViewById(R.id.userEmail);
+        display_status = findViewById(R.id.userProfileStatus);
+        changePhotoLInk = findViewById(R.id.changeProfileImageLink);
+        updateStatusBtn = findViewById(R.id.updateStatus);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.profile_settings_appbar);
+        Toolbar toolbar = findViewById(R.id.profile_settings_appbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,7 +103,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
                 display_name.setText(name);
-                display_email.setText(email);
+                display_email.setText(" "+email);
                 display_status.setText(status);
 
                 if(!image.equals("default_image")){ // default image condition for new user

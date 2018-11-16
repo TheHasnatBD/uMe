@@ -15,19 +15,21 @@
     <string name="friends">Friends</string>
     <string name="about_app">About App</string>
     <string name="all_peoples">Peoples</string>
-    <string name="all_friends">Friend List</string>
+    <string name="all_friends">Friends</string>
 
 
     <!-- Slider Screen Strings -->
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">START</string>
-    <string name="title_slide1">No Cost</string>
-    <string name="desc_slide1">uMe is completely FREE of cost, no subscription fees.</string>
-    <string name="title_slide2">Secure</string>
-    <string name="desc_slide2">uMe keeps your messages secure</string>
-    <string name="title_slide3">Personal Chatting</string>
-    <string name="desc_slide3">fully one to one personal &amp; premium chatting system</string>
+    <string name="title_slide1">Friendship</string>
+    <string name="desc_slide1">you can find a large number of people to build up friendship</string>
+    <string name="title_slide2">No Cost</string>
+    <string name="desc_slide2">uMe is completely FREE of cost, no subscription fees.</string>
+    <string name="title_slide3">Chatting</string>
+    <string name="desc_slide3">fully one to one personal chatting system</string>
+    <string name="title_slide4">Secure</string>
+    <string name="desc_slide4">uMe keeps your messages secure</string>
 
 
     <!-- About App Strings -->
@@ -55,6 +57,7 @@
     <!-- Remove or change this placeholder text -->
     <string name="on_internet_msg">No internet connection! Please check internet.</string>
     <string name="menu_search">Search</string>
+    <string name="register_success_popup">Registered successfully.\nVerification email has been sent.\nPlease verify email.</string>
 
     <string-array name="spinerViewPeople">
         <item>Default</item>

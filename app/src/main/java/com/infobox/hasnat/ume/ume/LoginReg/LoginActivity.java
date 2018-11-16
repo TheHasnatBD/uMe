@@ -1,13 +1,16 @@
 package com.infobox.hasnat.ume.ume.LoginReg;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -166,9 +169,11 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            Toasty.info(LoginActivity.this, "Email not verified. Please verify first", Toast.LENGTH_LONG, true).show();
+            Toasty.info(LoginActivity.this, "Email is not verified. Please verify first", Toast.LENGTH_LONG, true).show();
             mAuth.signOut();
         }
     }
+
+
 
 }

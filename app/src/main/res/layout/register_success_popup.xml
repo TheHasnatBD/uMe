@@ -10,30 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFF"
-        android:paddingBottom="30dp"
-        android:paddingTop="30dp"
-        >
+        android:paddingBottom="16dp"
+        android:layout_alignParentStart="true">
 
         <ImageButton
-            android:id="@+id/logoutImg"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:id="@+id/successIcon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:background="#00FFFFFF"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="50dp"
             android:scaleType="centerCrop"
             android:contentDescription="image"
-            android:src="@drawable/logout" />
+            android:src="@drawable/ic_check_circle" />
 
         <TextView
+            android:id="@+id/successMessage"
+            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logoutImg"
+            android:layout_below="@+id/successIcon"
             android:layout_marginTop="10dp"
-            android:textColor="#000"
+            android:layout_marginBottom="50dp"
+            android:textColor="#009f08"
             android:gravity="center"
-            android:text="Are you sure to Log out?"
-            android:textSize="18sp" />
+            android:padding="5dp"
+            android:textSize="15dp"
+            android:text="@string/register_success_popup"
+            />
     </RelativeLayout>
 
 </RelativeLayout>

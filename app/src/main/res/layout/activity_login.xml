@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-    android:layout_height="match_parent"
+        android:layout_height="match_parent"
         >
 
     <LinearLayout
@@ -19,8 +19,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/msg_chat"
             android:background="@null"
             android:layout_gravity="center_horizontal"
@@ -55,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint=" Password"
-
                 android:id="@+id/inputPassword"
                 />
         </android.support.design.widget.TextInputLayout>
@@ -70,8 +69,8 @@
             android:padding="10dp"
             android:background="@color/colorPrimary"
             android:textColor="@color/white"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="05dp"
             />
         <TextView
             android:id="@+id/linkForgotPassword"
@@ -81,7 +80,6 @@
             android:text="Forgot password?"
             android:textColor="@color/red"
             android:layout_marginTop="07dp"
-            android:layout_marginBottom="10dp"
             android:gravity="center"
             />
 
@@ -89,16 +87,15 @@
             android:id="@+id/linkSingUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New here? Create an account"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            android:textSize="18sp"
+            android:layout_marginTop="80dp"
             android:gravity="center"
-            />
+            android:padding="5dp"
+            android:text="New here? Create an account"
+            android:textColor="@color/colorPrimary" />
 
 
     </LinearLayout>
+
 
 
 </RelativeLayout>

@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
     // tool bar action menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
@@ -178,11 +177,6 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.logout_dailog, null);
 
-            TextView title = view.findViewById(R.id.title);
-            ImageButton imageButton = view.findViewById(R.id.logoutImg);
-
-            title.setText("Logout");
-            imageButton.setImageResource(R.drawable.logout);
             builder.setCancelable(true);
 
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
