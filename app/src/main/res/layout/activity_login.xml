@@ -87,16 +87,22 @@
             android:id="@+id/linkSingUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:padding="5dp"
+            android:textSize="18sp"
             android:text="New here? Create an account"
             android:textColor="@color/colorPrimary" />
 
-
+        <TextView
+            android:id="@+id/copyrightTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:text=""
+            />
     </LinearLayout>
-
-
-
 </RelativeLayout>
 </ScrollView>

@@ -1,10 +1,18 @@
 package com.infobox.hasnat.ume.ume.Chat;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,6 +42,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.infobox.hasnat.ume.ume.Home.MainActivity;
+import com.infobox.hasnat.ume.ume.LoginReg.LoginActivity;
+import com.infobox.hasnat.ume.ume.LoginReg.RegisterActivity;
 import com.infobox.hasnat.ume.ume.Model.Message;
 import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.Adapter.MessageAdapter;
@@ -46,6 +57,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
@@ -58,11 +71,10 @@ public class ChatActivity extends AppCompatActivity {
 
     private Toolbar chatToolbar;
     private TextView chatUserName;
-    private TextView chatUserActiveStatus;
+    private TextView chatUserActiveStatus, ChatConnectionTV;
     private CircleImageView chatUserImageView;
 
     private DatabaseReference rootReference;
-
 
     // sending message
     private ImageView send_message, send_image;
@@ -77,6 +89,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private final static int GALLERY_PICK_CODE = 2;
     private StorageReference imageMessageStorageRef;
+
+    private ConnectivityReceiver connectivityReceiver;
 
 
     @Override
@@ -94,7 +108,6 @@ public class ChatActivity extends AppCompatActivity {
 
         imageMessageStorageRef = FirebaseStorage.getInstance().getReference().child("messages_image");
 
-
         // appbar / toolbar
         chatToolbar = findViewById(R.id.chats_appbar);
         setSupportActionBar(chatToolbar);
@@ -107,7 +120,7 @@ public class ChatActivity extends AppCompatActivity {
         View view = layoutInflater.inflate(R.layout.appbar_chat, null);
         actionBar.setCustomView(view);
 
-
+        ChatConnectionTV = findViewById(R.id.ChatConnectionTV);
         chatUserName = findViewById(R.id.chat_user_name);
         chatUserActiveStatus = findViewById(R.id.chat_active_status);
         chatUserImageView = findViewById(R.id.chat_profile_image);
@@ -126,7 +139,6 @@ public class ChatActivity extends AppCompatActivity {
         messageList_ReCyVw.setHasFixedSize(true);
         //linearLayoutManager.setReverseLayout(true);
         messageList_ReCyVw.setAdapter(messageAdapter);
-
 
         fetchMessages();
 
@@ -181,12 +193,10 @@ public class ChatActivity extends AppCompatActivity {
                             }
                         }
 
-
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
 
@@ -206,30 +216,40 @@ public class ChatActivity extends AppCompatActivity {
         send_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent galleryIntent = new Intent().setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
                 startActivityForResult(galleryIntent, GALLERY_PICK_CODE);
 
             }
         });
-
-
     } // ending onCreate
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Register Connectivity Broadcast receiver
+        connectivityReceiver = new ConnectivityReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectivityReceiver, intentFilter);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unregister Connectivity Broadcast receiver
+        unregisterReceiver(connectivityReceiver);
+    }
 
 
     @Override // for gallery picking
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(this);
 
-
          //  For image sending
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == GALLERY_PICK_CODE && resultCode == RESULT_OK && data != null){
-            progressDialog.setMessage("Please wait...."); // ProgressDialog
+            //progressDialog.setMessage("Please wait...."); // ProgressDialog
             progressDialog.show();
 
             Uri imageUri = data.getData();
@@ -250,7 +270,7 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if (task.isSuccessful()){
-                        String downloadUrl = String.valueOf(task.getResult().getDownloadUrl());
+                        String downloadUrl = String.valueOf(task.getResult().toString());
 
                         Map message_text_body = new HashMap();
                         message_text_body.put("message", downloadUrl);
@@ -307,27 +327,18 @@ public class ChatActivity extends AppCompatActivity {
                             messageList.add(message);
                             messageAdapter.notifyDataSetChanged();
                         }
-
                     }
-
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
                     }
-
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
-
                     }
-
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
     }
@@ -336,7 +347,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void send_message() {
         String message = input_user_message.getText().toString();
-
         if (TextUtils.isEmpty(message)){
             Toasty.info(ChatActivity.this, "Please type a message", Toast.LENGTH_SHORT).show();
 
@@ -374,5 +384,40 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
+    // Broadcast receiver for network checking
+    public class ConnectivityReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            ChatConnectionTV.setVisibility(View.GONE);
+            if (networkInfo != null && networkInfo.isConnected()){
+                ChatConnectionTV.setText("Internet connected");
+                ChatConnectionTV.setTextColor(Color.WHITE);
+                ChatConnectionTV.setVisibility(View.VISIBLE);
+
+                // LAUNCH activity after certain time period
+                new Timer().schedule(new TimerTask(){
+                    public void run() {
+                        ChatActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                ChatConnectionTV.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+                }, 1200);
+
+            } else {
+                ChatConnectionTV.setText("No internet connection! ");
+                ChatConnectionTV.setTextColor(Color.WHITE);
+                ChatConnectionTV.setBackgroundColor(Color.RED);
+                ChatConnectionTV.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
 }

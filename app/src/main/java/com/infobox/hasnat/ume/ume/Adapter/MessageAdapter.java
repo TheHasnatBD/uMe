@@ -41,18 +41,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_message_layout, parent, false);
-
         mAuth = FirebaseAuth.getInstance();
-
         return new MessageViewHolder(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
-
         String sender_UID = mAuth.getCurrentUser().getUid();
 
         Message message = messageList.get(position);
@@ -118,7 +114,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.receiverImageMsg.setVisibility(View.GONE);
                 Picasso.get()
                         .load(message.getMessage())
-                        //.networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
                         // .placeholder(R.drawable.default_profile_image)
                         .into(holder.senderImageMsg);
             } else {
@@ -126,7 +122,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.senderImageMsg.setVisibility(View.GONE);
                 Picasso.get()
                         .load(message.getMessage())
-                        //.networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
                         // .placeholder(R.drawable.default_profile_image)
                         .into(holder.receiverImageMsg);
 
@@ -135,19 +131,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         }
 
-        /*
-        if (from_user_ID.equals(sender_UID)){
-            holder.receiver_text_message.setBackgroundResource(R.drawable.single_message_text_another_background);
-            holder.receiver_text_message.setTextColor(Color.BLACK);
-            holder.receiver_text_message.setGravity(Gravity.RIGHT);
-        } else {
-            holder.receiver_text_message.setBackgroundResource(R.drawable.single_message_text_background);
-            holder.receiver_text_message.setTextColor(Color.WHITE);
-            holder.receiver_text_message.setGravity(Gravity.LEFT);
-        }
-
-        holder.receiver_text_message.setText(message.getMessage());
-        */
     }
 
     @Override
@@ -156,22 +139,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView sender_text_message, receiver_text_message;
-        public CircleImageView user_profile_image;
-        public ImageView senderImageMsg, receiverImageMsg;
-
-        public MessageViewHolder(View view){
+        TextView sender_text_message, receiver_text_message;
+        CircleImageView user_profile_image;
+        ImageView senderImageMsg, receiverImageMsg;
+        MessageViewHolder(View view){
             super(view);
-
             sender_text_message = view.findViewById(R.id.senderMessageText);
             receiver_text_message = view.findViewById(R.id.receiverMessageText);
             user_profile_image = view.findViewById(R.id.messageUserImage);
 
             senderImageMsg = view.findViewById(R.id.messageImageVsender);
             receiverImageMsg = view.findViewById(R.id.messageImageVreceiver);
-
-
         }
 
     }

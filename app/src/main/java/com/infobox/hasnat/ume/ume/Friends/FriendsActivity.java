@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +34,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.infobox.hasnat.ume.ume.Chat.ChatActivity;
 import com.infobox.hasnat.ume.ume.Model.Friends;
+import com.infobox.hasnat.ume.ume.Model.ProfileInfo;
 import com.infobox.hasnat.ume.ume.Profile.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
@@ -83,40 +88,43 @@ public class FriendsActivity extends AppCompatActivity {
      *
      *  Library link- https://github.com/firebase/FirebaseUI-Android
      */
-    private void showPeopleList() {
+    private void showPeopleList(){
+        FirebaseRecyclerOptions<Friends> recyclerOptions = new FirebaseRecyclerOptions.Builder<Friends>()
+                .setQuery(friendsDatabaseReference, Friends.class)
+                .build();
 
-        FirebaseRecyclerAdapter<Friends, FriendsViewHolder> firebaseRecyclerAdapter
-                = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>
-                (
-                        Friends.class,
-                        R.layout.all_single_profile_display,
-                        FriendsViewHolder.class,
-                        friendsDatabaseReference
-                ) {
+        FirebaseRecyclerAdapter<Friends, FriendsVH> recyclerAdapter = new FirebaseRecyclerAdapter<Friends, FriendsVH>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(final FriendsViewHolder viewHolder, Friends model, final int position) {
+            protected void onBindViewHolder(@NonNull final FriendsVH holder, int position, @NonNull Friends model) {
+                holder.date.setText("Friendship date -\n" + model.getDate());
 
-                viewHolder.setDate(model.getDate());
+                final String userID = getRef(position).getKey();
 
-                final String user_id_list = getRef(position).getKey();
-
-                userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
+                userDatabaseReference.child(userID).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                         final String userName = dataSnapshot.child("user_name").getValue().toString();
                         String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
+                        String active_status = dataSnapshot.child("active_now").getValue().toString();
 
                         // online active status
-                        if (dataSnapshot.hasChild("active_now")){
-                            String active_status = dataSnapshot.child("active_now").getValue().toString();
-                            viewHolder.setActiveUser(active_status);
+                        holder.active_icon.setVisibility(View.GONE);
+                        if (active_status.contains("active_now")){
+                            holder.active_icon.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.active_icon.setVisibility(View.GONE);
                         }
 
-                        viewHolder.setUserName(userName);
-                        viewHolder.setUserThumbPhoto(userThumbPhoto, FriendsActivity.this);
+                        holder.name.setText(userName);
+                        Picasso.get()
+                                .load(userThumbPhoto)
+                                .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                                .placeholder(R.drawable.default_profile_image)
+                                .into(holder.profile_thumb);
+
 
                         //click item, 2 options in a dialogue will be appear
-                        viewHolder.m_view.setOnClickListener(new View.OnClickListener() {
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CharSequence options[] =  new CharSequence[]{"Send Message", userName+"'s profile"};
@@ -129,17 +137,17 @@ public class FriendsActivity extends AppCompatActivity {
                                             if (dataSnapshot.child("active_now").exists()){
 
                                                 Intent chatIntent = new Intent(FriendsActivity.this, ChatActivity.class);
-                                                chatIntent.putExtra("visitUserId", user_id_list);
+                                                chatIntent.putExtra("visitUserId", userID);
                                                 chatIntent.putExtra("userName", userName);
                                                 startActivity(chatIntent);
 
                                             } else {
-                                                userDatabaseReference.child(user_id_list).child("active_now")
+                                                userDatabaseReference.child(userID).child("active_now")
                                                         .setValue(ServerValue.TIMESTAMP).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         Intent chatIntent = new Intent(FriendsActivity.this, ChatActivity.class);
-                                                        chatIntent.putExtra("visitUserId", user_id_list);
+                                                        chatIntent.putExtra("visitUserId", userID);
                                                         chatIntent.putExtra("userName", userName);
                                                         startActivity(chatIntent);
                                                     }
@@ -152,7 +160,7 @@ public class FriendsActivity extends AppCompatActivity {
 
                                         if (which == 1){
                                             Intent profileIntent = new Intent(FriendsActivity.this, ProfileActivity.class);
-                                            profileIntent.putExtra("visitUserId", user_id_list);
+                                            profileIntent.putExtra("visitUserId", userID);
                                             startActivity(profileIntent);
                                         }
 
@@ -162,82 +170,44 @@ public class FriendsActivity extends AppCompatActivity {
 
                             }
                         });
+
+
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
 
 
             }
+
+            @NonNull
+            @Override
+            public FriendsVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.all_single_profile_display, viewGroup, false);
+                return new FriendsVH(view);
+            }
         };
-        friend_list_RV.setAdapter(firebaseRecyclerAdapter);
 
+        friend_list_RV.setAdapter(recyclerAdapter);
+        recyclerAdapter.startListening();
     }
 
-    public static class FriendsViewHolder extends RecyclerView.ViewHolder{
-        View m_view;
+    public static class FriendsVH extends RecyclerView.ViewHolder{
+        public TextView name;
+        TextView date;
+        CircleImageView profile_thumb;
+        ImageView active_icon;
 
-        public FriendsViewHolder(View itemView) {
+        public FriendsVH(View itemView) {
             super(itemView);
-
-            m_view = itemView;
+            name = itemView.findViewById(R.id.all_user_name);
+            date = itemView.findViewById(R.id.all_user_status);
+            profile_thumb = itemView.findViewById(R.id.all_user_profile_img);
+            active_icon = itemView.findViewById(R.id.activeIcon);
         }
-
-        public void setDate(String date){
-            TextView friendshipDate = m_view.findViewById(R.id.all_user_status);
-            friendshipDate.setText("Friend since: \n" + date);
-        }
-
-        public void setUserName(String userName){
-            TextView user_name = m_view.findViewById(R.id.all_user_name);
-            user_name.setText(userName);
-        }
-
-        public void setUserThumbPhoto(final String userThumbPhoto, final Context ctx){
-
-            final CircleImageView thumb_photo = m_view.findViewById(R.id.all_user_profile_img);
-
-            if(!thumb_photo.equals("default_image")) { // default image condition for new user
-
-                Picasso.get()
-                        .load(userThumbPhoto)
-                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
-                        .placeholder(R.drawable.default_profile_image)
-                        .into(thumb_photo, new Callback() {
-                            @Override
-                            public void onSuccess() {
-
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                Picasso.get()
-                                        .load(userThumbPhoto)
-                                        .placeholder(R.drawable.default_profile_image)
-                                        .into(thumb_photo);
-                            }
-                        });
-            }
-
-        }
-
-
-        public void setActiveUser(String activeUser) {
-
-            ImageView active_image =  m_view.findViewById(R.id.activeIcon);
-            if (activeUser.equals("true")){
-                active_image.setVisibility(View.VISIBLE);
-
-            } else {
-                active_image.setVisibility(View.INVISIBLE);
-
-            }
-
-        }
-
-
     }
+
+
 }

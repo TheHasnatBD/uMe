@@ -66,14 +66,4 @@ public class Message {
         this.from = from;
     }
 
-    @Override
-    public String toString() {
-        return "Message{" +
-                "message='" + message + '\'' +
-                ", type='" + type + '\'' +
-                ", time=" + time +
-                ", seen=" + seen +
-                ", from='" + from + '\'' +
-                '}';
-    }
 }

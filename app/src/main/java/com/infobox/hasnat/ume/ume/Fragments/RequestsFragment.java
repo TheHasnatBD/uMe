@@ -3,10 +3,12 @@ package com.infobox.hasnat.ume.ume.Fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.infobox.hasnat.ume.ume.Home.MainActivity;
+import com.infobox.hasnat.ume.ume.Model.Friends;
 import com.infobox.hasnat.ume.ume.Model.Requests;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
@@ -92,36 +97,27 @@ public class RequestsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FirebaseRecyclerAdapter<Requests, RequestsViewHolder> firebaseRecyclerAdapter
-                = new FirebaseRecyclerAdapter<Requests, RequestsViewHolder>
-                (
-                        Requests.class,
-                        R.layout.request_single,
-                        RequestsFragment.RequestsViewHolder.class,
-                        databaseReference
-                ) {
+        FirebaseRecyclerOptions<Requests> recyclerOptions = new FirebaseRecyclerOptions.Builder<Requests>()
+                .setQuery(databaseReference, Requests.class)
+                .build();
+
+        FirebaseRecyclerAdapter<Requests, RequestsVH> adapter = new FirebaseRecyclerAdapter<Requests, RequestsVH>(recyclerOptions) {
             @Override
-            protected void populateViewHolder(final RequestsViewHolder viewHolder, Requests model, int position) {
-                final String user_id_list = getRef(position).getKey();
-
-
+            protected void onBindViewHolder(@NonNull final RequestsVH holder, int position, @NonNull Requests model) {
+               final String userID = getRef(position).getKey();
                 // handling accept/cancel button
                 DatabaseReference getTypeReference = getRef(position).child("request_type").getRef();
                 getTypeReference.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
                             String requestType = dataSnapshot.getValue().toString();
-
-                            ImageView re_icon = viewHolder.view.findViewById(R.id.receivedIcon);
-                            ImageView se_icon = viewHolder.view.findViewById(R.id.sentIcon);
-                            final ImageView verified_icon = viewHolder.view.findViewById(R.id.verifiedIcon);
-                            verified_icon.setVisibility(View.GONE);
+                            holder.verified_icon.setVisibility(View.GONE);
 
                             if (requestType.equals("received")){
-                                re_icon.setVisibility(View.VISIBLE);
-                                se_icon.setVisibility(View.GONE);
-                                userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
+                                holder.re_icon.setVisibility(View.VISIBLE);
+                                holder.se_icon.setVisibility(View.GONE);
+                                userDatabaseReference.child(userID).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         final String userName = dataSnapshot.child("user_name").getValue().toString();
@@ -129,14 +125,33 @@ public class RequestsFragment extends Fragment {
                                         final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
                                         final String user_status = dataSnapshot.child("user_status").getValue().toString();
 
-                                        viewHolder.setUserName(userName);
-                                        viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
-                                        viewHolder.setUserStatus(user_status);
-                                        if (userVerified.contains("true")){
-                                            verified_icon.setVisibility(View.VISIBLE);
+                                        holder.name.setText(userName);
+                                        holder.status.setText(user_status);
+
+                                        if(!userThumbPhoto.equals("default_image")) { // default image condition for new user
+                                            Picasso.get()
+                                                    .load(userThumbPhoto)
+                                                    .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                                                    .placeholder(R.drawable.default_profile_image)
+                                                    .into(holder.user_photo, new Callback() {
+                                                        @Override
+                                                        public void onSuccess() {
+                                                        }
+                                                        @Override
+                                                        public void onError(Exception e) {
+                                                            Picasso.get()
+                                                                    .load(userThumbPhoto)
+                                                                    .placeholder(R.drawable.default_profile_image)
+                                                                    .into(holder.user_photo);
+                                                        }
+                                                    });
                                         }
 
-                                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                                        if (userVerified.contains("true")){
+                                            holder.verified_icon.setVisibility(View.VISIBLE);
+                                        }
+
+                                        holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 CharSequence options[] =  new CharSequence[]{"Accept Request", "Cancel Request"};
@@ -152,12 +167,12 @@ public class RequestsFragment extends Fragment {
                                                             SimpleDateFormat currentDate = new SimpleDateFormat("EEEE, dd MMM, yyyy");
                                                             final String friendshipDate = currentDate.format(myCalendar.getTime());
 
-                                                            friendsDatabaseReference.child(user_UId).child(user_id_list).child("date").setValue(friendshipDate)
+                                                            friendsDatabaseReference.child(user_UId).child(userID).child("date").setValue(friendshipDate)
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
 
-                                                                            friendsDatabaseReference.child(user_id_list).child(user_UId).child("date").setValue(friendshipDate)
+                                                                            friendsDatabaseReference.child(userID).child(user_UId).child("date").setValue(friendshipDate)
                                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                         @Override
                                                                                         public void onComplete(@NonNull Task<Void> task) {
@@ -165,20 +180,26 @@ public class RequestsFragment extends Fragment {
                                                                                              *  because of accepting friend request,
                                                                                              *  there have no more request them. So, for delete these node
                                                                                              */
-                                                                                            friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                                                            friendReqDatabaseReference.child(user_UId).child(userID).removeValue()
                                                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                         @Override
                                                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                                                             if (task.isSuccessful()){
                                                                                                                 // delete from users friend_requests node, receiver >> sender > values
-                                                                                                                friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
+                                                                                                                friendReqDatabaseReference.child(userID).child(user_UId).removeValue()
                                                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                                             @Override
                                                                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                                                                 if (task.isSuccessful()){
                                                                                                                                     // after deleting data
-                                                                                                                                    Snackbar.make(view, "This person is now your friend", 1000).show();
-
+                                                                                                                                    Snackbar snackbar = Snackbar
+                                                                                                                                            .make(view, "This person is now your friend", Snackbar.LENGTH_LONG);
+                                                                                                                                    // Changing message text color
+                                                                                                                                    View sView = snackbar.getView();
+                                                                                                                                    sView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                                                                                                                                    TextView textView = sView.findViewById(android.support.design.R.id.snackbar_text);
+                                                                                                                                    textView.setTextColor(Color.WHITE);
+                                                                                                                                    snackbar.show();
                                                                                                                                 }
                                                                                                                             }
 
@@ -199,19 +220,26 @@ public class RequestsFragment extends Fragment {
                                                         if (which == 1){
                                                             //for cancellation, delete data from user nodes
                                                             // delete from, sender >> receiver > values
-                                                            friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                            friendReqDatabaseReference.child(user_UId).child(userID).removeValue()
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()){
                                                                                 // delete from, receiver >> sender > values
-                                                                                friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
+                                                                                friendReqDatabaseReference.child(userID).child(user_UId).removeValue()
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                                 if (task.isSuccessful()){
                                                                                                     //Toast.makeText(getActivity(), "Cancel Request", Toast.LENGTH_SHORT).show();
-                                                                                                    Snackbar.make(view, "Canceled Request", 1000).show();
+                                                                                                    Snackbar snackbar = Snackbar
+                                                                                                            .make(view, "Canceled Request", Snackbar.LENGTH_LONG);
+                                                                                                    // Changing message text color
+                                                                                                    View sView = snackbar.getView();
+                                                                                                    sView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                                                                                                    TextView textView = sView.findViewById(android.support.design.R.id.snackbar_text);
+                                                                                                    textView.setTextColor(Color.WHITE);
+                                                                                                    snackbar.show();
 
                                                                                                 }
                                                                                             }
@@ -237,11 +265,10 @@ public class RequestsFragment extends Fragment {
                                     }
                                 });
                             }
-
                             if (requestType.equals("sent")){
-                                re_icon.setVisibility(View.GONE);
-                                se_icon.setVisibility(View.VISIBLE);
-                                userDatabaseReference.child(user_id_list).addValueEventListener(new ValueEventListener() {
+                                holder.re_icon.setVisibility(View.GONE);
+                                holder.se_icon.setVisibility(View.VISIBLE);
+                                userDatabaseReference.child(userID).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         final String userName = dataSnapshot.child("user_name").getValue().toString();
@@ -249,14 +276,33 @@ public class RequestsFragment extends Fragment {
                                         final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
                                         final String user_status = dataSnapshot.child("user_status").getValue().toString();
 
-                                        viewHolder.setUserName(userName);
-                                        viewHolder.setUserThumbPhoto(userThumbPhoto, getContext());
-                                        viewHolder.setUserStatus(user_status);
-                                        if (userVerified.contains("true")){
-                                            verified_icon.setVisibility(View.VISIBLE);
+                                        holder.name.setText(userName);
+                                        holder.status.setText(user_status);
+
+                                        if(!userThumbPhoto.equals("default_image")) { // default image condition for new user
+                                            Picasso.get()
+                                                    .load(userThumbPhoto)
+                                                    .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                                                    .placeholder(R.drawable.default_profile_image)
+                                                    .into(holder.user_photo, new Callback() {
+                                                        @Override
+                                                        public void onSuccess() {
+                                                        }
+                                                        @Override
+                                                        public void onError(Exception e) {
+                                                            Picasso.get()
+                                                                    .load(userThumbPhoto)
+                                                                    .placeholder(R.drawable.default_profile_image)
+                                                                    .into(holder.user_photo);
+                                                        }
+                                                    });
                                         }
 
-                                        viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                                        if (userVerified.contains("true")){
+                                            holder.verified_icon.setVisibility(View.VISIBLE);
+                                        }
+
+                                        holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 CharSequence options[] =  new CharSequence[]{"Cancel Sent Request"};
@@ -269,19 +315,25 @@ public class RequestsFragment extends Fragment {
                                                         if (which == 0){
                                                             //for cancellation, delete data from user nodes
                                                             // delete from, sender >> receiver > values
-                                                            friendReqDatabaseReference.child(user_UId).child(user_id_list).removeValue()
+                                                            friendReqDatabaseReference.child(user_UId).child(userID).removeValue()
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()){
                                                                                 // delete from, receiver >> sender > values
-                                                                                friendReqDatabaseReference.child(user_id_list).child(user_UId).removeValue()
+                                                                                friendReqDatabaseReference.child(userID).child(user_UId).removeValue()
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                                 if (task.isSuccessful()){
-                                                                                                    Snackbar.make(view, "Cancel Sent Request", 1000).show();
-
+                                                                                                    Snackbar snackbar = Snackbar
+                                                                                                            .make(view, "Cancel Sent Request", Snackbar.LENGTH_LONG);
+                                                                                                    // Changing message text color
+                                                                                                    View sView = snackbar.getView();
+                                                                                                    sView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                                                                                                    TextView textView = sView.findViewById(android.support.design.R.id.snackbar_text);
+                                                                                                    textView.setTextColor(Color.WHITE);
+                                                                                                    snackbar.show();
                                                                                                 }
                                                                                             }
 
@@ -305,60 +357,42 @@ public class RequestsFragment extends Fragment {
                                     }
                                 });
                             }
-                        } // ENDS datasnapshot exists
+
+                        }
+
                     }
+
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                     }
                 });
 
+            }
 
-
+            @NonNull
+            @Override
+            public RequestsVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.request_single, viewGroup, false);
+                return new RequestsVH(view);
             }
         };
-
-        request_list.setAdapter(firebaseRecyclerAdapter);
+        request_list.setAdapter(adapter);
+        adapter.startListening();
     }
 
-
-
-
-
-    public static class RequestsViewHolder extends RecyclerView.ViewHolder{
-        View view;
-        public RequestsViewHolder(View itemView) {
+    public static class RequestsVH extends RecyclerView.ViewHolder{
+        TextView name, status;
+        CircleImageView user_photo;
+        ImageView re_icon, se_icon, verified_icon;
+        public RequestsVH(View itemView) {
             super(itemView);
-            view = itemView;
-        }
-        public void setUserName(String userName) {
-            TextView Name = view.findViewById(R.id.r_profileName);
-            Name.setText(userName);
-        }
-        public void setUserThumbPhoto(final String userThumbPhoto, final Context context) {
-            final CircleImageView thumb_photo = view.findViewById(R.id.r_profileImage);
-            if(!thumb_photo.equals("default_image")) { // default image condition for new user
-                Picasso.get()
-                        .load(userThumbPhoto)
-                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
-                        .placeholder(R.drawable.default_profile_image)
-                        .into(thumb_photo, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                            }
-                            @Override
-                            public void onError(Exception e) {
-                                Picasso.get()
-                                        .load(userThumbPhoto)
-                                        .placeholder(R.drawable.default_profile_image)
-                                        .into(thumb_photo);
-                            }
-                        });
-            }
-        }
-
-        public void setUserStatus(String user_status) {
-            TextView Status = view.findViewById(R.id.r_profileStatus);
-            Status.setText(user_status);
+            name = itemView.findViewById(R.id.r_profileName);
+            user_photo = itemView.findViewById(R.id.r_profileImage);
+            status = itemView.findViewById(R.id.r_profileStatus);
+            re_icon = itemView.findViewById(R.id.receivedIcon);
+            se_icon = itemView.findViewById(R.id.sentIcon);
+            verified_icon = itemView.findViewById(R.id.verifiedIcon);
         }
     }
 

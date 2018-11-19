@@ -237,7 +237,7 @@ public class SettingsActivity extends AppCompatActivity {
                            Toasty.info(SettingsActivity.this, "Your profile photo is uploaded successfully.", Toast.LENGTH_SHORT).show();
 
                            // retrieve the stored image as profile photo
-                           final String download_url = task.getResult().getDownloadUrl().toString();
+                           final String download_url = task.getResult().toString();
 
                            // working with thumb image
                            UploadTask thumb_uploadTask = thumb_filePath.putBytes(thumb_byte);
@@ -245,7 +245,7 @@ public class SettingsActivity extends AppCompatActivity {
                                @Override
                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
 
-                                   String thumb_download_url = thumb_task.getResult().getDownloadUrl().toString();
+                                   String thumb_download_url = thumb_task.getResult().toString();
 
                                    if (task.isSuccessful()){
 

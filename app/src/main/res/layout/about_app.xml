@@ -81,8 +81,8 @@
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_marginTop="30dp"
-                        android:src="@drawable/sadiq_iqbal_sir"
-                        app:civ_border_color="@color/black"
+                        android:src="@drawable/sadik_sir"
+                        app:civ_border_color="@color/colorPrimary"
                         app:civ_border_width="0.70dp" />
 
 
@@ -108,8 +108,8 @@
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_marginTop="30dp"
-                        android:src="@drawable/omor_faruk_sir"
-                        app:civ_border_color="@color/black"
+                        android:src="@drawable/omor_sir"
+                        app:civ_border_color="@color/colorPrimary"
                         app:civ_border_width="0.70dp" />
 
 
@@ -157,7 +157,7 @@
                         android:layout_height="150dp"
                         android:layout_marginTop="30dp"
                         android:src="@drawable/hasnat"
-                        app:civ_border_color="@color/black"
+                        app:civ_border_color="@color/colorPrimary"
                         app:civ_border_width="0.70dp" />
 
                     <TextView
@@ -165,6 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="developed by-"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="16sp"
                         android:textStyle="bold|italic" />
 
@@ -239,7 +240,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="30dp"
                         android:text="@string/thehasnatbd"
-                        android:textColor="@color/black"
                         android:textSize="20sp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>

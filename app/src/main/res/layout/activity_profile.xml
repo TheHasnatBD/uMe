@@ -59,7 +59,7 @@
             android:drawableLeft="@drawable/ic_check_circle"
             android:gravity="center"
             android:text=" verified"
-            android:textColor="#009f08"
+            android:textColor="@color/colorPrimary"
             android:textStyle="italic" />
 
         <Button

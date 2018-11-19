@@ -11,8 +11,21 @@
         layout="@layout/all_app_bar_layout"
         android:id="@+id/chats_appbar"/>
 
-    <android.support.v7.widget.RecyclerView
+    <TextView
+        android:padding="2dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="3dp"
+        android:visibility="gone"
+        android:background="@color/colorPrimary"
         android:layout_below="@id/chats_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No internet"
+        android:textAlignment="center"
+        android:id="@+id/ChatConnectionTV"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/ChatConnectionTV"
         android:id="@+id/message_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Write your message"
+            android:hint="Your message..."
             android:inputType="textMultiLine"
             android:padding="10dp"/>
 

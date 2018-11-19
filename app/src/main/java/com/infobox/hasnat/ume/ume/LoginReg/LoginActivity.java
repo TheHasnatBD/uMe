@@ -30,6 +30,9 @@ import com.infobox.hasnat.ume.ume.ForgotPassword.ForgotPassActivity;
 import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
 
+import java.time.Year;
+import java.util.Calendar;
+
 import es.dmoral.toasty.Toasty;
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText userEmail, userPassword;
     private Button loginButton;
-    private TextView linkSingUp, linkForgotPassword;
+    private TextView linkSingUp, linkForgotPassword, copyrightTV;
 
 
     private ProgressDialog progressDialog;
@@ -61,12 +64,18 @@ public class LoginActivity extends AppCompatActivity {
 
         userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
-        userEmail = (EditText)findViewById(R.id.inputEmail);
-        userPassword = (EditText)findViewById(R.id.inputPassword);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        linkSingUp = (TextView)findViewById(R.id.linkSingUp);
+        userEmail = findViewById(R.id.inputEmail);
+        userPassword = findViewById(R.id.inputPassword);
+        loginButton = findViewById(R.id.loginButton);
+        linkSingUp = findViewById(R.id.linkSingUp);
         linkForgotPassword = findViewById(R.id.linkForgotPassword);
         progressDialog = new ProgressDialog(this);
+
+        //Copyright text
+        copyrightTV = findViewById(R.id.copyrightTV);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        copyrightTV.setText("uMe © " + year);
 
         //redirect to FORGOT PASS activity
         linkForgotPassword.setOnClickListener(new View.OnClickListener() {

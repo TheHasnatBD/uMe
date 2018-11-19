@@ -17,16 +17,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-
         switch (position){
             case 0:
                 ChatsFragment chatsFragment = new ChatsFragment();
                 return chatsFragment;
-
             case 1:
                 RequestsFragment requestsFragment = new RequestsFragment();
                 return requestsFragment;
-
             default:
                 return null;
 
@@ -38,22 +35,17 @@ public class TabsPagerAdapter extends FragmentPagerAdapter{
         return 2; // 2 is total fragment number (e.x- Chats, Requests)
     }
 
-
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
                 return "CHATS"; // ChatsFragment
-
             case 1:
                 return "REQUESTS"; // ttttRequestsFragment
-
             default:
                 return null;
         }
-
-
         //return super.getPageTitle(position);
     }
 }

@@ -32,6 +32,9 @@
         android:layout_alignParentEnd="true"
         android:src="@drawable/default_profile_image"
         android:layout_marginRight="6dp"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_overlay="true"
+        app:civ_border_width=".10dp"
         android:layout_marginBottom="1dp"
         />
 

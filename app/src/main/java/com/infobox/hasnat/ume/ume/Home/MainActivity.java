@@ -1,9 +1,18 @@
 package com.infobox.hasnat.ume.ume.Home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference userDatabaseReference;
     public FirebaseUser currentUser;
 
-    //Firebase analytics
+    private ConnectivityReceiver connectivityReceiver;
 
 
     @Override
@@ -83,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
         //getSupportActionBar().setTitle("uMe");
+
     } // ending onCreate
 
     private void setupTabIcons() {
@@ -94,23 +104,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         currentUser = mAuth.getCurrentUser();
-
         //checking logging, if not login redirect to Login ACTIVITY
         if (currentUser == null){
             logOutUser(); // Return to Login activity
-
-        } else if (currentUser != null){
-            userDatabaseReference.child("active_now").setValue("true");
-
         }
+        if (currentUser != null){
+            userDatabaseReference.child("active_now").setValue("true");
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Register Connectivity Broadcast receiver
+        connectivityReceiver = new ConnectivityReceiver();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(connectivityReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        // Unregister Connectivity Broadcast receiver
+        unregisterReceiver(connectivityReceiver);
 
         // google kore aro jana lagbe, bug aache ekhane
 
@@ -122,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-// from onStop
+        // from onStop
         if (currentUser != null){
             userDatabaseReference.child("active_now").setValue(ServerValue.TIMESTAMP);
         }
@@ -177,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.logout_dailog, null);
 
+            ImageButton imageButton = view.findViewById(R.id.logoutImg);
+            imageButton.setImageResource(R.drawable.logout);
             builder.setCancelable(true);
 
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -186,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            builder.setPositiveButton(Html.fromHtml("<font color='#FF0000'>YES, Log out</font>"), new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("YES, Log out", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (currentUser != null){
@@ -202,6 +221,35 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Broadcast receiver for network checking
+    public class ConnectivityReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()){
+
+            } else {
+                Snackbar snackbar = Snackbar
+                        .make(mViewPager, "No internet connection! ", Snackbar.LENGTH_LONG)
+                        .setAction("Go settings", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent=new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                startActivity(intent);
+                            }
+                        });
+                // Changing action button text color
+                snackbar.setActionTextColor(Color.BLACK);
+                // Changing message text color
+                View view = snackbar.getView();
+                view.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
+                TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackbar.show();
+            }
+        }
+    }
 
 
     // This method is used to detect back button

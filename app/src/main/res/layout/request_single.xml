@@ -18,7 +18,7 @@
             android:layout_height="65dp"
             android:src="@drawable/default_profile_image"
             android:id="@+id/r_profileImage"
-            app:civ_border_color="@color/black"
+            app:civ_border_color="@color/colorPrimary"
             app:civ_border_width="0.10dp"
             />
         <LinearLayout
@@ -64,7 +64,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="5dp"
                     android:text=""
-                    android:textStyle="italic"/>
+                    android:textStyle="normal"/>
             </LinearLayout>
 
             <LinearLayout
@@ -77,7 +77,7 @@
                     android:id="@+id/receivedIcon"
                     android:layout_marginTop="7dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_navigate_next_green"
+                    android:src="@drawable/ic_navigate_next_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageView
