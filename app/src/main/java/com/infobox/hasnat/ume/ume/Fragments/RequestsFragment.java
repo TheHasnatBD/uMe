@@ -3,6 +3,7 @@ package com.infobox.hasnat.ume.ume.Fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,9 +28,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.infobox.hasnat.ume.ume.Friends.FriendsActivity;
 import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.Model.Friends;
 import com.infobox.hasnat.ume.ume.Model.Requests;
+import com.infobox.hasnat.ume.ume.Profile.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -154,7 +157,7 @@ public class RequestsFragment extends Fragment {
                                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                CharSequence options[] =  new CharSequence[]{"Accept Request", "Cancel Request"};
+                                                CharSequence options[] =  new CharSequence[]{"Accept Request", "Cancel Request", userName+"'s profile"};
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -251,6 +254,11 @@ public class RequestsFragment extends Fragment {
 
                                                                     });
                                                         }
+                                                        if (which == 2){
+                                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                                            profileIntent.putExtra("visitUserId", userID);
+                                                            startActivity(profileIntent);
+                                                        }
 
                                                     }
                                                 });
@@ -305,7 +313,7 @@ public class RequestsFragment extends Fragment {
                                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                CharSequence options[] =  new CharSequence[]{"Cancel Sent Request"};
+                                                CharSequence options[] =  new CharSequence[]{"Cancel Sent Request", userName+"'s profile"};
 
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -343,6 +351,11 @@ public class RequestsFragment extends Fragment {
                                                                         }
 
                                                                     });
+                                                        }
+                                                        if (which == 1){
+                                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                                            profileIntent.putExtra("visitUserId", userID);
+                                                            startActivity(profileIntent);
                                                         }
 
                                                     }

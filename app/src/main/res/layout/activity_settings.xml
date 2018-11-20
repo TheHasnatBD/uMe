@@ -1,107 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <RelativeLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileSetting.SettingsActivity">
-
-    <include layout="@layout/all_app_bar_layout"
+    tools:context=".ProfileSetting.SettingsActivity"
+    >
+    <include
+        layout="@layout/all_app_bar_layout"
         android:id="@+id/profile_settings_appbar"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_below="@id/profile_settings_appbar"
-            android:layout_width="185dp"
-            android:layout_height="185dp"
-            android:src="@drawable/default_profile_image"
-            android:id="@+id/profile_img"
-            android:layout_centerHorizontal="true"
-            app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="1dp"
-            android:layout_marginTop="10dp"
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/updatedMsg"
+        android:padding="5dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Information updated successfully."/>
 
-            />
-
-        <TextView
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <LinearLayout
             android:padding="5dp"
-            android:id="@+id/userEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profile_img"
-            android:text=""
-            android:textColor="@color/colorPrimary"
-            android:drawableLeft="@drawable/ic_check_circle"
-            android:textStyle="italic"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="0dp"/>
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
+                        android:src="@drawable/default_profile_image"
+                        android:id="@+id/profile_img"
+                        app:civ_border_color="@color/colorPrimary"
+                        app:civ_border_width="1.2dp"
+                        app:civ_border_overlay="true"
+                        android:layout_marginTop="10dp"
+                        />
+                    <ImageView
+                        android:padding="5dp"
+                        android:id="@+id/editPhotoIcon"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="146dp"
+                        android:layout_marginTop="43dp"
+                        android:src="@drawable/ic_edit_circle"
+                        android:visibility="visible" />
+                </FrameLayout>
 
-        <TextView
-            android:padding="2dp"
-            android:id="@+id/user_display_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/userEmail"
-            android:text=""
-            android:textSize="22dp"
-            android:textColor="@color/black"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="2dp"/>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    >
+                    <TextView
+                        android:id="@+id/userProfileStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status Available"
+                        android:textStyle="normal"
+                        android:layout_marginTop="2dp"
+                        />
+                    <ImageView
+                        android:id="@+id/statusEdit"
+                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_edit_border"/>
+                </LinearLayout>
 
+            </LinearLayout>
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Personal Information"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="normal"
+                    android:textSize="20sp"/>
+                <EditText
+                    android:id="@+id/user_display_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=" Name"
+                    android:drawableLeft="@drawable/ic_person"
+                    android:drawablePadding="3dp"
+                    android:backgroundTint="@color/dark_gray"
+                    />
+                <EditText
+                    android:id="@+id/profession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=" Profession"
+                    android:drawableLeft="@drawable/ic_work"
+                    android:drawablePadding="3dp"
+                    android:backgroundTint="@color/dark_gray"
+                    />
 
+                <EditText
+                    android:id="@+id/userEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint=" Email"
+                    android:drawableLeft="@drawable/ic_email"
+                    android:drawablePadding="3dp"
+                    android:backgroundTint="@color/dark_gray"
+                    />
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint=" Phone"
+                    android:drawableLeft="@drawable/ic_smartphone"
+                    android:drawablePadding="3dp"
+                    android:backgroundTint="@color/dark_gray"
+                    />
+                <RadioGroup
+                    android:id="@+id/genderRG"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+                    <RadioButton
+                        android:id="@+id/maleRB"
+                        android:onClick="selectedGenderRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        />
+                    <RadioButton
+                        android:onClick="selectedGenderRB"
+                        android:id="@+id/femaleRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"/>
+                </RadioGroup>
 
+                <Button
+                    android:id="@+id/saveInfoBtn"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Update"
+                    android:textColor="@color/black"
+                    android:background="@drawable/ripplebutton"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="10dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
 
-        <TextView
-            android:padding="5dp"
-            android:id="@+id/userProfileStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_display_name"
-            android:text=""
-            android:textSize="16sp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="30dp"/>
-
-        <TextView
-            android:padding="2dp"
-            android:id="@+id/changeProfileImageLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/userProfileStatus"
-            android:text="Upload new a profile photo "
-            android:textSize="15dp"
-            android:textStyle="normal"
-            android:textColor="@color/colorPrimary"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:drawableLeft="@drawable/ic_file_upload"
-            android:drawablePadding="2dp"
-            />
-
-        <Button
-            android:id="@+id/updateStatus"
-            android:layout_marginLeft="75dp"
-            android:layout_marginRight="75dp"
-            android:layout_marginBottom="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/changeProfileImageLink"
-            android:layout_marginTop="10dp"
-            android:text=" Update Status "
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:drawableLeft="@drawable/ic_edit"
-            android:paddingLeft="32dp"
-            android:paddingRight="32dp"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            />
-    </RelativeLayout>
-
-</ScrollView>

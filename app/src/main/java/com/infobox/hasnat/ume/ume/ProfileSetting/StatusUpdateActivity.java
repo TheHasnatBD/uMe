@@ -44,10 +44,11 @@ public class StatusUpdateActivity extends AppCompatActivity {
         String user_id = mAuth.getCurrentUser().getUid();
         statusDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
 
-        status_from_input = (EditText)findViewById(R.id.input_status);
+        status_from_input = findViewById(R.id.input_status);
+
         progressDialog = new ProgressDialog(this);
 
-        mToolbar = (Toolbar)findViewById(R.id.update_status_appbar);
+        mToolbar = findViewById(R.id.update_status_appbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Update Status");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,6 +69,8 @@ public class StatusUpdateActivity extends AppCompatActivity {
          */
         String previousStatus = getIntent().getExtras().get("ex_status").toString();
         status_from_input.setText(previousStatus);
+        status_from_input.setSelection(status_from_input.getText().length());
+
     }
 
 
@@ -110,10 +113,7 @@ public class StatusUpdateActivity extends AppCompatActivity {
                             if (task.isSuccessful()){
 
                                 progressDialog.dismiss();
-
                                 finish();
-
-                                Toasty.success(getApplicationContext(), "Profile status updated successful.", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 Toasty.warning(getApplicationContext(), "Error occurred: failed to update.", Toast.LENGTH_SHORT).show();

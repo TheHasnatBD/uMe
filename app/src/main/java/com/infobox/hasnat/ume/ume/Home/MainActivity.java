@@ -127,10 +127,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         // Unregister Connectivity Broadcast receiver
-        unregisterReceiver(connectivityReceiver);
+        //unregisterReceiver(connectivityReceiver);
 
         // google kore aro jana lagbe, bug aache ekhane
-
 //        if (currentUser != null){
 //            userDatabaseReference.child("active_now").setValue(ServerValue.TIMESTAMP);
 //        }
@@ -153,21 +152,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     // tool bar action menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         if (item.getItemId() == R.id.menu_search){
             Intent intent =  new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
@@ -189,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.main_logout){
-
             // Custom Alert Dialog
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.logout_dailog, null);

@@ -256,7 +256,6 @@ public class ChatActivity extends AppCompatActivity {
 
             // image message sending size compressing will be placed below
 
-
             final String message_sender_reference = "messages/" + messageSenderId + "/" + messageReceiverID;
             final String message_receiver_reference = "messages/" + messageReceiverID + "/" + messageSenderId;
 

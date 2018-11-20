@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,66 +8,107 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Profile.ProfileActivity">
+        tools:context=".Profile.ProfileActivity"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        >
 
         <include
             android:id="@+id/single_profile_toolbar"
             layout="@layout/all_app_bar_layout" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/visit_user_profile_image"
-            android:layout_width="195dp"
-            android:layout_height="195dp"
+        <LinearLayout
+            android:id="@+id/layOne"
             android:layout_below="@id/single_profile_toolbar"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="13dp"
-            android:src="@drawable/default_profile_image"
-            app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="1dp" />
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            >
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/visit_user_profile_image"
+                    android:layout_width="195dp"
+                    android:layout_height="195dp"
+                    android:layout_marginTop="13dp"
+                    android:src="@drawable/default_profile_image"
+                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_width="1dp" />
+                <ImageView
+                    android:visibility="visible"
+                    android:id="@+id/visit_verified_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_check_circle"
+                    android:layout_marginTop="160dp"
+                    android:layout_marginStart="155dp"
+                    />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/visitUserProfileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/visit_user_profile_image"
+            android:layout_below="@id/layOne"
             android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/visitUserProfileStatus"
+            android:visibility="visible"
+            android:id="@+id/visit_work"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/visitUserProfileName"
             android:layout_centerInParent="true"
+            android:drawableLeft="@drawable/ic_work"
             android:gravity="center"
             android:text=""
-            android:textSize="18sp" />
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:textSize="17sp"/>
 
         <TextView
-            android:visibility="invisible"
-            android:id="@+id/visit_verified_icon"
+            android:id="@+id/visitUserProfileStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/visit_work"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text=""
+            android:textSize="16sp" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/go_my_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/visitUserProfileStatus"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="50dp"
-            android:drawableLeft="@drawable/ic_check_circle"
             android:gravity="center"
-            android:text=" verified"
+            android:text="Edit Profile"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimary"
-            android:textStyle="italic" />
+            android:textStyle="bold"
+            android:layout_marginTop="50dp"
+            />
 
         <Button
             android:id="@+id/visitUserFrndRqstSendButton"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/visit_verified_icon"
+            android:layout_below="@id/visitUserProfileStatus"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="70dp"
             android:layout_marginBottom="07dp"
             android:background="@drawable/ripplebutton"
             android:paddingLeft="40dp"

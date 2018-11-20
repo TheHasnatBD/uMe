@@ -62,7 +62,8 @@
         <activity
             android:name=".ProfileSetting.SettingsActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".Home.MainActivity" />
+            android:parentActivityName=".Home.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".ProfileSetting.StatusUpdateActivity"
             android:configChanges="orientation|screenSize"

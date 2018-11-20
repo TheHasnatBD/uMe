@@ -26,6 +26,7 @@
             android:src="@drawable/logout" />
 
         <TextView
+            android:id="@+id/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/logoutImg"
@@ -33,7 +34,7 @@
             android:textColor="#000"
             android:gravity="center"
             android:text="Are you sure to Log out?"
-            android:textSize="18sp" />
+            />
     </RelativeLayout>
 
 </RelativeLayout>

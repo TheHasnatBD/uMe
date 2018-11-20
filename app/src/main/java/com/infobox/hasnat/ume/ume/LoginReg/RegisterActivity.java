@@ -135,6 +135,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 storeDefaultDatabaseReference.child("search_name").setValue(name.toLowerCase());
                                 storeDefaultDatabaseReference.child("user_mobile").setValue(mobile);
                                 storeDefaultDatabaseReference.child("user_email").setValue(email);
+                                storeDefaultDatabaseReference.child("user_gender").setValue("");
+                                storeDefaultDatabaseReference.child("user_profession").setValue("");
                                 storeDefaultDatabaseReference.child("created_at").setValue(ServerValue.TIMESTAMP);
                                 storeDefaultDatabaseReference.child("user_status").setValue("Hi, I'm a new uMe user");
                                 storeDefaultDatabaseReference.child("user_image").setValue("default_image"); // Original image

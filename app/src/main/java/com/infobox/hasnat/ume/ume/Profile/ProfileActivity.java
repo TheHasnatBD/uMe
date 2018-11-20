@@ -1,5 +1,6 @@
 package com.infobox.hasnat.ume.ume.Profile;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,9 +19,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.infobox.hasnat.ume.ume.Model.ProfileInfo;
+import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
 import com.infobox.hasnat.ume.ume.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.NotActiveException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,8 +33,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private Button sendFriendRequest_Button, declineFriendRequest_Button;
-    private TextView profileName, profileStatus, verified_icon;
-    private ImageView profileImage;
+    private TextView profileName, profileStatus, u_work, go_my_profile;
+    private ImageView profileImage, verified_icon;
 
     private DatabaseReference userDatabaseReference;
 
@@ -93,6 +97,8 @@ public class ProfileActivity extends AppCompatActivity {
         profileStatus = findViewById(R.id.visitUserProfileStatus);
         verified_icon = findViewById(R.id.visit_verified_icon);
         profileImage = findViewById(R.id.visit_user_profile_image);
+        u_work = findViewById(R.id.visit_work);
+        go_my_profile = findViewById(R.id.go_my_profile);
 
         verified_icon.setVisibility(View.INVISIBLE);
 
@@ -106,11 +112,19 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("user_name").getValue().toString();
                 String status = dataSnapshot.child("user_status").getValue().toString();
+                String profession = dataSnapshot.child("user_profession").getValue().toString();
                 String image = dataSnapshot.child("user_image").getValue().toString();
                 String verified = dataSnapshot.child("verified").getValue().toString();
 
 
                 profileName.setText(name);
+
+                if (profession.length() > 2){
+                    u_work.setText("  " + profession);
+                } if (profession.equals("")){
+                    u_work.setText("  Not provided yet");
+                }
+
                 profileStatus.setText(status);
                 Picasso.get()
                         .load(image)
@@ -222,9 +236,17 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         } else {
-            System.out.println("Oh, I'm the owner of this account!!!");
             sendFriendRequest_Button.setVisibility(View.INVISIBLE);
             declineFriendRequest_Button.setVisibility(View.INVISIBLE);
+            go_my_profile.setVisibility(View.VISIBLE);
+            go_my_profile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
         }
 
 

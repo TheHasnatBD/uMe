@@ -19,7 +19,8 @@
         android:hint="Update your status..."
         android:ems="10"
         android:inputType="textMultiLine"
-        android:padding="30dp"/>
+        android:padding="30dp"
+        />
 
 
 </RelativeLayout>
