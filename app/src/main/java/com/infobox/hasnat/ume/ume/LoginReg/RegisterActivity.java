@@ -94,8 +94,8 @@ public class RegisterActivity extends AppCompatActivity {
         //Validation for empty fields
         if (TextUtils.isEmpty(name)) {
             Toasty.error(myContext, "Your name is required.", Toast.LENGTH_SHORT).show();
-        } else if (name.length() < 3 || name.length() > 60){
-            Toasty.error(myContext, "Your name should be 3 to 50 numbers of characters.", Toast.LENGTH_SHORT).show();
+        } else if (name.length() < 3 || name.length() > 40){
+            Toasty.error(myContext, "Your name should be 3 to 40 numbers of characters.", Toast.LENGTH_SHORT).show();
 
         } else if (TextUtils.isEmpty(email)){
             Toasty.error(myContext, "Your email is required.", Toast.LENGTH_SHORT).show();
@@ -135,10 +135,11 @@ public class RegisterActivity extends AppCompatActivity {
                                 storeDefaultDatabaseReference.child("search_name").setValue(name.toLowerCase());
                                 storeDefaultDatabaseReference.child("user_mobile").setValue(mobile);
                                 storeDefaultDatabaseReference.child("user_email").setValue(email);
+                                storeDefaultDatabaseReference.child("user_nickname").setValue("");
                                 storeDefaultDatabaseReference.child("user_gender").setValue("");
                                 storeDefaultDatabaseReference.child("user_profession").setValue("");
                                 storeDefaultDatabaseReference.child("created_at").setValue(ServerValue.TIMESTAMP);
-                                storeDefaultDatabaseReference.child("user_status").setValue("Hi, I'm a new uMe user");
+                                storeDefaultDatabaseReference.child("user_status").setValue("Hi, I'm new uMe user");
                                 storeDefaultDatabaseReference.child("user_image").setValue("default_image"); // Original image
                                 storeDefaultDatabaseReference.child("device_token").setValue(deviceToken);
                                 storeDefaultDatabaseReference.child("user_thumb_image").setValue("default_image")

@@ -96,75 +96,77 @@ public class ChatsFragment extends Fragment {
                 userDatabaseReference.child(userID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                        final String userName = dataSnapshot.child("user_name").getValue().toString();
-                        final String userPresence = dataSnapshot.child("active_now").getValue().toString();
-                        final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
+                        if (dataSnapshot.exists()){
+                            final String userName = dataSnapshot.child("user_name").getValue().toString();
+                            final String userPresence = dataSnapshot.child("active_now").getValue().toString();
+                            final String userThumbPhoto = dataSnapshot.child("user_thumb_image").getValue().toString();
 
-                        if (!userThumbPhoto.equals("default_image")) { // default image condition for new user
-                            Picasso.get()
-                                    .load(userThumbPhoto)
-                                    .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
-                                    .placeholder(R.drawable.default_profile_image)
-                                    .into(holder.user_photo, new Callback() {
-                                        @Override
-                                        public void onSuccess() {
-                                        }
+                            if (!userThumbPhoto.equals("default_image")) { // default image condition for new user
+                                Picasso.get()
+                                        .load(userThumbPhoto)
+                                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                                        .placeholder(R.drawable.default_profile_image)
+                                        .into(holder.user_photo, new Callback() {
+                                            @Override
+                                            public void onSuccess() {
+                                            }
 
-                                        @Override
-                                        public void onError(Exception e) {
-                                            Picasso.get()
-                                                    .load(userThumbPhoto)
-                                                    .placeholder(R.drawable.default_profile_image)
-                                                    .into(holder.user_photo);
-                                        }
-                                    });
-                        }
-                        holder.user_name.setText(userName);
-
-                        //active status
-                        holder.active_icon.setVisibility(View.GONE);
-                        if (userPresence.contains("true")) {
-                            holder.user_presence.setText("Active now");
-                            holder.active_icon.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.active_icon.setVisibility(View.GONE);
-                            UserLastSeenTime lastSeenTime = new UserLastSeenTime();
-                            long last_seen = Long.parseLong(userPresence);
-                            String lastSeenOnScreenTime = lastSeenTime.getTimeAgo(last_seen, getContext());
-                            Log.e("lastSeenTime", lastSeenOnScreenTime);
-                            if (lastSeenOnScreenTime != null) {
-                                holder.user_presence.setText(lastSeenOnScreenTime);
+                                            @Override
+                                            public void onError(Exception e) {
+                                                Picasso.get()
+                                                        .load(userThumbPhoto)
+                                                        .placeholder(R.drawable.default_profile_image)
+                                                        .into(holder.user_photo);
+                                            }
+                                        });
                             }
-                        }
+                            holder.user_name.setText(userName);
 
-
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // user active status validation
-                                if (dataSnapshot.child("active_now").exists()) {
-
-                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                    chatIntent.putExtra("visitUserId", userID);
-                                    chatIntent.putExtra("userName", userName);
-                                    startActivity(chatIntent);
-
-                                } else {
-                                    userDatabaseReference.child(userID).child("active_now")
-                                            .setValue(ServerValue.TIMESTAMP).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                            chatIntent.putExtra("visitUserId", userID);
-                                            chatIntent.putExtra("userName", userName);
-                                            startActivity(chatIntent);
-                                        }
-                                    });
-
-
+                            //active status
+                            holder.active_icon.setVisibility(View.GONE);
+                            if (userPresence.contains("true")) {
+                                holder.user_presence.setText("Active now");
+                                holder.active_icon.setVisibility(View.VISIBLE);
+                            } else {
+                                holder.active_icon.setVisibility(View.GONE);
+                                UserLastSeenTime lastSeenTime = new UserLastSeenTime();
+                                long last_seen = Long.parseLong(userPresence);
+                                String lastSeenOnScreenTime = lastSeenTime.getTimeAgo(last_seen, getContext());
+                                Log.e("lastSeenTime", lastSeenOnScreenTime);
+                                if (lastSeenOnScreenTime != null) {
+                                    holder.user_presence.setText(lastSeenOnScreenTime);
                                 }
                             }
-                        });
+
+
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // user active status validation
+                                    if (dataSnapshot.child("active_now").exists()) {
+
+                                        Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                        chatIntent.putExtra("visitUserId", userID);
+                                        chatIntent.putExtra("userName", userName);
+                                        startActivity(chatIntent);
+
+                                    } else {
+                                        userDatabaseReference.child(userID).child("active_now")
+                                                .setValue(ServerValue.TIMESTAMP).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                chatIntent.putExtra("visitUserId", userID);
+                                                chatIntent.putExtra("userName", userName);
+                                                startActivity(chatIntent);
+                                            }
+                                        });
+
+
+                                    }
+                                }
+                            });
+                        }
 
                     }
 

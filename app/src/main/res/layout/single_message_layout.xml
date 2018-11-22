@@ -16,8 +16,7 @@
         android:layout_marginStart="51dp"
         app:riv_corner_radius="15dp"
         app:riv_border_width="0.5dip"
-        android:src="@drawable/default_profile_image"        />
-
+        />
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/messageUserImage"
         android:layout_width="40dp"
@@ -67,6 +66,6 @@
         android:layout_alignParentTop="true"
         app:riv_corner_radius="15dp"
         app:riv_border_width="0.5dip"
-        android:src="@drawable/default_profile_image"/>
+        />
 
 </RelativeLayout>

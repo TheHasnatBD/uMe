@@ -32,7 +32,7 @@
             android:layout_below="@+id/successIcon"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="50dp"
-            android:textColor="#009f08"
+            android:textColor="@color/colorPrimary"
             android:gravity="center"
             android:padding="5dp"
             android:textSize="15dp"

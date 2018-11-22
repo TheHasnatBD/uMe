@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.infobox.hasnat.ume.ume.R;
-
 import es.dmoral.toasty.Toasty;
 
 public class StatusUpdateActivity extends AppCompatActivity {
@@ -34,7 +33,6 @@ public class StatusUpdateActivity extends AppCompatActivity {
     private DatabaseReference statusDatabaseReference;
     private FirebaseAuth mAuth;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +43,6 @@ public class StatusUpdateActivity extends AppCompatActivity {
         statusDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
 
         status_from_input = findViewById(R.id.input_status);
-
         progressDialog = new ProgressDialog(this);
 
         mToolbar = findViewById(R.id.update_status_appbar);
@@ -63,16 +60,13 @@ public class StatusUpdateActivity extends AppCompatActivity {
             }
         });
 
-
         /**
          * retrieve previous profile status from SettingsActivity
          */
         String previousStatus = getIntent().getExtras().get("ex_status").toString();
         status_from_input.setText(previousStatus);
         status_from_input.setSelection(status_from_input.getText().length());
-
-    }
-
+    } //ending onCreate
 
     // tool bar Status update done- menu button
     @Override
@@ -86,22 +80,18 @@ public class StatusUpdateActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         if (item.getItemId() == R.id.status_update_done){
             String new_status = status_from_input.getText().toString();
             changeProfileStatus(new_status);
         }
-
         return true;
     }
 
     private void changeProfileStatus(String new_status) {
-
         if (TextUtils.isEmpty(new_status)){
             Toasty.warning(getApplicationContext(), "Please write something about status", Toast.LENGTH_SHORT).show();
         } else {
-            progressDialog.setTitle("Updating profile status");
-            progressDialog.setMessage("Please wait...");
+            progressDialog.setMessage("Updating status...");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
 
@@ -109,24 +99,15 @@ public class StatusUpdateActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-
                             if (task.isSuccessful()){
-
                                 progressDialog.dismiss();
                                 finish();
-
                             } else {
                                 Toasty.warning(getApplicationContext(), "Error occurred: failed to update.", Toast.LENGTH_SHORT).show();
-
                             }
-
                         }
                     });
-
         }
-
     }
-
-
 
 }

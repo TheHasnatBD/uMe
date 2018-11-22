@@ -57,7 +57,6 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("users");
-
         friendRequestReference = FirebaseDatabase.getInstance().getReference().child("friend_requests");
         friendRequestReference.keepSynced(true); // for offline
 
@@ -111,13 +110,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("user_name").getValue().toString();
+                String nickname = dataSnapshot.child("user_nickname").getValue().toString();
                 String status = dataSnapshot.child("user_status").getValue().toString();
                 String profession = dataSnapshot.child("user_profession").getValue().toString();
                 String image = dataSnapshot.child("user_image").getValue().toString();
                 String verified = dataSnapshot.child("verified").getValue().toString();
 
+                if (nickname.isEmpty()){
+                    profileName.setText(name);
+                } else {
+                    String full_name = name +" ("+nickname+")";
+                    profileName.setText(full_name);
+                }
 
-                profileName.setText(name);
 
                 if (profession.length() > 2){
                     u_work.setText("  " + profession);

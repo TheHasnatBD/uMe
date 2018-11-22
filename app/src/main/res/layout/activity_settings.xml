@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:text="Information updated successfully."/>
+        android:text="Your information saved successfully"/>
 
     <ScrollView
     android:layout_width="match_parent"
@@ -104,8 +104,31 @@
                     android:hint=" Name"
                     android:drawableLeft="@drawable/ic_person"
                     android:drawablePadding="3dp"
-                    android:backgroundTint="@color/dark_gray"
+                    android:backgroundTint="@color/gray"
+                    android:inputType="textCapWords"
                     />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Nickname:"
+                        android:padding="3dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        />
+                    <EditText
+                        android:id="@+id/user_nickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="birth name/ surname"
+                        android:drawablePadding="3dp"
+                        android:inputType="textNoSuggestions"
+                        android:backgroundTint="@color/dark_gray"
+                        />
+                </LinearLayout>
                 <EditText
                     android:id="@+id/profession"
                     android:layout_width="match_parent"
@@ -115,7 +138,6 @@
                     android:drawablePadding="3dp"
                     android:backgroundTint="@color/dark_gray"
                     />
-
                 <EditText
                     android:id="@+id/userEmail"
                     android:layout_width="match_parent"
@@ -156,12 +178,23 @@
                         android:text="Female"/>
                 </RadioGroup>
 
+                <TextView
+                    android:id="@+id/recheckGender"
+                    android:layout_marginStart="5dp"
+                    android:padding="3dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recheck_gender"/>
+
                 <Button
                     android:id="@+id/saveInfoBtn"
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Update"
+                    android:text="    Save Changes    "
+                    android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:background="@drawable/ripplebutton"
                     android:paddingStart="10dp"

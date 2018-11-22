@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -53,14 +50,12 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dmoral.toasty.Toasty;
@@ -83,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView send_message, send_image;
     private EditText input_user_message;
     private FirebaseAuth mAuth;
-    private String messageSenderId, download_url;
+    private String messageSenderId;
 
     private RecyclerView messageList_ReCyVw;
     private final List<Message> messageList = new ArrayList<>();
@@ -94,6 +89,9 @@ public class ChatActivity extends AppCompatActivity {
     private StorageReference imageMessageStorageRef;
 
     private ConnectivityReceiver connectivityReceiver;
+
+    Bitmap compressed_msg_bitmap = null;
+
 
 
     @Override
@@ -241,8 +239,33 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
          //  For image sending
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GALLERY_PICK_CODE && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == GALLERY_PICK_CODE && resultCode == RESULT_OK && data != null){
             Uri imageUri = data.getData();
+
+            //compressedImageFile = new Compressor(this).compressToFile(imageUri);
+
+
+            File compressed_img_path_Uri = new File(imageUri.getPath());
+            try {
+                compressed_msg_bitmap= new Compressor(this)
+                        //.setMaxWidth(640)
+                        //.setMaxHeight(480)
+                        .setQuality(75)
+                        .compressToBitmap(compressed_img_path_Uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            compressed_msg_bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream);
+            final byte[] thumb_byte = outputStream.toByteArray();
+
+            UploadTask uploadTask =
+            ////////
+
+            // firebase storage for uploading the cropped and compressed image
+            //final StorageReference thumb_filePath = thumb_image_ref.child( + "jpg");
+
 
             // image message sending size compressing will be placed below
 
@@ -252,55 +275,49 @@ public class ChatActivity extends AppCompatActivity {
             DatabaseReference user_message_key = rootReference.child("messages").child(messageSenderId).child(messageReceiverID).push();
             final String message_push_id = user_message_key.getKey();
 
-            final StorageReference file_path = imageMessageStorageRef.child(message_push_id + ".jpg");
+            StorageReference file_path = imageMessageStorageRef.child(message_push_id + ".jpg");
 
-            UploadTask uploadTask = file_path.putFile(imageUri);
-            Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+
+            file_path.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task){
-                    if (!task.isSuccessful()){
-                        Toasty.error(ChatActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                    download_url = file_path.getDownloadUrl().toString();
-                    return file_path.getDownloadUrl();
-                }
-            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     if (task.isSuccessful()){
-                        if (task.isSuccessful()){
-                            download_url = task.getResult().toString();
-                            //Toast.makeText(ChatActivity.this, "From ChatActivity, link: " +download_url, Toast.LENGTH_SHORT).show();
+                        String downloadUrl = String.valueOf(task.getResult().toString());
 
-                            HashMap<String, Object> message_text_body = new HashMap<>();
-                            message_text_body.put("message", download_url);
-                            message_text_body.put("seen", false);
-                            message_text_body.put("type", "image");
-                            message_text_body.put("time", ServerValue.TIMESTAMP);
-                            message_text_body.put("from", messageSenderId);
+                        Map message_text_body = new HashMap();
+                        message_text_body.put("message", downloadUrl);
+                        message_text_body.put("seen", false);
+                        message_text_body.put("type", "image");
+                        message_text_body.put("time", ServerValue.TIMESTAMP);
+                        message_text_body.put("from", messageSenderId);
 
-                            HashMap<String, Object> messageBodyDetails = new HashMap<>();
-                            messageBodyDetails.put(message_sender_reference + "/" + message_push_id, message_text_body);
-                            messageBodyDetails.put(message_receiver_reference + "/" + message_push_id, message_text_body);
+                        Map messageBodyDetails = new HashMap();
+                        messageBodyDetails.put(message_sender_reference + "/" + message_push_id, message_text_body);
+                        messageBodyDetails.put(message_receiver_reference + "/" + message_push_id, message_text_body);
 
-                            rootReference.updateChildren(messageBodyDetails, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if (databaseError != null){
-                                        Log.e("from_image_chat: ", databaseError.getMessage());
-                                    }
-                                    input_user_message.setText("");
+                        rootReference.updateChildren(messageBodyDetails, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                if (databaseError != null){
+                                    Log.e("from_image_chat: ", databaseError.getMessage());
                                 }
-                            });
-                            Log.e("tag", "Image sent successfully");
-                        } else{
-                            Toasty.warning(ChatActivity.this, "Failed to send image. Try again", Toast.LENGTH_SHORT).show();
-                        }
+                                input_user_message.setText("");
+                            }
+                        });
+                        Log.e("tag", "Image sent successfully");
+                    } else{
+                        Toasty.warning(ChatActivity.this, "Failed to send image. Try again", Toast.LENGTH_SHORT).show();
                     }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toasty.error(ChatActivity.this, "Error: "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
+
 
     private void fetchMessages() {
         rootReference.child("messages").child(messageSenderId).child(messageReceiverID)
@@ -341,14 +358,14 @@ public class ChatActivity extends AppCompatActivity {
             DatabaseReference user_message_key = rootReference.child("messages").child(messageSenderId).child(messageReceiverID).push();
             String message_push_id = user_message_key.getKey();
 
-            HashMap<String, Object> message_text_body = new HashMap<>();
+            Map message_text_body = new HashMap();
             message_text_body.put("message", message);
             message_text_body.put("seen", false);
             message_text_body.put("type", "text");
             message_text_body.put("time", ServerValue.TIMESTAMP);
             message_text_body.put("from", messageSenderId);
 
-            HashMap<String, Object> messageBodyDetails = new HashMap<>();
+            Map messageBodyDetails = new HashMap();
             messageBodyDetails.put(message_sender_reference + "/" + message_push_id, message_text_body);
             messageBodyDetails.put(message_receiver_reference + "/" + message_push_id, message_text_body);
 

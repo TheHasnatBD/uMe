@@ -2,7 +2,7 @@
     <string name="app_name">uMe</string>
     <string name="app_name_slogan">urgent messages</string>
 
-    <string name="give_correct_information">Please your give correct information. Because, registered information can\'t be changed.</string>
+    <string name="give_correct_information">Please your give correct information. Because, your email &amp; phone number needs to be verification.</string>
 
     <!-- My Common Strings -->
     <string name="student_name">Abdullah Al-Hasnat</string>
@@ -58,6 +58,7 @@
     <string name="on_internet_msg">No internet connection! Please check internet.</string>
     <string name="menu_search">Search</string>
     <string name="register_success_popup">Registered successfully.\nVerification email has been sent.\nPlease verify email.</string>
+    <string name="recheck_gender">To save your changes, please check/recheck your GENDER.</string>
 
     <string-array name="spinerViewPeople">
         <item>Default</item>

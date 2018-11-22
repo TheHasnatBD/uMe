@@ -7,13 +7,10 @@ public class Message {
     private String from;
 
     // default constructor
-
     public Message() {
     }
 
-
     // constructor
-
     public Message(String message, String type, long time, boolean seen, String from) {
         this.message = message;
         this.type = type;
@@ -22,10 +19,7 @@ public class Message {
         this.from = from;
     }
 
-
     // getter & setter
-
-
     public String getMessage() {
         return message;
     }

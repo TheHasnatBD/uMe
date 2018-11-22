@@ -5,12 +5,14 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.infobox.hasnat.ume.ume.Model.Message;
 import com.infobox.hasnat.ume.ume.R;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +53,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull final MessageViewHolder holder, int position) {
         String sender_UID = mAuth.getCurrentUser().getUid();
-
         Message message = messageList.get(position);
 
         String from_user_ID = message.getFrom();
@@ -61,17 +63,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userName = dataSnapshot.child("user_name").getValue().toString();
-                String userProfileImage = dataSnapshot.child("user_thumb_image").getValue().toString();
-                //
-                Picasso.get()
-                        .load(userProfileImage)
-                        .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
-                        .placeholder(R.drawable.default_profile_image)
-                        .into(holder.user_profile_image);
+                if (dataSnapshot.exists()){
+                    String userName = dataSnapshot.child("user_name").getValue().toString();
+                    String userProfileImage = dataSnapshot.child("user_thumb_image").getValue().toString();
+                    //
+                    Picasso.get()
+                            .load(userProfileImage)
+                            .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
+                            .placeholder(R.drawable.default_profile_image)
+                            .into(holder.user_profile_image);
+                }
 
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -93,7 +96,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.sender_text_message.setTextColor(Color.BLACK);
                 holder.sender_text_message.setGravity(Gravity.LEFT);
                 holder.sender_text_message.setText(message.getMessage());
-
             } else {
                 holder.sender_text_message.setVisibility(View.INVISIBLE);
                 holder.receiver_text_message.setVisibility(View.VISIBLE);
@@ -104,7 +106,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 holder.receiver_text_message.setGravity(Gravity.LEFT);
                 holder.receiver_text_message.setText(message.getMessage());
             }
-        } else { // if message type is NON TEXT
+        }
+        if (from_message_TYPE.equals("image")){ // if message type is NON TEXT
             // when msg has IMAGE, text views are GONE
             holder.sender_text_message.setVisibility(View.GONE);
             holder.receiver_text_message.setVisibility(View.GONE);
@@ -112,23 +115,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if (from_user_ID.equals(sender_UID)){
                 holder.user_profile_image.setVisibility(View.GONE);
                 holder.receiverImageMsg.setVisibility(View.GONE);
+                //holder.senderImageMsg.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(message.getMessage())
                         .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
-                        // .placeholder(R.drawable.default_profile_image)
+                         //.placeholder(R.drawable.default_profile_image)
                         .into(holder.senderImageMsg);
+                Log.e("tag","from adapter, link : "+ message.getMessage());
             } else {
                 holder.user_profile_image.setVisibility(View.VISIBLE);
                 holder.senderImageMsg.setVisibility(View.GONE);
+                //holder.receiverImageMsg.setVisibility(View.VISIBLE);
                 Picasso.get()
                         .load(message.getMessage())
                         .networkPolicy(NetworkPolicy.OFFLINE) // for Offline
-                        // .placeholder(R.drawable.default_profile_image)
+                         //.placeholder(R.drawable.default_profile_image)
                         .into(holder.receiverImageMsg);
+                Log.e("tag","from adapter, link : "+ message.getMessage());
 
             }
-
-
         }
 
     }
@@ -141,7 +146,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public class MessageViewHolder extends RecyclerView.ViewHolder{
         TextView sender_text_message, receiver_text_message;
         CircleImageView user_profile_image;
-        ImageView senderImageMsg, receiverImageMsg;
+        RoundedImageView senderImageMsg, receiverImageMsg;
+
         MessageViewHolder(View view){
             super(view);
             sender_text_message = view.findViewById(R.id.senderMessageText);
