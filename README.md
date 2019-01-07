@@ -22,7 +22,7 @@
 
 >with full UI design
 
-[Download APK](https://github.com/TheHasnatBD/uMe/blob/master/myFiles/app-debug.zip)
+[Download APK](https://github.com/TheHasnatBD/uMe/blob/master/myFiles/app-debug-new.zip)
 #### Some Screenshots of this app
 
  Intro Slider                               | Home                                        | Profile Settings 			                    | Friend Request UI 
