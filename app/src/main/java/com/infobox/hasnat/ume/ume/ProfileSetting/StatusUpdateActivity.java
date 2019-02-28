@@ -20,7 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.infobox.hasnat.ume.ume.R;
-import es.dmoral.toasty.Toasty;
+
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class StatusUpdateActivity extends AppCompatActivity {
 
@@ -89,7 +90,7 @@ public class StatusUpdateActivity extends AppCompatActivity {
 
     private void changeProfileStatus(String new_status) {
         if (TextUtils.isEmpty(new_status)){
-            Toasty.warning(getApplicationContext(), "Please write something about status", Toast.LENGTH_SHORT).show();
+            SweetToast.warning(getApplicationContext(), "Please write something about status");
         } else {
             progressDialog.setMessage("Updating status...");
             progressDialog.show();
@@ -103,7 +104,7 @@ public class StatusUpdateActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 finish();
                             } else {
-                                Toasty.warning(getApplicationContext(), "Error occurred: failed to update.", Toast.LENGTH_SHORT).show();
+                                SweetToast.warning(getApplicationContext(), "Error occurred: failed to update.");
                             }
                         }
                     });

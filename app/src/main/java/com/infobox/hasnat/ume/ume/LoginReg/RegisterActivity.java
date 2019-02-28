@@ -30,7 +30,7 @@ import com.infobox.hasnat.ume.ume.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import es.dmoral.toasty.Toasty;
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -93,28 +93,28 @@ public class RegisterActivity extends AppCompatActivity {
 
         //Validation for empty fields
         if (TextUtils.isEmpty(name)) {
-            Toasty.error(myContext, "Your name is required.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Your name is required.");
         } else if (name.length() < 3 || name.length() > 40){
-            Toasty.error(myContext, "Your name should be 3 to 40 numbers of characters.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Your name should be 3 to 40 numbers of characters.");
 
         } else if (TextUtils.isEmpty(email)){
-            Toasty.error(myContext, "Your email is required.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Your email is required.");
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toasty.error(myContext, "Your email is not valid.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Your email is not valid.");
 
         } else if (TextUtils.isEmpty(mobile)){
-            Toasty.error(myContext, "Your mobile number is required.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Your mobile number is required.");
         } else if (mobile.length() < 11){
-            Toasty.error(myContext, "Mobile number should be min 11 characters.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Mobile number should be min 11 characters.");
 
         } else if (TextUtils.isEmpty(password)){
-            Toasty.error(myContext, "Please fill this password field", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Please fill this password field");
         } else if (password.length() < 6){
-            Toasty.error(myContext, "Create a password at least 6 characters long.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Create a password at least 6 characters long.");
         }else if (TextUtils.isEmpty(confirmPassword)){
-            Toasty.warning(myContext, "Please retype in password field", Toast.LENGTH_SHORT).show();
+            SweetToast.warning(myContext, "Please retype in password field");
         } else if (!password.equals(confirmPassword)){
-            Toasty.error(myContext, "Your password don't match with your confirm password", Toast.LENGTH_SHORT).show();
+            SweetToast.error(myContext, "Your password don't match with your confirm password");
 
         } else {
             //NOw ready to create a user a/c
@@ -170,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                                                             startActivity(mainIntent);
                                                                                             finish();
 
-                                                                                            Toasty.info(myContext, "Please check your email & verify.", Toast.LENGTH_LONG).show();
+                                                                                            SweetToast.info(myContext, "Please check your email & verify.");
 
                                                                                         }
                                                                                     });
@@ -191,7 +191,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             } else {
                                 String message = task.getException().getMessage();
-                                Toasty.error(myContext, "Error occurred : " + message, Toast.LENGTH_SHORT).show();
+                                SweetToast.error(myContext, "Error occurred : " + message);
                             }
 
                             progressDialog.dismiss();

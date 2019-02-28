@@ -1,7 +1,6 @@
 package com.infobox.hasnat.ume.ume.LoginReg;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -33,7 +32,7 @@ import com.infobox.hasnat.ume.ume.R;
 import java.time.Year;
 import java.util.Calendar;
 
-import es.dmoral.toasty.Toasty;
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -117,21 +116,18 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUserAccount(String email, String password) {
         //just validation
         if(TextUtils.isEmpty(email)){
-            Toasty.error(this, "Email is required",Toast.LENGTH_SHORT, true).show();
+            SweetToast.error(this, "Email is required");
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            Toasty.error(this, "Your email is not valid.",Toast.LENGTH_SHORT, true).show();
+            SweetToast.error(this, "Your email is not valid.");
         } else if(TextUtils.isEmpty(password)){
-            Toasty.error(this, "Password is required", Toast.LENGTH_SHORT, true).show();
+            SweetToast.error(this, "Password is required");
         } else if (password.length() < 6){
-            Toasty.error(this, "May be your password had minimum 6 numbers of character.", Toast.LENGTH_SHORT, true).show();
+            SweetToast.error(this, "May be your password had minimum 6 numbers of character.");
         } else {
-
             //progress bar
             progressDialog.setMessage("Please wait...");
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
-
-
 
             // after validation checking, log in user a/c
             mAuth.signInWithEmailAndPassword(email, password)
@@ -152,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                         });
 
                             } else {
-                                Toasty.error(LoginActivity.this, "Your email and password may be incorrect. Please check & try again.", Toast.LENGTH_SHORT, true).show();
+                                SweetToast.error(LoginActivity.this, "Your email and password may be incorrect. Please check & try again.");
                             }
 
                             progressDialog.dismiss();
@@ -178,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            Toasty.info(LoginActivity.this, "Email is not verified. Please verify first", Toast.LENGTH_LONG, true).show();
+            SweetToast.info(LoginActivity.this, "Email is not verified. Please verify first");
             mAuth.signOut();
         }
     }

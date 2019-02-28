@@ -26,7 +26,8 @@ import com.infobox.hasnat.ume.ume.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import es.dmoral.toasty.Toasty;
+import xyz.hasnat.sweettoast.SweetToast;
+
 
 public class ForgotPassActivity extends AppCompatActivity {
     private Toolbar mToolbar;
@@ -55,9 +56,9 @@ public class ForgotPassActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = forgotEmail.getText().toString();
                 if(TextUtils.isEmpty(email)){
-                    Toasty.error(ForgotPassActivity.this, "Email is required", Toast.LENGTH_SHORT).show();
+                    SweetToast.error(ForgotPassActivity.this, "Email is required");
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    Toasty.error(ForgotPassActivity.this,"Email format is not valid.", Toast.LENGTH_SHORT).show();
+                    SweetToast.error(ForgotPassActivity.this,"Email format is not valid.");
                 } else {
                     // send email to reset password
                     auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -78,7 +79,7 @@ public class ForgotPassActivity extends AppCompatActivity {
                                                 startActivity(mainIntent);
                                                 finish();
 
-                                                Toasty.info(ForgotPassActivity.this, "Please check your email.", Toast.LENGTH_LONG).show();
+                                                SweetToast.info(ForgotPassActivity.this, "Please check your email.");
 
                                             }
                                         });
@@ -89,7 +90,7 @@ public class ForgotPassActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toasty.error(ForgotPassActivity.this, "Oops!! "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            SweetToast.error(ForgotPassActivity.this, "Oops!! "+e.getMessage());
                         }
                     });
                 }

@@ -34,7 +34,7 @@ import com.squareup.picasso.Picasso;
 
 import cn.zhaiyifan.rememberedittext.RememberEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -184,7 +184,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.menu_clear_search){
             RememberEditText.clearCache(SearchActivity.this);
-            Toasty.info(this, "Search history cleared successfully.", Toast.LENGTH_SHORT, true).show();
+            SweetToast.info(this, "Search history cleared successfully.");
             this.finish();
         }
         return true;

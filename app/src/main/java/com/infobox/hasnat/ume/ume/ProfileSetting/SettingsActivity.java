@@ -57,8 +57,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 import id.zelory.compressor.Compressor;
+import xyz.hasnat.sweettoast.SweetToast;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -250,13 +250,13 @@ public class SettingsActivity extends AppCompatActivity {
             recheckGender.setTextColor(Color.RED);
             //Toasty.info(this, "To save changes, please recheck your GENDER", 1000).show();
         } else if (TextUtils.isEmpty(uName)){
-            Toasty.error(this, "Oops! your name can't be empty", 1000).show();
+            SweetToast.error(this, "Oops! your name can't be empty");
         } else if (uName.length()<3 || uName.length()>40){
-            Toasty.warning(this, "Your name should be 3 to 40 numbers of characters", 1000).show();
+            SweetToast.warning(this, "Your name should be 3 to 40 numbers of characters");
         } else if (TextUtils.isEmpty(uPhone)){
-            Toasty.error(this, "Your mobile number is required.", Toast.LENGTH_SHORT).show();
+            SweetToast.error(this, "Your mobile number is required.");
         } else if (uPhone.length()<11){
-            Toasty.warning(this, "Sorry! your mobile number is too short", 1000).show();
+            SweetToast.warning(this, "Sorry! your mobile number is too short");
         } else {
             getUserDatabaseReference.child("user_name").setValue(uName);
             getUserDatabaseReference.child("user_nickname").setValue(uNickname);
@@ -338,7 +338,7 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task){
                         if (!task.isSuccessful()){
-                            Toasty.error(SettingsActivity.this, "Profile Photo Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            SweetToast.error(SettingsActivity.this, "Profile Photo Error: " + task.getException().getMessage());
                             //throw task.getException();
                         }
                         profile_download_url = filePath.getDownloadUrl().toString();
@@ -365,7 +365,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 @Override
                                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task){
                                     if (!task.isSuccessful()){
-                                        Toasty.error(SettingsActivity.this, "Thumb Image Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        SweetToast.error(SettingsActivity.this, "Thumb Image Error: " + task.getException().getMessage());
                                     }
                                     profile_thumb_download_url = thumb_filePath.getDownloadUrl().toString();
                                     return thumb_filePath.getDownloadUrl();
@@ -470,7 +470,7 @@ public class SettingsActivity extends AppCompatActivity {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 //Exception error = result.getError();
                 // handling more event
-                Toasty.info(SettingsActivity.this,"Image cropping failed.", Toast.LENGTH_SHORT).show();
+                SweetToast.info(SettingsActivity.this,"Image cropping failed.");
             }
         }
 

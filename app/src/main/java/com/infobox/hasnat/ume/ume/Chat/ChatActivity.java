@@ -63,8 +63,8 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 import id.zelory.compressor.Compressor;
+import xyz.hasnat.sweettoast.SweetToast;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -259,7 +259,7 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task){
                     if (!task.isSuccessful()){
-                        Toasty.error(ChatActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        SweetToast.error(ChatActivity.this, "Error: " + task.getException().getMessage());
                     }
                     download_url = file_path.getDownloadUrl().toString();
                     return file_path.getDownloadUrl();
@@ -294,7 +294,7 @@ public class ChatActivity extends AppCompatActivity {
                             });
                             Log.e("tag", "Image sent successfully");
                         } else{
-                            Toasty.warning(ChatActivity.this, "Failed to send image. Try again", Toast.LENGTH_SHORT).show();
+                            SweetToast.warning(ChatActivity.this, "Failed to send image. Try again");
                         }
                     }
                 }
@@ -333,7 +333,7 @@ public class ChatActivity extends AppCompatActivity {
     private void sendMessage() {
         String message = input_user_message.getText().toString();
         if (TextUtils.isEmpty(message)){
-            Toasty.info(ChatActivity.this, "Please type a message", Toast.LENGTH_SHORT).show();
+            SweetToast.info(ChatActivity.this, "Please type a message");
         } else {
             String message_sender_reference = "messages/" + messageSenderId + "/" + messageReceiverID;
             String message_receiver_reference = "messages/" + messageReceiverID + "/" + messageSenderId;

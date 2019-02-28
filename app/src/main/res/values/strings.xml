@@ -8,7 +8,7 @@
     <string name="student_name">Abdullah Al-Hasnat</string>
     <string name="copyright">uMe © 2018</string>
     <string name="profile_settings">My Profile</string>
-    <string name="thehasnatbd">@TheHasnatBD</string>
+    <string name="thehasnatbd">TheHasnatBD</string>
     <string name="log_in">Log In</string>
     <string name="log_out">Log Out</string>
     <string name="profile">Profile</string>
@@ -65,8 +65,5 @@
         <item>Name</item>
         <item>Date</item>
     </string-array>
-
-    <!-- TODO: Firebase Database node / fields -->
-
 
 </resources>
