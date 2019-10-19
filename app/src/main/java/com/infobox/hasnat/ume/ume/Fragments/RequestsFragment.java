@@ -6,12 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +23,13 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.infobox.hasnat.ume.ume.Friends.FriendsActivity;
-import com.infobox.hasnat.ume.ume.Home.MainActivity;
-import com.infobox.hasnat.ume.ume.Model.Friends;
 import com.infobox.hasnat.ume.ume.Model.Requests;
 import com.infobox.hasnat.ume.ume.Profile.ProfileActivity;
 import com.infobox.hasnat.ume.ume.R;
@@ -200,7 +199,7 @@ public class RequestsFragment extends Fragment {
                                                                                                                                     // Changing message text color
                                                                                                                                     View sView = snackbar.getView();
                                                                                                                                     sView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                                                                                                                                    TextView textView = sView.findViewById(android.support.design.R.id.snackbar_text);
+                                                                                                                                    TextView textView = sView.findViewById(R.id.snackbar_text);
                                                                                                                                     textView.setTextColor(Color.WHITE);
                                                                                                                                     snackbar.show();
                                                                                                                                 }
@@ -240,7 +239,7 @@ public class RequestsFragment extends Fragment {
                                                                                                     // Changing message text color
                                                                                                     View sView = snackbar.getView();
                                                                                                     sView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                                                                                                    TextView textView = sView.findViewById(android.support.design.R.id.snackbar_text);
+                                                                                                    TextView textView = sView.findViewById(R.id.snackbar_text);
                                                                                                     textView.setTextColor(Color.WHITE);
                                                                                                     snackbar.show();
 
@@ -339,7 +338,7 @@ public class RequestsFragment extends Fragment {
                                                                                                     // Changing message text color
                                                                                                     View sView = snackbar.getView();
                                                                                                     sView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                                                                                                    TextView textView = sView.findViewById(android.support.design.R.id.snackbar_text);
+                                                                                                    TextView textView = sView.findViewById(R.id.snackbar_text);
                                                                                                     textView.setTextColor(Color.WHITE);
                                                                                                     snackbar.show();
                                                                                                 }

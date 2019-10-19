@@ -13,7 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
-public class uMeOffline extends Application{
+public class MyApplication extends Application{
 
     private DatabaseReference userDatabaseReference;
     private FirebaseAuth mAuth;

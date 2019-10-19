@@ -10,14 +10,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +25,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -38,8 +39,6 @@ import com.infobox.hasnat.ume.ume.R;
 import com.infobox.hasnat.ume.ume.ProfileSetting.SettingsActivity;
 import com.infobox.hasnat.ume.ume.Adapter.TabsPagerAdapter;
 import com.infobox.hasnat.ume.ume.Search.SearchActivity;
-
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -238,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 // Changing message text color
                 View view = snackbar.getView();
                 view.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
-                TextView textView = view.findViewById(android.support.design.R.id.snackbar_text);
+                TextView textView = view.findViewById(R.id.snackbar_text);
                 textView.setTextColor(Color.WHITE);
                 snackbar.show();
             }

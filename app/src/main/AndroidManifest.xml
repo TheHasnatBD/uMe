@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.infobox.hasnat.ume.ume">
-
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
-        android:name=".Utils.uMeOffline"
+        android:name=".Utils.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -63,7 +51,7 @@
             android:name=".ProfileSetting.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:parentActivityName=".Home.MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ProfileSetting.StatusUpdateActivity"
             android:configChanges="orientation|screenSize"
@@ -86,20 +74,26 @@
             android:parentActivityName=".Home.MainActivity" />
         <activity
             android:name=".Search.SearchActivity"
-            android:configChanges="orientation|screenSize" />
-
-        <!-- Cropping image library -->
+            android:configChanges="orientation|screenSize" /> <!-- Cropping image library -->
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
-
-        <!-- Firebase Messaging Service -->
+            android:theme="@style/Base.Theme.AppCompat" /> <!-- Firebase Messaging Service -->
         <service android:name=".Utils.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -16,6 +14,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.infobox.hasnat.ume.ume.Home.MainActivity;
 import com.infobox.hasnat.ume.ume.R;
