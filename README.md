@@ -2,7 +2,7 @@
 > _urgent messages_
 
 
-[![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Abandoned-orange.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+[![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Not%20Maintained-yellow.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 #### This project is no longer under development or, maintained.
 
 ### features for learner / developer *(For beginners or intermediate)*-
